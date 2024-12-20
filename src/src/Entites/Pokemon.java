@@ -6,9 +6,11 @@ public class Pokemon {
     //Main stuff, static stats + the pokemon
     BufferedImage frontSprite, backSprite;
     String Name;
+    String Ability; //maybe object
     int MaxHealth, Attack, Defense, SpAttack, SpDefense, Speed;
 
     //multipliers, stat changing
+    String Status; //maybe object
     int AtkMultiplier, DefMultiplier, SpAMultiplier, SpDMultiplier, SpdMultiplier;
 
     public Pokemon(){

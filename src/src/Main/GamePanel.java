@@ -1,5 +1,8 @@
 package Main;
 
+import States.AbstractState;
+import States.BattleState;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -8,13 +11,14 @@ import java.io.File;
 import java.io.IOException;
 
 public class GamePanel extends JPanel implements Runnable{
-    public int tileSize = 48; //each 1 tile is 48x48 pixels
+    public static int tileSize = 48; //each 1 tile is 48x48 pixels
     public int rows = 16;
     public int columns = 22;
-    public int screenHeight = tileSize * rows; //576 pixels tall // 12 tiles tall, temp size
-    public int screenWidth = tileSize * columns; //768 pixels wide // 16 tiles tall, temp size
-
+    public int screenHeight = tileSize * rows; // 16 tiles tall, temp size
+    public int screenWidth = tileSize * columns; //22 tiles wide, temp size
     int fps = 60;
+
+    PlayerKeyInputs keyInputs;
 
     BufferedImage backgroundImage;
 
@@ -26,6 +30,8 @@ public class GamePanel extends JPanel implements Runnable{
         this.setDoubleBuffered(true);
 
         this.setFocusable(true);
+        this.keyInputs = new PlayerKeyInputs(this);
+        this.addKeyListener(keyInputs);
 
         try{
             backgroundImage = ImageIO.read(new File("out/res/lhu26US.png"));
@@ -81,25 +87,7 @@ public class GamePanel extends JPanel implements Runnable{
             y += tileSize;
         }
 
-        //textbox
-        graphics2D.setColor(new Color(0,0,0,150)); //background = black + low opacity
-        graphics2D.fillRoundRect(0, tileSize*11, tileSize*11, tileSize*5, 35, 35);
-
-        graphics2D.setColor(Color.white);
-        graphics2D.setStroke(new BasicStroke(5));
-        graphics2D.drawRoundRect( 0, tileSize*11 + 2,
-                tileSize*11 - 2, tileSize*5 - 4, 25, 25);
-
-
-        //options box
-        graphics2D.setColor(new Color(255,255,255,150)); //background = black + low opacity
-        graphics2D.fillRoundRect(tileSize*11, tileSize*11, tileSize*11, tileSize*5, 35, 35);
-
-        graphics2D.setColor(Color.white);
-        graphics2D.setStroke(new BasicStroke(5));
-        graphics2D.drawRoundRect( tileSize*11, tileSize*11 + 2,
-                tileSize*11 - 2, tileSize*5 - 4, 25, 25);
-
+        keyInputs.state.paintComponent(graphics2D);
 
 
         graphics2D.dispose();
