@@ -1,7 +1,7 @@
 package Main;
 
 import States.AbstractState;
-import States.BattleState;
+import States.SelectionState;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -13,7 +13,7 @@ public class PlayerKeyInputs implements KeyListener {
 
     public PlayerKeyInputs(GamePanel gp){
         this.gp = gp;
-        this.state = new BattleState(gp);
+        this.state = new SelectionState(this);
     }
     @Override
     public void keyTyped(KeyEvent e) {

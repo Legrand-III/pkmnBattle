@@ -1,7 +1,6 @@
 package Main;
 
-import PokemonStuff.Move;
-import PokemonStuff.Pokemon;
+import PokemonStuff.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -31,6 +30,8 @@ public class GamePanel extends JPanel implements Runnable{
 
     public static HashMap<String, Move> moveData = storeMoveInfo("out/res/moves.csv");
     public static HashMap<String, Pokemon> pokemonData = storePokemonInfo("out/res/pokemon.csv");;
+    public static Pokemon activePokemon;
+    public static Pokemon opposingPokemon;
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -67,10 +68,26 @@ public class GamePanel extends JPanel implements Runnable{
             ArrayList<String> splits = new ArrayList<>(Arrays.asList(lines.get(i).split(",")));
 
             String name = splits.get(0); String type = splits.get(1); String category = splits.get(2);
-            int pp = Integer.parseInt(splits.get(3)); int power = Integer.parseInt(splits.get(4)); int accuracy = Integer.parseInt(splits.get(5));
+            int pp = Integer.parseInt(splits.get(3)); int power = Integer.parseInt(splits.get(4));
+            int accuracy = Integer.parseInt(splits.get(5)); int priority = Integer.parseInt(splits.get(6));
 
-            Move move = new Move(name, type, category, pp, power, accuracy);
-            ans.put(name, move);
+            switch(category){
+                case("Physical"):
+                    Move attack = new Attack(name, type, category, pp, power, accuracy, priority);
+                    ans.put(name, attack);
+                    break;
+                case("Special"):
+                    Move spAttack = new SpAttack(name, type, category, pp, power, accuracy, priority);
+                    ans.put(name, spAttack);
+                    break;
+                case("Status"):
+                    Move statusMove = new StatusMove(name, type, category, pp, power, accuracy, priority);
+                    ans.put(name, statusMove);
+                    break;
+
+            }
+
+
         }
         return ans;
     }

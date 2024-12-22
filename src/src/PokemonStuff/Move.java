@@ -8,8 +8,9 @@ public class Move {
     public int RemainingPP;
     public int Power;
     public int Accuracy;
+    public int Priority;
     //maybe contact and such later
-    public Move(String name, String type, String category, int pp, int power, int accuracy){
+    public Move(String name, String type, String category, int pp, int power, int accuracy, int priority){
         this.Name = name;
         this.Type = type;
         this.Category = category;
@@ -17,6 +18,7 @@ public class Move {
         this.RemainingPP = pp;
         this.Power = power;
         this.Accuracy = accuracy;
+        this.Priority = priority;
     }
 
 }

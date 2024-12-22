@@ -12,7 +12,7 @@ public class Pokemon {
     public BufferedImage frontSprite, backSprite;
     public String Name;
     String Ability; //object perchance, implement later lol
-    int MaxHealth, CurrentHealth, Attack, Defense, SpAttack, SpDefense, Speed;
+    public int MaxHealth, CurrentHealth, Attack, Defense, SpAttack, SpDefense, Speed;
 
     public Move[] moves;
 
@@ -56,9 +56,22 @@ public class Pokemon {
         //new object so PP can be represented accurately
         moves[0] = copyMoveData(pkmn.moves[0]); moves[1] = copyMoveData(pkmn.moves[1]);
         moves[2] = copyMoveData(pkmn.moves[2]); moves[3] = copyMoveData(pkmn.moves[3]);
+
+        this.frontSprite = pkmn.frontSprite;
+        this.backSprite = pkmn.backSprite;
     }
     public Move copyMoveData(Move move){
-        return new Move(move.Name, move.Type, move.Category, move.MaxPP, move.Power, move.Accuracy);
+        switch(move.Category){
+            case("Physical"):
+                return new Attack(move.Name, move.Type, move.Category, move.MaxPP, move.Power, move.Accuracy, move.Priority);
+            case("Special"):
+                return new SpAttack(move.Name, move.Type, move.Category, move.MaxPP, move.Power, move.Accuracy, move.Priority);
+            case("Status"):
+                return new StatusMove(move.Name, move.Type, move.Category, move.MaxPP, move.Power, move.Accuracy, move.Priority);
+        }
+        System.out.println("unable to find move category");
+        return null;
+
     }
 
     public void resetStatChanges(){
