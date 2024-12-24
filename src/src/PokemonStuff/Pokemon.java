@@ -7,26 +7,33 @@ import java.io.IOException;
 
 import static Main.GamePanel.pokemonData;
 
+
 public class Pokemon {
     //Main stuff, static stats + the pokemon
     public BufferedImage frontSprite, backSprite;
     public String Name;
-    String Ability; //object perchance, implement later lol
+    String Type, Type2; //object perchance, implement later lol
     public int MaxHealth, CurrentHealth, Attack, Defense, SpAttack, SpDefense, Speed;
 
     public Move[] moves;
+    public boolean protecting = false;
+    public Move[] previousMoves = new Move[4];
+
 
     //multipliers, stat changing
     String Status; //maybe object
-    int AtkMultiplier, DefMultiplier, SpAMultiplier, SpDMultiplier, SpdMultiplier;
+    int AtkMultiplier, DefMultiplier, SpAtkMultiplier, SpDefMultiplier, SpdMultiplier;
     public Pokemon(String name){ //constructor used for team pokemon
         createPokemon(pokemonData.get(name));
     }
 
-    public Pokemon(String name, String ability, int maxHealth, int attack, int defense,
+    public Pokemon(String name, String type, String type2, int maxHealth, int attack, int defense,
                    int spAttack, int spDefense, int speed, String frontSpritePath, String backSpritePath,
                    Move m0, Move m1, Move m2, Move m3){ //constructor used for blueprint
-        this.Name = name; this.Ability = ability;
+        this.Name = name; this.Type = type;
+        if(!type2.equals("none")){
+            this.Type2 = type2;
+        }
         this.MaxHealth = maxHealth; this.CurrentHealth = maxHealth;
         this.Attack = attack; this.Defense = defense;
         this.SpAttack = spAttack; this.SpDefense = spDefense;
@@ -46,7 +53,7 @@ public class Pokemon {
     }
 
     public void createPokemon(Pokemon pkmn){
-        this.Name = pkmn.Name; this.Ability = pkmn.Ability;
+        this.Name = pkmn.Name; this.Type = pkmn.Type;
         this.MaxHealth = pkmn.MaxHealth; this.CurrentHealth = pkmn.MaxHealth;
         this.Attack = pkmn.Attack; this.Defense = pkmn.Defense;
         this.SpAttack = pkmn.SpAttack; this.SpDefense = pkmn.SpDefense;
@@ -62,12 +69,13 @@ public class Pokemon {
     }
     public Move copyMoveData(Move move){
         switch(move.Category){
-            case("Physical"):
-                return new Attack(move.Name, move.Type, move.Category, move.MaxPP, move.Power, move.Accuracy, move.Priority);
-            case("Special"):
-                return new SpAttack(move.Name, move.Type, move.Category, move.MaxPP, move.Power, move.Accuracy, move.Priority);
+            case ("Physical"), ("Special"):
+                return new AttackingMove(move.Name, move.Type, move.Category, move.MaxPP, move.Power, move.Accuracy,
+                        move.Priority, move.Effect);
+
             case("Status"):
-                return new StatusMove(move.Name, move.Type, move.Category, move.MaxPP, move.Power, move.Accuracy, move.Priority);
+                return new StatusMove(move.Name, move.Type, move.Category, move.MaxPP, move.Power, move.Accuracy,
+                        move.Priority, move.Effect, move.StatusType);
         }
         System.out.println("unable to find move category");
         return null;
@@ -77,8 +85,19 @@ public class Pokemon {
     public void resetStatChanges(){
         AtkMultiplier = 0;
         DefMultiplier = 0;
-        SpAMultiplier = 0;
-        SpDMultiplier = 0;
+        SpAtkMultiplier = 0;
+        SpDefMultiplier = 0;
         SpdMultiplier = 0;
     }
+
+    public void switchOut(){
+        resetStatChanges();
+        previousMoves[0] = null;
+        previousMoves[1] = null;
+        previousMoves[2] = null;
+        previousMoves[3] = null;
+
+    }
+
+
 }

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+
 public class GamePanel extends JPanel implements Runnable{
     public static int tileSize = 48; //each 1 tile is 48x48 pixels
     public int rows = 16;
@@ -32,6 +33,7 @@ public class GamePanel extends JPanel implements Runnable{
     public static HashMap<String, Pokemon> pokemonData = storePokemonInfo("out/res/pokemon.csv");;
     public static Pokemon activePokemon;
     public static Pokemon opposingPokemon;
+
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -70,18 +72,15 @@ public class GamePanel extends JPanel implements Runnable{
             String name = splits.get(0); String type = splits.get(1); String category = splits.get(2);
             int pp = Integer.parseInt(splits.get(3)); int power = Integer.parseInt(splits.get(4));
             int accuracy = Integer.parseInt(splits.get(5)); int priority = Integer.parseInt(splits.get(6));
-
+            String effect = splits.get(7);
             switch(category){
-                case("Physical"):
-                    Move attack = new Attack(name, type, category, pp, power, accuracy, priority);
+                case ("Physical"), ("Special"):
+                    Move attack = new AttackingMove(name, type, category, pp, power, accuracy, priority, effect);
                     ans.put(name, attack);
                     break;
-                case("Special"):
-                    Move spAttack = new SpAttack(name, type, category, pp, power, accuracy, priority);
-                    ans.put(name, spAttack);
-                    break;
                 case("Status"):
-                    Move statusMove = new StatusMove(name, type, category, pp, power, accuracy, priority);
+                    String statusType =splits.get(8);
+                    Move statusMove = new StatusMove(name, type, category, pp, power, accuracy, priority, effect, statusType);
                     ans.put(name, statusMove);
                     break;
 
@@ -100,15 +99,16 @@ public class GamePanel extends JPanel implements Runnable{
         for(int i = 1; i < lines.size(); i++){
             ArrayList<String> splits = new ArrayList<>(Arrays.asList(lines.get(i).split(",")));
 
-            String name = splits.get(0); String ability = splits.get(1); int maxHealth = Integer.parseInt(splits.get(2));
-            int attack = Integer.parseInt(splits.get(3)); int defense = Integer.parseInt(splits.get(4));
-            int spAttack = Integer.parseInt(splits.get(5)); int spDefense = Integer.parseInt(splits.get(6));
-            int speed = Integer.parseInt(splits.get(7));
-            String frontSprite = splits.get(8); String backSprite = splits.get(9);
-            Move move1 = moveData.get(splits.get(10)); Move move2 = moveData.get(splits.get(11));
-            Move move3 = moveData.get(splits.get(12)); Move move4 = moveData.get(splits.get(13));
+            String name = splits.get(0); String type = splits.get(1); String type2 = splits.get(2);
+            int maxHealth = Integer.parseInt(splits.get(3));
+            int attack = Integer.parseInt(splits.get(4)); int defense = Integer.parseInt(splits.get(5));
+            int spAttack = Integer.parseInt(splits.get(6)); int spDefense = Integer.parseInt(splits.get(7));
+            int speed = Integer.parseInt(splits.get(8));
+            String frontSprite = splits.get(9); String backSprite = splits.get(10);
+            Move move1 = moveData.get(splits.get(11)); Move move2 = moveData.get(splits.get(12));
+            Move move3 = moveData.get(splits.get(13)); Move move4 = moveData.get(splits.get(14));
 
-            Pokemon pokemon = new Pokemon(name, ability, maxHealth, attack, defense,
+            Pokemon pokemon = new Pokemon(name, type, type2, maxHealth, attack, defense,
                     spAttack, spDefense, speed, frontSprite, backSprite, move1, move2, move3, move4);
             ans.put(name, pokemon);
         }

@@ -1,5 +1,5 @@
-String-Name,String-Type,String-Category,int-PP,int-Power,int-Accuracy,int-Priority
-Tackle,Normal,Physical,40,35,100,0
-Protect,Normal,Status,10,-1,-1,4
-Growl,Normal,Status,40,-1,100,0
-Work Up,Normal,Status,30,-1,-1,0
+String-Name,String-Type,String-Category,int-PP,int-Power,int-Accuracy,int-Priority,String-Effect,String-StatusType
+Tackle,Normal,Physical,40,35,100,0,none,
+Protect,Normal,Status,10,-1,-1,4,DMG!0,Protect
+Growl,Normal,Status,40,-1,100,0,ATK!-1,EnemyStat
+Work Up,Normal,Status,30,-1,-1,0,ATK!+1!DEF!+1,SelfStat
