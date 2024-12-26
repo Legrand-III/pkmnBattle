@@ -2,6 +2,7 @@ package PokemonStuff;
 
 import Main.GamePanel;
 
+import java.rmi.UnexpectedException;
 import java.util.ArrayList;
 
 public class StatusMove extends Move{
@@ -12,21 +13,20 @@ public class StatusMove extends Move{
         this.StatusType = statusType;
     }
 
-    public String[] useMove(Pokemon user, Pokemon target){
-        String[] ans = new String[3];
+    public String[][] useMove(Pokemon user, Pokemon target){
+        String[][] ans = new String[2][2];
         if(StatusType.equals("Protect")){
-            ans[0] = user.Name + " used\n"
-                    + this.Name;
             if(protectValidity(user)){
-                ans[1] = null;
+                ans[0][0] = user.Name;
+                ans[0][1] = "protected themself!";
             }
             else{
-                ans[1] = "But it \n" +
-                        "failed...";
+                ans[0][0] = "But it";
+                ans[0][1] = "failed...";
             }
             return ans;
         }
-        if(StatusType.equals("SelfStatus")){//target = self instead
+        if(StatusType.equals("SelfStat")){//target = self instead
             target = user;
         }
         String[] effectList = Effect.split("!");
@@ -96,16 +96,16 @@ public class StatusMove extends Move{
             }
         }
         if(!statsThatDecreased.isEmpty()){
-            ans[1] = target.Name + "'s stats decreased\n" +
-                    statsChanged(statsThatDecreased);
+            ans[0][0] = target.Name + "'s stats decreased...";
+            ans[0][1] = statsChanged(statsThatDecreased);
             if(!statsThatIncreased.isEmpty()){
-                ans[2] = target.Name + "'s stats increased\n" +
-                        statsChanged(statsThatIncreased);
+                ans[1][0] = target.Name + "'s stats increased!";
+                ans[1][1] = statsChanged(statsThatIncreased);
             }
         }
         else{
-            ans[1] = target.Name + "'s stats increased\n" +
-                    statsChanged(statsThatIncreased);
+            ans[0][0] = target.Name + "'s stats increased!";
+            ans[0][1] = statsChanged(statsThatIncreased);
         }
 
         return ans;
@@ -116,6 +116,7 @@ public class StatusMove extends Move{
         if(previousMoves[0] == null || !previousMoves[0].StatusType.equals("Protect")){
             //first time trying to protect, successful
             user.protecting = true;
+            return true;
         }
         double protectChance;
         if(!previousMoves[1].StatusType.equals("Protect")){//protect used twice in a row
@@ -124,7 +125,7 @@ public class StatusMove extends Move{
                 user.protecting = true;
             }
         }
-        if(!previousMoves[2].StatusType.equals("Protect")){//protect used 3 times in a row, tiny chance
+        else if(!previousMoves[2].StatusType.equals("Protect")){//protect used 3 times in a row, tiny chance
             protectChance = Math.random();
             if(protectChance>0.75){
                 user.protecting = true;

@@ -10,7 +10,7 @@ public class Move {
     public int Accuracy;
     public int Priority;
     public String Effect;
-    public String StatusType;
+    public String StatusType = "";
     //maybe contact and such later
     public Move(String name, String type, String category, int pp, int power, int accuracy, int priority){
         this.Name = name;
@@ -22,7 +22,7 @@ public class Move {
         this.Accuracy = accuracy;
         this.Priority = priority;
     }
-    public String[] useMove(Pokemon user, Pokemon target){return new String[0];}
+    public String[][] useMove(Pokemon user, Pokemon target){return new String[0][0];}
 
     /**
      * 0 = immune
@@ -266,6 +266,8 @@ public class Move {
                     ans/=2;
                 }
                 break;
+            default:
+                System.out.println("error in pokemon typing");
         }
         return ans;
     }

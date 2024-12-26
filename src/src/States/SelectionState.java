@@ -23,8 +23,10 @@ public class SelectionState extends AbstractState{
         this.subState = new mainMenu(this);
 
         //change
-       activePokemon = new Pokemon("Temp");
-       opposingPokemon = new Pokemon("Evil Temp");
+        if(activePokemon == null && opposingPokemon == null) {
+            activePokemon = new Pokemon("Temp");
+            opposingPokemon = new Pokemon("Evil Temp");
+        }
     }
     @Override
     public void update() {
@@ -33,12 +35,12 @@ public class SelectionState extends AbstractState{
 
     @Override
     public void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
         Graphics2D graphics2D = (Graphics2D)graphics;
-        graphics2D.setStroke(new BasicStroke(5));
-        graphics2D.setColor(Color.red);
-        graphics2D.drawRect(tileSize*4, tileSize*7, tileSize*4, tileSize*4);
+
         graphics2D.drawImage(activePokemon.backSprite, tileSize*4, tileSize*7 - 2, tileSize*4, tileSize*4, null);
         graphics2D.drawImage(opposingPokemon.frontSprite, tileSize*14, tileSize*3, tileSize*4, tileSize*4, null);
+
         subState.draw(graphics2D);
     }
 
@@ -102,15 +104,14 @@ class mainMenu implements SubState{
         graphics2D.drawRoundRect( 0, tileSize*11 + 2,
                 tileSize*11 - 2, tileSize*5 - 4, 25, 25);
 
-
         //options box
         graphics2D.setColor(new Color(255,255,255,150)); //background = white + low opacity
         graphics2D.fillRoundRect(tileSize*11, tileSize*11, tileSize*11, tileSize*5, 35, 35);
 
         graphics2D.setColor(Color.white);
-        graphics2D.setStroke(new BasicStroke(5));
         graphics2D.drawRoundRect(tileSize*11, tileSize*11 + 2,
                 tileSize*11 - 2, tileSize*5 - 4, 25, 25);
+
 
         graphics2D.setFont(new Font("times", Font.BOLD, 48));
         graphics2D.drawString("What should", tileSize, tileSize *13 - (tileSize/8));
@@ -121,7 +122,7 @@ class mainMenu implements SubState{
         graphics2D.drawString("Pokemon", tileSize*12, tileSize *15 - (tileSize/8));
         graphics2D.drawString("Quit", tileSize*18, tileSize *15 - (tileSize/8));
 
-        graphics2D.setStroke(new BasicStroke(5));
+
         graphics2D.setColor(Color.red);
         switch (selectionState.selectedOption){
             case(0):
@@ -238,9 +239,9 @@ class fightMenu implements SubState{
     public void spacePressed() {
         //new state for battle part
         //selection.activePokemon.moves[battleState.selectedOption]
-        this.selectionState.keyInputs.state = new BattleState(selectionState.keyInputs, activePokemon,
+        this.selectionState.keyInputs.state = new BattleState(selectionState.keyInputs,
                 activePokemon.moves[selectionState.selectedOption],
-                opposingPokemon, opposingPokemon.moves[0] );
+                 opposingPokemon.moves[0] );
 
     }
     public void escapePressed(){

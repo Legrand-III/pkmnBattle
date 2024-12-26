@@ -4,6 +4,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static Main.GamePanel.pokemonData;
 
@@ -18,11 +19,12 @@ public class Pokemon {
     public Move[] moves;
     public boolean protecting = false;
     public Move[] previousMoves = new Move[4];
-
+    public String nonVolatileStatus; //sleep, burn, paralysis, etc
+    public ArrayList<String> volatileStatus; //confuse, taunt, torment, infatuation, etc
 
     //multipliers, stat changing
     String Status; //maybe object
-    int AtkMultiplier, DefMultiplier, SpAtkMultiplier, SpDefMultiplier, SpdMultiplier;
+    public int AtkMultiplier, DefMultiplier, SpAtkMultiplier, SpDefMultiplier, SpdMultiplier;
     public Pokemon(String name){ //constructor used for team pokemon
         createPokemon(pokemonData.get(name));
     }
@@ -97,6 +99,30 @@ public class Pokemon {
         previousMoves[2] = null;
         previousMoves[3] = null;
 
+    }
+    public double effectiveStat(int baseStat, int statMultiplier){
+        if(statMultiplier < 0){
+            statMultiplier*= -1;
+            return 2/((double)statMultiplier + 2);
+        }
+        if(statMultiplier > 0){
+            return ((double)(statMultiplier + 2))/2;
+        }
+        return baseStat;
+    }
+    public void addUsedMove(Move move){
+        if(this.previousMoves[0] == null){
+            previousMoves[0] = move;
+        }
+        else if(this.previousMoves[1] == null){
+            previousMoves[1] = previousMoves[0];
+            previousMoves[0] = move;
+        }
+        else{
+            previousMoves[2] = previousMoves[1];
+            previousMoves[1] = previousMoves[0];
+            previousMoves[0] = move;
+        }
     }
 
 
