@@ -149,7 +149,7 @@ class mainMenu implements SubState{
                 selectionState.subState = new fightMenu(selectionState);
                 break;
             case(1):
-                //status menu
+                selectionState.keyInputs.state = new StatusState(selectionState.keyInputs);
                 break;
             case(2):
                 //switch menu
