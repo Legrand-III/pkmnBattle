@@ -21,12 +21,12 @@ public class StatusState extends AbstractState{
     public void paintComponent(Graphics graphics) {
         Graphics2D graphics2D = (Graphics2D)graphics;
         graphics2D.setColor(new Color(0,0,0,150)); //background = black + low opacity
-        graphics2D.fillRoundRect(0, tileSize*11, tileSize*22, tileSize*5, 35, 35);
+        graphics2D.fillRoundRect(0, tileSize*11, screenWidth, tileSize*5, 35, 35);
 
         graphics2D.setColor(Color.white);
         graphics2D.setStroke(new BasicStroke(5));
         graphics2D.drawRoundRect( 0, tileSize*11 + 2,
-                tileSize*22 - 2, tileSize*5 - 4, 25, 25);
+                screenWidth - 2, tileSize*5 - 4, 25, 25);
 
         //player status
         graphics2D.setColor(new Color(0,0,0,150)); //background = black + low opacity
@@ -37,7 +37,7 @@ public class StatusState extends AbstractState{
         graphics2D.drawRoundRect( 0,2,
                 tileSize*11 - 2, tileSize*11 - 4, 25, 25);
 
-        graphics2D.drawImage(activePokemon.backSprite, tileSize, tileSize, tileSize*2, tileSize*2, null);
+        graphics2D.drawImage(activePokemon.frontSprite, tileSize, tileSize, tileSize*2, tileSize*2, null);
         graphics2D.setFont(new Font("times", Font.BOLD|Font.ITALIC, 38));
         graphics2D.drawString(activePokemon.Name, tileSize * 4, tileSize*2 - (tileSize/8));
         graphics2D.drawString("HP: " + activePokemon.CurrentHealth + " / " + activePokemon.MaxHealth,
@@ -57,8 +57,6 @@ public class StatusState extends AbstractState{
 
 
         //enemy status
-        graphics2D.drawImage(opposingPokemon.frontSprite, tileSize*12, tileSize, tileSize*2, tileSize*2, null);
-
         graphics2D.setColor(new Color(0,0,0,150)); //background = black + low opacity
         graphics2D.fillRoundRect(tileSize*11, 0, tileSize*11, tileSize*11, 35, 35);
 
@@ -67,6 +65,8 @@ public class StatusState extends AbstractState{
         graphics2D.drawRoundRect( tileSize*11,2,
                 tileSize*11 - 2, tileSize*11 - 4, 25, 25);
 
+        graphics2D.drawImage(opposingPokemon.frontSprite, tileSize*12, tileSize, tileSize*2, tileSize*2, null);
+        graphics2D.setFont(new Font("times", Font.BOLD|Font.ITALIC, 38));
         graphics2D.drawString(opposingPokemon.Name, tileSize * 15, tileSize*2 - (tileSize/8));
         graphics2D.drawString("HP: " + opposingPokemon.CurrentHealth + " / " + activePokemon.MaxHealth,
                 tileSize * 15, tileSize*3 - (tileSize/8));
@@ -82,8 +82,6 @@ public class StatusState extends AbstractState{
         drawStatChanges(opposingPokemon, "SpATK", tileSize * 16 - 6, graphics2D);
         drawStatChanges(opposingPokemon, "SpDEF", tileSize * 16 - 6, graphics2D);
         drawStatChanges(opposingPokemon, "SPD", tileSize * 16 - 6, graphics2D);
-
-
 
     }
     private void drawStatChanges(Pokemon subject, String stat, int xPos, Graphics2D graphics2D){

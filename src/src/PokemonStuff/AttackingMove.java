@@ -18,6 +18,11 @@ public class AttackingMove extends Move{
         if(target.Type2 != null){
             effectiveness *= calculateEffectiveness(target.Type2);
         }
+        if(effectiveness == 0){
+            ans[0][0] = "The target";
+            ans[0][1] = "was immune!";
+            return ans;
+        }
         int critical;
         if(Math.random() > 0.95){
             critical = 2;
@@ -31,16 +36,20 @@ public class AttackingMove extends Move{
         }
         int damage;
         if(this.Category.equals("Physical")){//physical attack
-            damage = (int)(((22 * this.Power *
+            System.out.println(user.Name + "'s effective attack = " + user.effectiveStat(user.Attack, user.AtkMultiplier));
+            damage = (int)((((22 * this.Power *
                     (user.effectiveStat(user.Attack, user.AtkMultiplier))
-                    / (target.effectiveStat(target.Defense, target.DefMultiplier))) /50)+2
+                    / (target.effectiveStat(target.Defense, target.DefMultiplier))) /50)+2)
                     * effectiveness * critical * sameTypeBonus);
+            System.out.println("DMG = " + damage);
         }
         else{//special attack
-            damage = (int)(((22 * this.Power *
+            System.out.println(user.Name + "'s effective Special Attack = " + user.effectiveStat(user.SpAttack, user.SpAtkMultiplier));
+            damage = (int)((((22 * this.Power *
                     (user.effectiveStat(user.SpAttack, user.SpAtkMultiplier))
-                    / (target.effectiveStat(target.SpDefense, target.SpDefMultiplier))) /50)+2
+                    / (target.effectiveStat(target.SpDefense, target.SpDefMultiplier))) /50)+2)
                     * effectiveness * critical * sameTypeBonus);
+            System.out.println("DMG = " + damage);
         }
 
         target.CurrentHealth -= damage;
@@ -48,11 +57,8 @@ public class AttackingMove extends Move{
             target.CurrentHealth = 0;
         }
 
-        if(effectiveness == 0){
-            ans[0][0] = "The target";
-            ans[0][1] = "was immune!";
-        }
-        else if(effectiveness > 1){
+
+        if(effectiveness > 1){
             ans[0][0] = "It's super";
             ans[0][1] = "effective!";
         }
@@ -70,7 +76,6 @@ public class AttackingMove extends Move{
                 ans[1][1] = " critical hit!";
             }
         }
-
         return ans;
     }
 

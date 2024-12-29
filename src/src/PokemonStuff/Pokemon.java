@@ -13,7 +13,7 @@ public class Pokemon {
     //Main stuff, static stats + the pokemon
     public BufferedImage frontSprite, backSprite;
     public String Name;
-    String Type, Type2; //object perchance, implement later lol
+    String Type, Type2;
     public int MaxHealth, CurrentHealth, Attack, Defense, SpAttack, SpDefense, Speed;
 
     public Move[] moves;
@@ -55,7 +55,8 @@ public class Pokemon {
     }
 
     public void createPokemon(Pokemon pkmn){
-        this.Name = pkmn.Name; this.Type = pkmn.Type;
+        this.Name = pkmn.Name; this.Type = pkmn.Type; this.Type2 = pkmn.Type2;
+        this.MaxHealth = pkmn.MaxHealth; this.CurrentHealth = pkmn.MaxHealth;
         this.MaxHealth = pkmn.MaxHealth; this.CurrentHealth = pkmn.MaxHealth;
         this.Attack = pkmn.Attack; this.Defense = pkmn.Defense;
         this.SpAttack = pkmn.SpAttack; this.SpDefense = pkmn.SpDefense;
@@ -103,10 +104,10 @@ public class Pokemon {
     public double effectiveStat(int baseStat, int statMultiplier){
         if(statMultiplier < 0){
             statMultiplier*= -1;
-            return 2/((double)statMultiplier + 2);
+            return baseStat * (2/((double)statMultiplier + 2));
         }
         if(statMultiplier > 0){
-            return ((double)(statMultiplier + 2))/2;
+            return baseStat * (((double)(statMultiplier + 2))/2);
         }
         return baseStat;
     }

@@ -26,6 +26,16 @@ public class StatusMove extends Move{
             }
             return ans;
         }
+        if(StatusType.equals("SelfHeal")){
+            String[] effectList = Effect.split("!");
+            user.CurrentHealth += (int)(user.MaxHealth * (Double.parseDouble(effectList[1])/100));
+            if(user.CurrentHealth > user.MaxHealth){
+                user.CurrentHealth = user.MaxHealth;
+            }
+            ans[0][0] = user.Name + " healed";
+            ans[0][1] = "themself!";
+            return ans;
+        }
         if(StatusType.equals("SelfStat")){//target = self instead
             target = user;
         }
@@ -49,7 +59,7 @@ public class StatusMove extends Move{
                     }
 
                     break;
-                case("SPATK"):
+                case("SpATK"):
                     target.SpAtkMultiplier += statChange;
                     if(target.SpAtkMultiplier > 6){
                         target.SpAtkMultiplier = 6;
@@ -67,7 +77,7 @@ public class StatusMove extends Move{
                         target.DefMultiplier = -6;
                     }
                     break;
-                case("SPDEF"):
+                case("SpDEF"):
                     target.SpDefMultiplier += statChange;
                     if(target.SpDefMultiplier > 6){
                         target.SpDefMultiplier = 6;
@@ -119,13 +129,13 @@ public class StatusMove extends Move{
             return true;
         }
         double protectChance;
-        if(!previousMoves[1].StatusType.equals("Protect")){//protect used twice in a row
+        if(previousMoves[1] == null ||!previousMoves[1].StatusType.equals("Protect")){//protect used twice in a row
             protectChance = Math.random();
             if(protectChance>0.5){
                 user.protecting = true;
             }
         }
-        else if(!previousMoves[2].StatusType.equals("Protect")){//protect used 3 times in a row, tiny chance
+        else if(previousMoves[2] == null || !previousMoves[2].StatusType.equals("Protect")){//protect used 3 times in a row, tiny chance
             protectChance = Math.random();
             if(protectChance>0.75){
                 user.protecting = true;

@@ -41,12 +41,12 @@ public class BattleState extends AbstractState{
 
         //textbox
         graphics2D.setColor(new Color(0,0,0,150)); //background = black + low opacity
-        graphics2D.fillRoundRect(0, tileSize*11, tileSize*22, tileSize*5, 35, 35);
+        graphics2D.fillRoundRect(0, tileSize*11, screenWidth, tileSize*5, 35, 35);
 
         graphics2D.setColor(Color.white);
         graphics2D.setStroke(new BasicStroke(5));
         graphics2D.drawRoundRect( 0, tileSize*11 + 2,
-                tileSize*22 - 2, tileSize*5 - 4, 25, 25);
+                screenWidth - 2, tileSize*5 - 4, 25, 25);
 
         try {
             playTurn(graphics2D);
@@ -141,7 +141,8 @@ public class BattleState extends AbstractState{
             }
             else{
                 graphics2D.drawString(PokemonB.Name + " fainted.", tileSize, tileSize *13 - (tileSize/8));
-                turnPart = 4;
+                printed = true;
+                turnPart = 6;
             }
         }
         else if(turnPart == 4){

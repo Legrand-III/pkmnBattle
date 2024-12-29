@@ -5,10 +5,7 @@ import PokemonStuff.Pokemon;
 
 import java.awt.*;
 
-import static Main.GamePanel.tileSize;
-import static Main.GamePanel.activePokemon;
-import static Main.GamePanel.opposingPokemon;
-
+import static Main.GamePanel.*;
 
 
 public class SelectionState extends AbstractState{
@@ -23,9 +20,10 @@ public class SelectionState extends AbstractState{
         this.subState = new mainMenu(this);
 
         //change
-        if(activePokemon == null && opposingPokemon == null) {
-            activePokemon = new Pokemon("Temp");
-            opposingPokemon = new Pokemon("Evil Temp");
+        if(activePokemon == null && opposingPokemon == null && player == null) {
+            activePokemon = new Pokemon("Leavanny");
+            opposingPokemon = new Pokemon("Pikachu");
+            player = new Trainer(activePokemon, new Pokemon("Milotic"), new Pokemon("Lucario"));
         }
     }
     @Override
@@ -82,7 +80,7 @@ public class SelectionState extends AbstractState{
 
 }
 
-class mainMenu implements SubState{
+class mainMenu extends SubState{
     private SelectionState selectionState;
     public mainMenu(SelectionState selectionState){
         this.selectionState = selectionState;
@@ -152,7 +150,7 @@ class mainMenu implements SubState{
                 selectionState.keyInputs.state = new StatusState(selectionState.keyInputs);
                 break;
             case(2):
-                //switch menu
+                selectionState.keyInputs.state = new TrainerTeamState(selectionState.keyInputs);
                 break;
             case(3):
                 selectionState.keyInputs.state = new QuitState(selectionState.keyInputs);
@@ -163,7 +161,7 @@ class mainMenu implements SubState{
     public void escapePressed(){}
 }
 
-class fightMenu implements SubState{
+class fightMenu extends SubState{
     private SelectionState selectionState;
 
     public fightMenu(SelectionState selectionState){
@@ -237,8 +235,6 @@ class fightMenu implements SubState{
 
     @Override
     public void spacePressed() {
-        //new state for battle part
-        //selection.activePokemon.moves[battleState.selectedOption]
         this.selectionState.keyInputs.state = new BattleState(selectionState.keyInputs,
                 activePokemon.moves[selectionState.selectedOption],
                  opposingPokemon.moves[0] );

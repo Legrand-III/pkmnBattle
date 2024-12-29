@@ -17,10 +17,10 @@ import java.util.HashMap;
 
 public class GamePanel extends JPanel implements Runnable{
     public static int tileSize = 48; //each 1 tile is 48x48 pixels
-    public int rows = 16;
-    public int columns = 22;
-    public int screenHeight = tileSize * rows; // 16 tiles tall, temp size
-    public int screenWidth = tileSize * columns; //22 tiles wide, temp size
+    public static int rows = 16;
+    public static int columns = 22;
+    public static int screenHeight = tileSize * rows; // 16 tiles tall, temp size
+    public static int screenWidth = tileSize * columns; //22 tiles wide, temp size
     int fps = 60;
 
     PlayerKeyInputs keyInputs;
@@ -33,6 +33,7 @@ public class GamePanel extends JPanel implements Runnable{
     public static HashMap<String, Pokemon> pokemonData = storePokemonInfo("out/res/pokemon.csv");;
     public static Pokemon activePokemon;
     public static Pokemon opposingPokemon;
+    public static Trainer player;
 
 
     public GamePanel(){
