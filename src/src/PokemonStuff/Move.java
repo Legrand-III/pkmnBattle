@@ -22,6 +22,16 @@ public class Move {
         this.Accuracy = accuracy;
         this.Priority = priority;
     }
+    public Move(String Category){
+        if(Category.equals("Switch")){
+            this.Priority = 99;
+            this.Category = "Switch";
+        }
+        else{
+            this.Priority = -99;
+            this.Category = "Wait";
+        }
+    }
     public String[][] useMove(Pokemon user, Pokemon target){return new String[0][0];}
 
     /**

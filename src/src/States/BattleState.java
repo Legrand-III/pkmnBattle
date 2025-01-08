@@ -1,6 +1,7 @@
 package States;
 
 import Main.PlayerKeyInputs;
+import Main.Trainer;
 import PokemonStuff.*;
 
 import java.awt.*;
@@ -14,7 +15,7 @@ public class BattleState extends AbstractState{
     protected PlayerKeyInputs keyInputs;
     protected Move selectedMove;
     protected Move opponentMove;
-    protected AbstractMap.SimpleEntry<Pokemon, Move>[] turnOrder;
+    protected AbstractMap.SimpleEntry<Trainer, Move>[] turnOrder;
     protected int turnPart = 0;
     boolean printed = false;
     String[][] moveText;
@@ -39,17 +40,10 @@ public class BattleState extends AbstractState{
         graphics2D.drawImage(activePokemon.backSprite, tileSize*4, tileSize*7 - 2, tileSize*4, tileSize*4, null);
         graphics2D.drawImage(opposingPokemon.frontSprite, tileSize*14, tileSize*3, tileSize*4, tileSize*4, null);
 
-        //textbox
-        graphics2D.setColor(new Color(0,0,0,150)); //background = black + low opacity
-        graphics2D.fillRoundRect(0, tileSize*11, screenWidth, tileSize*5, 35, 35);
-
-        graphics2D.setColor(Color.white);
-        graphics2D.setStroke(new BasicStroke(5));
-        graphics2D.drawRoundRect( 0, tileSize*11 + 2,
-                screenWidth - 2, tileSize*5 - 4, 25, 25);
+        drawTextBox(graphics2D, columns, 5);
 
         try {
-            playTurn(graphics2D);
+            playTurn(graphics2D, this.turnPart);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -59,58 +53,63 @@ public class BattleState extends AbstractState{
 
 
 
-    public AbstractMap.SimpleEntry<Pokemon,Move>[] calculateTurnOrder(Move selectedMove, Move opponentMove){
-        AbstractMap.SimpleEntry<Pokemon,Move>[] ans = new AbstractMap.SimpleEntry[2];
+    public AbstractMap.SimpleEntry<Trainer,Move>[] calculateTurnOrder(Move selectedMove, Move opponentMove){
+        AbstractMap.SimpleEntry<Trainer,Move>[] ans = new AbstractMap.SimpleEntry[2];
         if(selectedMove.Priority == opponentMove.Priority){//same priority = speed determines
             double activeEffSpeed = activePokemon.effectiveStat(activePokemon.Speed, activePokemon.SpdMultiplier);
             double opposingEffSpeed = opposingPokemon.effectiveStat(opposingPokemon.Speed, opposingPokemon.SpdMultiplier);
 
             if(activeEffSpeed > opposingEffSpeed){//player first
-                ans[0] = new AbstractMap.SimpleEntry<>(activePokemon, selectedMove);
-                ans[1] = new AbstractMap.SimpleEntry<>(opposingPokemon, opponentMove);
+                ans[0] = new AbstractMap.SimpleEntry<>(player, selectedMove);
+                ans[1] = new AbstractMap.SimpleEntry<>(opposingTrainer, opponentMove);
                 return ans;
             }
             else if(activeEffSpeed < opposingEffSpeed){//enemy first
-                ans[0] = new AbstractMap.SimpleEntry<>(opposingPokemon, opponentMove);
-                ans[1] = new AbstractMap.SimpleEntry<>(activePokemon, selectedMove);
+                ans[0] = new AbstractMap.SimpleEntry<>(opposingTrainer, opponentMove);
+                ans[1] = new AbstractMap.SimpleEntry<>(player, selectedMove);
                 return ans;
             }
             //else, speed tie, random order
             int first = (int)(Math.random()*2);
             if(first == 0){//player first
-                ans[0] = new AbstractMap.SimpleEntry<>(activePokemon, selectedMove);
-                ans[1] = new AbstractMap.SimpleEntry<>(opposingPokemon, opponentMove);
+                ans[0] = new AbstractMap.SimpleEntry<>(player, selectedMove);
+                ans[1] = new AbstractMap.SimpleEntry<>(opposingTrainer, opponentMove);
             }
             else{ //enemy first
-                ans[0] = new AbstractMap.SimpleEntry<>(opposingPokemon, opponentMove);
-                ans[1] = new AbstractMap.SimpleEntry<>(activePokemon, selectedMove);
+                ans[0] = new AbstractMap.SimpleEntry<>(opposingTrainer, opponentMove);
+                ans[1] = new AbstractMap.SimpleEntry<>(player, selectedMove);
             }
             return ans;
         }
         //else, different priorities
         if(selectedMove.Priority > opponentMove.Priority){//player first
-            ans[0] = new AbstractMap.SimpleEntry<>(activePokemon, selectedMove);
-            ans[1] = new AbstractMap.SimpleEntry<>(opposingPokemon, opponentMove);
+            ans[0] = new AbstractMap.SimpleEntry<>(player, selectedMove);
+            ans[1] = new AbstractMap.SimpleEntry<>(opposingTrainer, opponentMove);
         }
         else{//(selectedMove.Priority < opponentMove.Priority) --> enemy first
-            ans[0] = new AbstractMap.SimpleEntry<>(opposingPokemon, opponentMove);
-            ans[1] = new AbstractMap.SimpleEntry<>(activePokemon, selectedMove);
+            ans[0] = new AbstractMap.SimpleEntry<>(opposingTrainer, opponentMove);
+            ans[1] = new AbstractMap.SimpleEntry<>(player, selectedMove);
         }
         return ans;
     }
-    public void playTurn(Graphics2D graphics2D) throws InterruptedException {
-        Pokemon PokemonA = turnOrder[0].getKey();
+    public void playTurn(Graphics2D graphics2D, int turnPart) throws InterruptedException {
+        Pokemon PokemonA = turnOrder[0].getKey().team[0];
         Move MoveA = turnOrder[0].getValue();
-        Pokemon PokemonB = turnOrder[1].getKey();
+        Pokemon PokemonB = turnOrder[1].getKey().team[0];
         Move MoveB = turnOrder[1].getValue();
         if(turnPart == 0){
-            printUsedMove(PokemonA.Name, MoveA.Name, graphics2D);
-            turnPart+= 1;
+            if(MoveA.Category.equals("Wait")) {
+                playTurn(graphics2D, 2);
+                return;
+            }
+            else{
+                printUsedMove(PokemonA.Name, MoveA, graphics2D);
+                turnPart += 1;
+            }
         }
         else if(turnPart == 1){
             sleep(2000);
             moveText = MoveA.useMove(PokemonA, PokemonB);
-            MoveA.RemainingPP -=1;
             PokemonA.addUsedMove(MoveA);
             if(moveText[0][0] != null) {
                 printMoveOutput(graphics2D, 0);
@@ -136,8 +135,14 @@ public class BattleState extends AbstractState{
         else if(turnPart == 3){
             moveText = null;
             if(PokemonB.CurrentHealth > 0){
-                printUsedMove(PokemonB.Name, MoveB.Name, graphics2D);
-                turnPart+=1;
+                if(MoveB.Category.equals("Wait")) {
+                    playTurn(graphics2D, 6);
+                    return;
+                }
+                else{
+                    printUsedMove(PokemonB.Name, MoveB, graphics2D);
+                    turnPart+=1;
+                }
             }
             else{
                 graphics2D.drawString(PokemonB.Name + " fainted.", tileSize, tileSize *13 - (tileSize/8));
@@ -148,7 +153,6 @@ public class BattleState extends AbstractState{
         else if(turnPart == 4){
             sleep(2000);
             moveText = MoveB.useMove(PokemonB, PokemonA);
-            MoveB.RemainingPP -=1;
             PokemonB.addUsedMove(MoveB);
             if(moveText[0][0] != null) {
                 printMoveOutput(graphics2D, 0);
@@ -172,18 +176,46 @@ public class BattleState extends AbstractState{
             if(printed){sleep(2000);}
             activePokemon.protecting = false;
             opposingPokemon.protecting = false;
+
+            if(activePokemon.CurrentHealth == 0){
+                this.keyInputs.state = new TrainerTeamState(this.keyInputs);
+                return;
+            }
+
+            if(opposingPokemon.CurrentHealth == 0){
+
+                if(opposingTrainer.team[1].CurrentHealth != 0) {
+                    this.keyInputs.state = new BattleState(this.keyInputs, new Wait(), new Switch(1, opposingTrainer));
+                }
+                else if(opposingTrainer.team[2].CurrentHealth != 0){
+                    this.keyInputs.state = new BattleState(this.keyInputs, new Wait(), new Switch(2, opposingTrainer));
+                }
+                else{
+                    System.out.println("you win!");
+                    this.keyInputs.state = new SelectionState(this.keyInputs);
+                }
+                return;
+            }
+
             this.keyInputs.state = new SelectionState(this.keyInputs);
         }
 
-
+        this.turnPart = turnPart;
 
     }
 
-    public void printUsedMove(String user, String move, Graphics2D graphics2D){
+    public void printUsedMove(String user, Move move, Graphics2D graphics2D){
         graphics2D.setFont(new Font("times", Font.BOLD, 48));
-        graphics2D.drawString(user + " used", tileSize, tileSize *13 - (tileSize/8));
-        graphics2D.drawString(move + "!",
-                tileSize, tileSize *15 - (tileSize/8));
+        if(!move.Category.equals("Switch")){
+            graphics2D.drawString(user + " used", tileSize, tileSize * 13 - (tileSize / 8));
+            graphics2D.drawString(move.Name + "!",
+                    tileSize, tileSize * 15 - (tileSize / 8));
+        }
+        else{
+            graphics2D.drawString(user + " switched", tileSize, tileSize * 13 - (tileSize / 8));
+            graphics2D.drawString("out!",
+                    tileSize, tileSize * 15 - (tileSize / 8));
+        }
     }
     public void printMoveOutput(Graphics2D graphics2D, int index){
         graphics2D.setFont(new Font("times", Font.BOLD, 48));

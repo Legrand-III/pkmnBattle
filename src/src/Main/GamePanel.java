@@ -34,7 +34,7 @@ public class GamePanel extends JPanel implements Runnable{
     public static Pokemon activePokemon;
     public static Pokemon opposingPokemon;
     public static Trainer player;
-
+    public static Trainer opposingTrainer;
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));

@@ -7,6 +7,7 @@ public class AttackingMove extends Move{
         this.Effect = effect;
     }
     public String[][] useMove(Pokemon user, Pokemon target){
+        this.RemainingPP -=1;
         String[][] ans = new String[2][2];
         if(target.protecting){
             ans[0][0] = target.Name + " blocked";
@@ -69,11 +70,11 @@ public class AttackingMove extends Move{
         if(critical > 1){
             if(ans[0][0] == null){
                 ans[0][0] = "It's a";
-                ans[0][1] = " critical hit!";
+                ans[0][1] = "critical hit!";
             }
             else{
                 ans[1][0] = "It's a";
-                ans[1][1] = " critical hit!";
+                ans[1][1] = "critical hit!";
             }
         }
         return ans;

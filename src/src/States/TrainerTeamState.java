@@ -1,6 +1,8 @@
 package States;
 
 import Main.PlayerKeyInputs;
+import PokemonStuff.Switch;
+import PokemonStuff.Wait;
 
 import java.awt.*;
 
@@ -141,14 +143,7 @@ class selectPokemon extends SubState{
 
     @Override
     public void draw(Graphics2D graphics2D) {
-        //textbox
-        graphics2D.setColor(new Color(0,0,0,150)); //background = black + low opacity
-        graphics2D.fillRoundRect(0, tileSize*11, screenWidth, tileSize*5, 35, 35);
-
-        graphics2D.setColor(Color.white);
-        graphics2D.setStroke(new BasicStroke(5));
-        graphics2D.drawRoundRect( 0, tileSize*11 + 2,
-                screenWidth - 2, tileSize*5 - 4, 25, 25);
+        trainerTeamState.drawTextBox(graphics2D, columns, 5);
 
         graphics2D.setFont(new Font("times", Font.BOLD, 48));
         graphics2D.drawString("Who will you", tileSize, tileSize *13 - (tileSize/8));
@@ -237,22 +232,10 @@ class summaryOrSwitch extends SubState{
 
     @Override
     public void draw(Graphics2D graphics2D) {
-//textbox
-        graphics2D.setColor(new Color(0,0,0,150)); //background = black + low opacity
-        graphics2D.fillRoundRect(0, tileSize*11, tileSize*11, tileSize*5, 35, 35);
 
-        graphics2D.setColor(Color.white);
-        graphics2D.setStroke(new BasicStroke(5));
-        graphics2D.drawRoundRect( 0, tileSize*11 + 2,
-                tileSize*11 - 2, tileSize*5 - 4, 25, 25);
+        trainerTeamState.drawTextBox(graphics2D, 11, 5);
 
-        //options box
-        graphics2D.setColor(new Color(255,255,255,150)); //background = white + low opacity
-        graphics2D.fillRoundRect(tileSize*11, tileSize*11, tileSize*11, tileSize*5, 35, 35);
-
-        graphics2D.setColor(Color.white);
-        graphics2D.drawRoundRect(tileSize*11, tileSize*11 + 2,
-                tileSize*11 - 2, tileSize*5 - 4, 25, 25);
+        trainerTeamState.drawOptionsBox(graphics2D, 11, 11, 5);
 
         graphics2D.setFont(new Font("times", Font.BOLD, 48));
         graphics2D.drawString("What would you", tileSize, tileSize *13 - (tileSize/8));
@@ -344,15 +327,38 @@ class summaryOrSwitch extends SubState{
     @Override
     public void spacePressed() {
         switch(optionNum){
-            case(0):
+            case(0)://switch out
                 if(selectedPokemon == 0){
-
+                    System.out.println("this pokemon is already active!");
                 }
-                if(player.team[selectedPokemon].CurrentHealth > 0){
+                else if(player.team[selectedPokemon].CurrentHealth > 0){//change
+                    if(activePokemon.CurrentHealth == 0){
+                        trainerTeamState.keyInputs.state = new BattleState(trainerTeamState.keyInputs,
+                                new Switch(selectedPokemon, player), new Wait());
+                    }
+                    else if(opposingPokemon.CurrentHealth != 0) {
+                        trainerTeamState.keyInputs.state = new BattleState(trainerTeamState.keyInputs,
+                                new Switch(selectedPokemon, player), opposingPokemon.moves[0]);
+                    }
+                    else{
 
+                        if(opposingTrainer.team[1].CurrentHealth != 0){
+                            trainerTeamState.keyInputs.state = new BattleState(trainerTeamState.keyInputs,
+                                    new Switch(selectedPokemon, player), new Switch(1, opposingTrainer));
+                        }
+                        else if(opposingTrainer.team[2].CurrentHealth != 0){
+                            trainerTeamState.keyInputs.state = new BattleState(trainerTeamState.keyInputs,
+                                    new Switch(selectedPokemon, player), new Switch(2, opposingTrainer));
+                        }
+                        else{
+                            trainerTeamState.keyInputs.state = new BattleState(trainerTeamState.keyInputs,
+                                    new Switch(selectedPokemon, player), new Wait());
+                        }
+
+                    }
                 }
                 else{
-
+                    System.out.println("This pokemon is not healthy enough to fight!");
                 }
                 break;
             case(1):

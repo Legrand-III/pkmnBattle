@@ -42,7 +42,7 @@ public class PlayerKeyInputs implements KeyListener {
                 state.spacePressed();
                 break;
 
-            case KeyEvent.VK_ESCAPE:
+            case KeyEvent.VK_ESCAPE, KeyEvent.VK_X:
                 state.escapePressed();
                 break;
         }

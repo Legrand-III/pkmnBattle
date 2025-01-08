@@ -20,7 +20,7 @@ Water Pulse,Water,Special,20,60,100,0,none,none
 Leaf Blade,Grass,Physical,15,90,100,0,none,none
 Synthesis,Grass,Status,5,-1,-1,0,HEAL!+50,SelfHeal
 Moonblast,Fairy,Special,15,95,100,0,none,none
-Calm Mind,Psychic,Status,20,-1,-1,0,SpATK!+1!SpDEF!+1,none
+Calm Mind,Psychic,Status,20,-1,-1,0,SpATK!+1!SpDEF!+1,SelfStat
 Focus Blast,Fighting,Special,5,120,70,0,none,none
 Poison Jab,Poison,Physical,20,80,100,0,none,none
 Aura Sphere,Fighting,Special,20,80,100,0,none,none

@@ -14,6 +14,7 @@ public class StatusMove extends Move{
     }
 
     public String[][] useMove(Pokemon user, Pokemon target){
+        this.RemainingPP -= 1;
         String[][] ans = new String[2][2];
         if(StatusType.equals("Protect")){
             if(protectValidity(user)){
