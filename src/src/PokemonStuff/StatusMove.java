@@ -1,6 +1,7 @@
 package PokemonStuff;
 
 import Main.GamePanel;
+import NonVolatileStatusConditions.*;
 
 import java.rmi.UnexpectedException;
 import java.util.ArrayList;
@@ -37,8 +38,80 @@ public class StatusMove extends Move{
             ans[0][1] = "themself!";
             return ans;
         }
+
+        if(StatusType.equals("EnemyStatusCond")){
+            if(target.protecting){
+                ans[0][0] = target.Name + " protected";
+                ans[0][1] = "themself!";
+                return ans;
+            }
+            if(this.Accuracy - (Math.random() * 100) < 0){
+                ans[0][0] = "The attack";
+                ans[0][1] = "missed!";
+                return ans;
+            }
+            switch(Effect){
+                case("BURN"):
+                    if(target.nonVolatileStatus != null ||
+                            target.Type.equals("Fire") || (target.Type2 != null && target.Type2.equals("Fire"))){
+                        ans[0][0] = "But it";
+                        ans[0][1] = "failed...";
+                        return ans;
+                    }
+                    ans[0][0] = target.Name;
+                    ans[0][1] = "was burnt!";
+                    target.nonVolatileStatus = new Burn(target);
+                    return ans;
+                case("SLEEP"):
+                    if(target.nonVolatileStatus != null){
+                        ans[0][0] = "But it";
+                        ans[0][1] = "failed...";
+                        return ans;
+                    }
+                    ans[0][0] = target.Name;
+                    ans[0][1] = "fell asleep!";
+                    target.nonVolatileStatus = new Sleep(target);
+                    return ans;
+                case("PARALYSIS"):
+                    if(target.nonVolatileStatus != null ||
+                            target.Type.equals("Electric") || (target.Type2 != null && target.Type2.equals("Electric"))){
+                        ans[0][0] = "But it";
+                        ans[0][1] = "failed...";
+                        return ans;
+                    }
+                    ans[0][0] = target.Name;
+                    ans[0][1] = "was paralyzed!";
+                    target.nonVolatileStatus = new Paralysis(target);
+                    return ans;
+                case("POISON"):
+                    if(target.nonVolatileStatus != null ||
+                            target.Type.equals("Poison") || (target.Type2 != null && target.Type2.equals("Poison"))){
+                        ans[0][0] = "But it";
+                        ans[0][1] = "failed...";
+                        return ans;
+                    }
+                    ans[0][0] = target.Name;
+                    ans[0][1] = "was badly poisoned!";
+                    target.nonVolatileStatus = new Poison(target);
+                    return ans;
+                default:
+                    System.out.println("error in effect file, " + Effect);
+            }
+
+        }
+
         if(StatusType.equals("SelfStat")){//target = self instead
             target = user;
+        }
+        if(target.protecting){
+            ans[0][0] = target.Name + " protected";
+            ans[0][1] = "themself!";
+            return ans;
+        }
+        if(this.Accuracy - (Math.random() * 100) < 0){
+            ans[0][0] = "The attack";
+            ans[0][1] = "missed!";
+            return ans;
         }
         String[] effectList = Effect.split("!");
         if(effectList[0].equals("none")){

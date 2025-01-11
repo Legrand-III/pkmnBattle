@@ -22,17 +22,64 @@ public class Move {
         this.Accuracy = accuracy;
         this.Priority = priority;
     }
-    public Move(String Category){
-        if(Category.equals("Switch")){
+    public Move(String input){
+        if(input.equals("Switch")){
             this.Priority = 99;
             this.Category = "Switch";
         }
-        else{
+        else if(input.equals("Wait")){
             this.Priority = -99;
             this.Category = "Wait";
         }
+        else{
+            this.Name = "Struggle";
+            this.Type = "None";
+            this.Category = "Physical";
+            this.Power = 50;
+            this.Accuracy = 100;
+            this.Priority = 0;
+        }
     }
-    public String[][] useMove(Pokemon user, Pokemon target){return new String[0][0];}
+    public String[][] useMove(Pokemon user, Pokemon target){ //struggle
+        String[][] ans = new String[2][2];
+        if(target.protecting){
+            ans[0][0] = target.Name + " blocked";
+            ans[0][1] = "the hit!";
+            return ans;
+        }
+        int critical;
+        int damage;
+            double burn = 1;
+            if(user.nonVolatileStatus.Condition.equals("Burn")){burn = 0.5;}
+            double targetDefense;
+            if(Math.random() > 0.95){
+                critical = 2;
+                targetDefense = target.Defense;
+            }
+            else{
+                critical = 1;
+                targetDefense = target.effectiveStat(target.Defense, target.DefMultiplier);
+            }
+            System.out.println(user.Name + "'s effective attack = " + user.effectiveStat(user.Attack, user.AtkMultiplier));
+            damage = (int)((((22 * this.Power *
+                    (user.effectiveStat(user.Attack, user.AtkMultiplier))
+                    / (targetDefense)) /50)+2) * critical  * burn);
+            System.out.println("DMG = " + damage);
+        if(critical > 1){
+            ans[0][0] = "It's a";
+            ans[0][1] = "critical hit!";
+        }
+        if(ans[0][0] == null){
+            ans[0][0] = user.Name + " took";
+            ans[0][1] = "recoil damage!";
+        }
+        else{
+            ans[1][0] = user.Name + " took";
+            ans[1][1] = "recoil damage!";
+        }
+        user.CurrentHealth -= user.MaxHealth/4;
+        return ans;
+    }
 
     /**
      * 0 = immune
@@ -275,6 +322,8 @@ public class Move {
                         this.Type.equals("Dark")){
                     ans/=2;
                 }
+                break;
+            case("None"):
                 break;
             default:
                 System.out.println("error in pokemon typing");

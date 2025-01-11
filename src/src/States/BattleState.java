@@ -102,9 +102,26 @@ public class BattleState extends AbstractState{
                 playTurn(graphics2D, 2);
                 return;
             }
+            if(PokemonA.nonVolatileStatus != null && !PokemonA.nonVolatileStatus.StartOfTurn()){ //MOVE
+                PokemonA.nonVolatileStatus.PrintstatusMessage(graphics2D);
+                printed = true;
+                turnPart = 3;
+            }
             else{
-                printUsedMove(PokemonA.Name, MoveA, graphics2D);
-                turnPart += 1;
+                if(PokemonA.nonVolatileStatus != null && PokemonA.nonVolatileStatus.cureAtStart){
+                    PokemonA.nonVolatileStatus.PrintCured(graphics2D);
+                    PokemonA.nonVolatileStatus = null;
+                    printed = true;
+                    turnPart = 0;
+                }
+                else {
+                    if (printed) {
+                        sleep(2000);
+                        printed = false;
+                    }
+                    printUsedMove(PokemonA.Name, MoveA, graphics2D);
+                    turnPart = 1;
+                }
             }
         }
         else if(turnPart == 1){
@@ -115,39 +132,50 @@ public class BattleState extends AbstractState{
                 printMoveOutput(graphics2D, 0);
                 printed = true;
             }
-            turnPart+=1;
-
+            turnPart = 2;
         }
         else if(turnPart == 2){
             if(printed) {sleep(2000);}
             if(moveText[1][0] != null){
                 printMoveOutput(graphics2D, 1);
-                turnPart+=1;
                 printed = true;
             }
             else{
-                turnPart+=1;
                 printed = false;
             }
-
+            turnPart = 3;
         }
 
         else if(turnPart == 3){
             moveText = null;
             if(PokemonB.CurrentHealth > 0){
                 if(MoveB.Category.equals("Wait")) {
-                    playTurn(graphics2D, 6);
+                    playTurn(graphics2D, 7);
                     return;
                 }
+                else if(PokemonB.nonVolatileStatus != null && !PokemonB.nonVolatileStatus.StartOfTurn()){
+                    PokemonB.nonVolatileStatus.PrintstatusMessage(graphics2D);
+                    printed = true;
+                    turnPart = 7;
+                }
                 else{
-                    printUsedMove(PokemonB.Name, MoveB, graphics2D);
-                    turnPart+=1;
+                    if(PokemonB.nonVolatileStatus != null && PokemonB.nonVolatileStatus.cureAtStart){
+                        PokemonB.nonVolatileStatus.PrintCured(graphics2D);
+                        PokemonB.nonVolatileStatus = null;
+                        printed = true;
+                        turnPart = 3;
+                    }
+                    else{
+                        if(printed){sleep(2000); printed = false;}
+                        printUsedMove(PokemonB.Name, MoveB, graphics2D);
+                        turnPart = 4;
+                    }
                 }
             }
             else{
                 graphics2D.drawString(PokemonB.Name + " fainted.", tileSize, tileSize *13 - (tileSize/8));
                 printed = true;
-                turnPart = 6;
+                turnPart = 7;
             }
         }
         else if(turnPart == 4){
@@ -158,19 +186,44 @@ public class BattleState extends AbstractState{
                 printMoveOutput(graphics2D, 0);
                 printed = true;
             }
-            turnPart+=1;
+            turnPart = 5;
         }
         else if(turnPart == 5){
             if(printed){sleep(2000);}
             if(moveText[1][0] != null){
                 printMoveOutput(graphics2D, 1);
-                turnPart+=1;
                 printed = true;
             }
             else{
-                turnPart+=1;
                 printed = false;
             }
+            turnPart = 6;
+        }
+        else if(turnPart == 6){
+            if(PokemonA.CurrentHealth == 0){
+                if(printed){sleep(2000);}
+                graphics2D.drawString(PokemonA.Name + " fainted.", tileSize, tileSize *13 - (tileSize/8));
+                printed = true;
+            }
+            turnPart = 7;
+        }
+        else if(turnPart == 7){
+            if(printed){sleep(2000);}
+            printed = false;
+            if(PokemonA.CurrentHealth > 0 && PokemonA.nonVolatileStatus != null && PokemonA.nonVolatileStatus.EndofTurn()){
+                PokemonA.nonVolatileStatus.PrintstatusMessage(graphics2D);
+                printed = true;
+            }
+            turnPart++;
+        }
+        else if(turnPart == 8){
+            if(printed){sleep(2000);}
+            printed = false;
+            if(PokemonB.CurrentHealth > 0 && PokemonB.nonVolatileStatus != null && PokemonB.nonVolatileStatus.EndofTurn()){
+                PokemonB.nonVolatileStatus.PrintstatusMessage(graphics2D);
+                printed = true;
+            }
+            turnPart++;
         }
         else{
             if(printed){sleep(2000);}

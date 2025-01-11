@@ -38,8 +38,6 @@ public class TrainerTeamState extends AbstractState{
 
         //active pokemon
         if(activePokemon.CurrentHealth == 0){
-            graphics2D.setColor(Color.black);
-            graphics2D.drawString("Fainted", tileSize*6, tileSize*4 - (tileSize/8));
             graphics2D.setColor(new Color(255,0,0,150)); //background = red + low opacity
         }
         else {
@@ -57,8 +55,6 @@ public class TrainerTeamState extends AbstractState{
 
         //pokemon b
         if(player.team[1].CurrentHealth == 0){
-            graphics2D.setColor(Color.black);
-            graphics2D.drawString("Fainted", tileSize*16, tileSize*2 - (tileSize/8));
             graphics2D.setColor(new Color(255,0,0,150)); //background = red + low opacity
         }
         else {
@@ -77,8 +73,6 @@ public class TrainerTeamState extends AbstractState{
 
         //pokemon c
         if(player.team[2].CurrentHealth == 0){
-            graphics2D.setColor(Color.black);
-            graphics2D.drawString("Fainted", tileSize*6, tileSize*4 - (tileSize/8));
             graphics2D.setColor(new Color(255,0,0,150)); //background = red + low opacity
         }
         else {
@@ -338,7 +332,7 @@ class summaryOrSwitch extends SubState{
                     }
                     else if(opposingPokemon.CurrentHealth != 0) {
                         trainerTeamState.keyInputs.state = new BattleState(trainerTeamState.keyInputs,
-                                new Switch(selectedPokemon, player), opposingPokemon.moves[0]);
+                                new Switch(selectedPokemon, player), opposingTrainer.determineMove());
                     }
                     else{
 
@@ -362,6 +356,7 @@ class summaryOrSwitch extends SubState{
                 }
                 break;
             case(1):
+                trainerTeamState.keyInputs.state = new SummaryState(trainerTeamState.keyInputs, selectedPokemon);
                 break;
             case(2):
                 trainerTeamState.subState = new selectPokemon(trainerTeamState);

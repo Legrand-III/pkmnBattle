@@ -21,10 +21,10 @@ public class SelectionState extends AbstractState{
 
         //change
         if(player == null && opposingTrainer == null) {
-            player = new Trainer(new Pokemon("Leavanny"), new Pokemon("Milotic"), new Pokemon("Lucario"));
+            player = new Trainer(new Pokemon("Ninetales"), new Pokemon("Pikachu"), new Pokemon("Lucario"));
             activePokemon = player.team[0];
 
-            opposingTrainer = new Trainer(new Pokemon("Pikachu"), new Pokemon("Nidoking"), new Pokemon("Scizor"));
+            opposingTrainer = new Trainer(new Pokemon("Temp"), new Pokemon("Scizor"), new Pokemon("Ninetales"));
             opposingPokemon = opposingTrainer.team[0];
 
         }
@@ -212,9 +212,12 @@ class fightMenu extends SubState{
 
     @Override
     public void spacePressed() {
+        if(activePokemon.moves[selectionState.selectedOption].RemainingPP == 0){
+            System.out.println("This move has no more PP!");
+        }
         this.selectionState.keyInputs.state = new BattleState(selectionState.keyInputs,
                 activePokemon.moves[selectionState.selectedOption],
-                 opposingPokemon.moves[0] );
+                 opposingTrainer.determineMove() );
 
     }
     public void escapePressed(){

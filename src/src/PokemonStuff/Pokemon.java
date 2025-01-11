@@ -1,5 +1,7 @@
 package PokemonStuff;
 
+import NonVolatileStatusConditions.StatusCond;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -13,13 +15,13 @@ public class Pokemon {
     //Main stuff, static stats + the pokemon
     public BufferedImage frontSprite, backSprite;
     public String Name;
-    String Type, Type2;
+    public String Type, Type2;
     public int MaxHealth, CurrentHealth, Attack, Defense, SpAttack, SpDefense, Speed;
 
     public Move[] moves;
     public boolean protecting = false;
     public Move[] previousMoves = new Move[4];
-    public String nonVolatileStatus; //sleep, burn, paralysis, etc
+    public StatusCond nonVolatileStatus = null; //sleep, burn, paralysis, etc
     public ArrayList<String> volatileStatus; //confuse, taunt, torment, infatuation, etc
 
     //multipliers, stat changing

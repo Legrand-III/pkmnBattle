@@ -68,7 +68,7 @@ public class StatusState extends AbstractState{
         graphics2D.drawImage(opposingPokemon.frontSprite, tileSize*12, tileSize, tileSize*2, tileSize*2, null);
         graphics2D.setFont(new Font("times", Font.BOLD|Font.ITALIC, 38));
         graphics2D.drawString(opposingPokemon.Name, tileSize * 15, tileSize*2 - (tileSize/8));
-        graphics2D.drawString("HP: " + opposingPokemon.CurrentHealth + " / " + activePokemon.MaxHealth,
+        graphics2D.drawString("HP: " + opposingPokemon.CurrentHealth + " / " + opposingPokemon.MaxHealth,
                 tileSize * 15, tileSize*3 - (tileSize/8));
 
         graphics2D.drawString("ATK: ", tileSize*12, tileSize*5 - (tileSize/8));
@@ -82,6 +82,13 @@ public class StatusState extends AbstractState{
         drawStatChanges(opposingPokemon, "SpATK", tileSize * 16 - 6, graphics2D);
         drawStatChanges(opposingPokemon, "SpDEF", tileSize * 16 - 6, graphics2D);
         drawStatChanges(opposingPokemon, "SPD", tileSize * 16 - 6, graphics2D);
+
+        if(activePokemon.nonVolatileStatus != null){
+            drawStatus(graphics2D, activePokemon);
+        }
+        if(opposingPokemon.nonVolatileStatus != null){
+            drawStatus(graphics2D, opposingPokemon);
+        }
 
     }
     private void drawStatChanges(Pokemon subject, String stat, int xPos, Graphics2D graphics2D){
@@ -178,6 +185,85 @@ public class StatusState extends AbstractState{
         }
     }
 
+    private void drawStatus(Graphics2D graphics2D, Pokemon effectedPokemon) {
+        switch (effectedPokemon.nonVolatileStatus.Condition) {
+            case ("Burn"):
+                if (effectedPokemon.equals(activePokemon)) {
+                    graphics2D.setColor(new Color(200, 0, 0, 150));
+                    graphics2D.fillRoundRect(tileSize * 9 - 2, 4, tileSize * 2 - 2, tileSize + 4, 25, 25);
+                    graphics2D.setFont(new Font("times", Font.BOLD, 32));
+                    graphics2D.setColor(Color.white);
+                    graphics2D.drawString("BRN", tileSize * 9 + tileSize / 4, tileSize * 9 - (tileSize / 8));
+                } else {
+                    graphics2D.setColor(new Color(200, 0, 0, 150));
+                    graphics2D.fillRoundRect(screenWidth - tileSize*2 - 2, tileSize + 4, tileSize * 2 - 2, tileSize + 4, 25, 25);
+                    graphics2D.setFont(new Font("times", Font.BOLD, 32));
+                    graphics2D.setColor(Color.white);
+                    graphics2D.drawString("BRN", screenWidth - tileSize*2 + tileSize / 4, tileSize * 2 - (tileSize / 8));
+                }
+                break;
+            case ("Sleep"):
+                if (effectedPokemon.equals(activePokemon)) {
+                    graphics2D.setColor(new Color(100, 227, 233, 150));
+                    graphics2D.fillRoundRect(tileSize * 9 - 2, tileSize + 4, tileSize * 2 - 2, tileSize + 4, 25, 25);
+                    graphics2D.setFont(new Font("times", Font.BOLD, 32));
+                    graphics2D.setColor(Color.white);
+                    graphics2D.drawString("SLP", tileSize * 9 + tileSize / 4, tileSize * 2 - (tileSize / 8));
+                } else {
+                    graphics2D.setColor(new Color(100, 227, 233, 150));
+                    graphics2D.fillRoundRect(screenWidth - tileSize*2 - 2, tileSize + 4, tileSize * 2 - 2, tileSize + 4, 25, 25);
+                    graphics2D.setFont(new Font("times", Font.BOLD, 32));
+                    graphics2D.setColor(Color.white);
+                    graphics2D.drawString("SLP", screenWidth - tileSize*2 + tileSize / 4, tileSize * 2 - (tileSize / 8));
+                }
+                break;
+            case ("Poison"):
+                if (effectedPokemon.equals(activePokemon)) {
+                    graphics2D.setColor(new Color(128, 0, 128, 150));
+                    graphics2D.fillRoundRect(tileSize * 9 - 2, tileSize + 4, tileSize * 2 - 2, tileSize + 4, 25, 25);
+                    graphics2D.setFont(new Font("times", Font.BOLD, 32));
+                    graphics2D.setColor(Color.white);
+                    graphics2D.drawString("PSN", tileSize * 9 + tileSize / 4, tileSize * 2 - (tileSize / 8));
+                } else {
+                    graphics2D.setColor(new Color(128, 0, 128, 150));
+                    graphics2D.fillRoundRect(screenWidth - tileSize*2 - 2, tileSize + 4, tileSize * 2 - 2, tileSize + 4, 25, 25);
+                    graphics2D.setFont(new Font("times", Font.BOLD, 32));
+                    graphics2D.setColor(Color.white);
+                    graphics2D.drawString("PSN", screenWidth - tileSize*2 + tileSize / 4, tileSize * 2 - (tileSize / 8));
+                }
+                break;
+            case ("Paralysis"):
+                if (effectedPokemon.equals(activePokemon)) {
+                    graphics2D.setColor(new Color(255, 255, 50, 150));
+                    graphics2D.fillRoundRect(tileSize * 9 - 2, tileSize + 4, tileSize * 2 - 2, tileSize + 4, 25, 25);
+                    graphics2D.setFont(new Font("times", Font.BOLD, 32));
+                    graphics2D.setColor(Color.white);
+                    graphics2D.drawString("PRZ", tileSize * 9 + tileSize / 4, tileSize * 2 - (tileSize / 8));
+                } else {
+                    graphics2D.setColor(new Color(255, 255, 50, 150));
+                    graphics2D.fillRoundRect(screenWidth - tileSize*2 - 2, tileSize + 4, tileSize * 2 - 2, tileSize + 4, 25, 25);
+                    graphics2D.setFont(new Font("times", Font.BOLD, 32));
+                    graphics2D.setColor(Color.white);
+                    graphics2D.drawString("PRZ", screenWidth - tileSize*2 + tileSize / 4, tileSize * 2 - (tileSize / 8));
+                }
+                break;
+            case ("Freeze"):
+                if (effectedPokemon.equals(activePokemon)) {
+                    graphics2D.setColor(new Color(70, 189, 255, 150));
+                    graphics2D.fillRoundRect(tileSize * 9 - 2, tileSize + 4, tileSize * 2 - 2, tileSize + 4, 25, 25);
+                    graphics2D.setFont(new Font("times", Font.BOLD, 32));
+                    graphics2D.setColor(Color.white);
+                    graphics2D.drawString("FRZ", tileSize * 9 + tileSize / 4, tileSize * 2 - (tileSize / 8));
+                } else {
+                    graphics2D.setColor(new Color(70, 189, 255, 150));
+                    graphics2D.fillRoundRect(screenWidth - tileSize*2 - 2, tileSize + 4, tileSize * 2 - 2, tileSize + 4, 25, 25);
+                    graphics2D.setFont(new Font("times", Font.BOLD, 32));
+                    graphics2D.setColor(Color.white);
+                    graphics2D.drawString("FRZ", screenWidth - tileSize*2 + tileSize / 4, tileSize * 2 - (tileSize / 8));
+                }
+                break;
+        }
+    }
 
     @Override
     public void escapePressed() {

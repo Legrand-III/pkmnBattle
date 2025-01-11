@@ -1,9 +1,9 @@
 STRING-Name,STRING-Type,String-Type2,INT-MaxHealth,INT-Attack,INT-Defense,INT-SpAttack,INT-SpDefense,INT-Speed,Front-Sprite,Back-Sprite,move1,move2,move3,move4
-Temp,Normal,none,100,1,1,1,1,1,out/res/temp_Sprite00.png,out/res/temp_Sprite00.png,Tackle,Protect,Growl,Work Up
+Temp,Normal,none,100,1,1,1,1,1,out/res/temp_Sprite00.png,out/res/temp_Sprite00.png,Tackle,Protect,Sing,Work Up
 Evil Temp,Normal,none,100,1,1,1,1,1,out/res/71b6e92413caa95e.png,out/res/71b6e92413caa95e.png,Tackle,Work Up,Protect,Growl
 Pikachu,Electric,none,142,117,101,112,112,156,out/res/pokemonImages/pikachu.png,out/res/pokemonImages/pikachuBack.png,Thunderbolt,Agility,Iron Tail,Quick Attack
 Scizor,Bug,Steel,177,200,167,117,145,128,out/res/pokemonImages/scizor-f.png,out/res/pokemonImages/scizor-fBack.png,Metal Claw,Swords Dance,X-Scissor,Protect
-Ninetales,Fire,none,180,140,139,146,167,167,out/res/pokemonImages/ninetales.png,out/res/pokemonImages/ninetalesBack.png,Flamethrower,Protect,Psychic,Nasty Plot
+Ninetales,Fire,none,180,140,139,146,167,167,out/res/pokemonImages/ninetales.png,out/res/pokemonImages/ninetalesBack.png,Flamethrower,Will-O-Wisp,Psychic,Nasty Plot
 Nidoking,Poison,Ground,188,169,141,150,139,150,out/res/pokemonImages/nidoking.png,out/res/pokemonImages/nidokingBack.png,Earth Power,Sludge Wave,Stone Edge,Water Pulse
 Gardevoir,Psychic,Fairy,175,128,128,194,183,145,out/res/pokemonImages/gardevoir.png,out/res/pokemonImages/gardevoirBack.png,Moonblast,Calm Mind,Psychic,Focus Blast
 Leavanny,Bug,Grass,182,170,145,134,145,158,out/res/pokemonImages/leavanny.png,out/res/pokemonImages/leavannyBack.png,Leaf Blade,X-Scissor,Synthesis,Poison Jab

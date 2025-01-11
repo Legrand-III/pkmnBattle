@@ -14,6 +14,11 @@ public class AttackingMove extends Move{
             ans[0][1] = "the hit!";
             return ans;
         }
+        if(this.Accuracy - (Math.random() * 100) < 0){
+            ans[0][0] = "The attack";
+            ans[0][1] = "missed!";
+            return ans;
+        }
 
         double effectiveness = calculateEffectiveness(target.Type);
         if(target.Type2 != null){
@@ -25,30 +30,46 @@ public class AttackingMove extends Move{
             return ans;
         }
         int critical;
-        if(Math.random() > 0.95){
-            critical = 2;
-        }
-        else{
-            critical = 1;
-        }
+
         double sameTypeBonus = 1;
         if(this.Type.equals(user.Type) || this.Type.equals(user.Type2)){
             sameTypeBonus += 0.5;
         }
         int damage;
         if(this.Category.equals("Physical")){//physical attack
+            double burn = 1;
+            if(user.nonVolatileStatus.Condition.equals("Burn")){burn = 0.5;}
+            double targetDefense;
+            if(Math.random() > 0.95){
+                critical = 2;
+                targetDefense = target.Defense;
+            }
+            else{
+                critical = 1;
+                targetDefense = target.effectiveStat(target.Defense, target.DefMultiplier);
+            }
             System.out.println(user.Name + "'s effective attack = " + user.effectiveStat(user.Attack, user.AtkMultiplier));
             damage = (int)((((22 * this.Power *
                     (user.effectiveStat(user.Attack, user.AtkMultiplier))
-                    / (target.effectiveStat(target.Defense, target.DefMultiplier))) /50)+2)
-                    * effectiveness * critical * sameTypeBonus);
+                    / (targetDefense)) /50)+2)
+                    * effectiveness * critical * sameTypeBonus * burn);
             System.out.println("DMG = " + damage);
         }
         else{//special attack
+            double targetSpDefense;
+            if(Math.random() > 0.95){
+                critical = 2;
+                targetSpDefense = target.SpDefense;
+            }
+            else{
+                critical = 1;
+                targetSpDefense = target.effectiveStat(target.SpDefense, target.SpDefMultiplier);
+
+            }
             System.out.println(user.Name + "'s effective Special Attack = " + user.effectiveStat(user.SpAttack, user.SpAtkMultiplier));
             damage = (int)((((22 * this.Power *
                     (user.effectiveStat(user.SpAttack, user.SpAtkMultiplier))
-                    / (target.effectiveStat(target.SpDefense, target.SpDefMultiplier))) /50)+2)
+                    / (targetSpDefense)) /50)+2)
                     * effectiveness * critical * sameTypeBonus);
             System.out.println("DMG = " + damage);
         }

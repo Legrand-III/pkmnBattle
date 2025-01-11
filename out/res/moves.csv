@@ -1,26 +1,26 @@
 String-Name,String-Type,String-Category,int-PP,int-Power,int-Accuracy,int-Priority,String-Effect,String-StatusType
 Tackle,Normal,Physical,40,35,100,0,none,none
-Protect,Normal,Status,10,-1,-1,4,DMG!0,Protect
+Protect,Normal,Status,10,-1,999999,4,DMG!0,Protect
 Growl,Normal,Status,40,-1,100,0,ATK!-1,EnemyStat
-Work Up,Normal,Status,30,-1,-1,0,ATK!+1!DEF!+1,SelfStat
+Work Up,Normal,Status,30,-1,999999,0,ATK!+1!DEF!+1,SelfStat
 Thunderbolt,Electric,Special,15,90,100,0,none,none
 Quick Attack,Normal,Physical,30,40,100,1,none,none
-Agility,Psychic,Status,30,-1,-1,0,SPD!+2,SelfStat
+Agility,Psychic,Status,30,-1,999999,0,SPD!+2,SelfStat
 Iron Tail,Steel,Physical,15,100,75,0,none,none
 Metal Claw,Steel,Physical,35,50,95,0,none,none
 X-Scissor,Bug,Physical,15,80,100,0,none,none
-Swords Dance,Normal,Status,20,-1,-1,0,ATK!+2,SelfStat
+Swords Dance,Normal,Status,20,-1,999999,0,ATK!+2,SelfStat
 Flamethrower,Fire,Special,15,90,100,0,none,none
 Psychic,Psychic,Special,10,90,100,0,none,none
-Nasty Plot,Dark,Status,20,-1,-1,0,SpATK!+2,SelfStat
+Nasty Plot,Dark,Status,20,-1,999999,0,SpATK!+2,SelfStat
 Earth Power,Ground,Special,10,90,100,0,none,none
 Stone Edge,Rock,Physical,5,100,80,0,none,none
 Sludge Wave,Poison,Special,10,95,100,0,none,none
 Water Pulse,Water,Special,20,60,100,0,none,none
 Leaf Blade,Grass,Physical,15,90,100,0,none,none
-Synthesis,Grass,Status,5,-1,-1,0,HEAL!+50,SelfHeal
+Synthesis,Grass,Status,5,-1,999999,0,HEAL!+50,SelfHeal
 Moonblast,Fairy,Special,15,95,100,0,none,none
-Calm Mind,Psychic,Status,20,-1,-1,0,SpATK!+1!SpDEF!+1,SelfStat
+Calm Mind,Psychic,Status,20,-1,999999,0,SpATK!+1!SpDEF!+1,SelfStat
 Focus Blast,Fighting,Special,5,120,70,0,none,none
 Poison Jab,Poison,Physical,20,80,100,0,none,none
 Aura Sphere,Fighting,Special,20,80,100,0,none,none
@@ -28,4 +28,9 @@ Extreme Speed,Normal,Physical,5,80,100,1,none,none
 Crunch,Dark,Physical,15,80,100,0,none,none
 Ice Beam,Ice,Special,10,90,100,0,none,none
 Scald,Water,Special,15,80,100,0,none,none
-Recover,Normal,Status,5,-1,-1,0,HEAL!+50,SelfHeal
+Recover,Normal,Status,5,-1,999999,0,HEAL!+50,SelfHeal
+Struggle,None,Physical,1,50,100,0,none,none
+Will-O-Wisp,Fire,Status,15,-1,85,0,BURN,EnemyStatusCond
+Sing,Normal,Status,15,-1,55,0,SLEEP,EnemyStatusCond
+Thunder Wave,Electric,Status,20,-1,90,0,PARALYSIS,EnemyStatusCond
+Toxic,Poison,Status,10,-1,90,0,POISON,EnemyStatusCond
