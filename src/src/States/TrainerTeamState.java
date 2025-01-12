@@ -1,6 +1,7 @@
 package States;
 
 import Main.PlayerKeyInputs;
+import PokemonStuff.Pokemon;
 import PokemonStuff.Switch;
 import PokemonStuff.Wait;
 
@@ -88,9 +89,60 @@ public class TrainerTeamState extends AbstractState{
         graphics2D.drawString("HP: " + player.team[2].CurrentHealth + " / " + player.team[2].MaxHealth,
                 tileSize*15, tileSize*9 - (tileSize/8));
 
+        if(player.team[0].nonVolatileStatus != null){
+            drawStatus(graphics2D, player.team[0], tileSize*8, tileSize*3);
+        }
+        if(player.team[1].nonVolatileStatus != null){
+            drawStatus(graphics2D, player.team[1], tileSize*19, tileSize);
+        }
+        if(player.team[2].nonVolatileStatus != null){
+            drawStatus(graphics2D, player.team[2], tileSize*19, tileSize*6);
+        }
+
+
         subState.draw(graphics2D);
 
 
+    }
+
+    private void drawStatus(Graphics2D graphics2D, Pokemon effectedPokemon, int xPos, int yPos) {
+        switch (effectedPokemon.nonVolatileStatus.Condition) {
+            case ("Burn"):
+                graphics2D.setColor(new Color(200, 0, 0, 150));
+                graphics2D.fillRoundRect(xPos - 2, yPos, tileSize * 2 - 2, tileSize + 4, 25, 25);
+                graphics2D.setFont(new Font("times", Font.BOLD, 32));
+                graphics2D.setColor(Color.white);
+                graphics2D.drawString("BRN", xPos + tileSize / 4, yPos + tileSize - (tileSize / 8));
+                break;
+            case ("Sleep"):
+                graphics2D.setColor(new Color(100, 227, 233, 150));
+                graphics2D.fillRoundRect(xPos - 2, yPos, tileSize * 2 - 2, tileSize + 4, 25, 25);
+                graphics2D.setFont(new Font("times", Font.BOLD, 32));
+                graphics2D.setColor(Color.white);
+                graphics2D.drawString("SLP", xPos + tileSize / 4, yPos + tileSize - (tileSize / 8));
+                break;
+            case ("Poison"):
+                graphics2D.setColor(new Color(128, 0, 128, 150));
+                graphics2D.fillRoundRect(xPos - 2, yPos, tileSize * 2 - 2, tileSize + 4, 25, 25);
+                graphics2D.setFont(new Font("times", Font.BOLD, 32));
+                graphics2D.setColor(Color.white);
+                graphics2D.drawString("PSN", xPos + tileSize / 4, yPos + tileSize - (tileSize / 8));
+                break;
+            case ("Paralysis"):
+                graphics2D.setColor(new Color(255, 255, 50, 150));
+                graphics2D.fillRoundRect(xPos - 2, yPos, tileSize * 2 - 2, tileSize + 4, 25, 25);
+                graphics2D.setFont(new Font("times", Font.BOLD, 32));
+                graphics2D.setColor(Color.white);
+                graphics2D.drawString("PRZ", xPos + tileSize / 4, yPos + tileSize - (tileSize / 8));
+                break;
+            case ("Freeze"):
+                graphics2D.setColor(new Color(70, 189, 255, 150));
+                graphics2D.fillRoundRect(xPos - 2, yPos, tileSize * 2 - 2, tileSize + 4, 25, 25);
+                graphics2D.setFont(new Font("times", Font.BOLD, 32));
+                graphics2D.setColor(Color.white);
+                graphics2D.drawString("FRZ", xPos + tileSize / 4, yPos + tileSize - (tileSize / 8));
+                break;
+        }
     }
 
     @Override
@@ -164,6 +216,8 @@ class selectPokemon extends SubState{
                 throw new IllegalStateException("Unexpected value: " + optionNum);
         }
     }
+
+
 
     public void upPressed() {
         if(optionNum == 1){

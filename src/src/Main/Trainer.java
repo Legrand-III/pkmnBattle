@@ -1,9 +1,5 @@
 package Main;
 
-import NonVolatileStatusConditions.Burn;
-import NonVolatileStatusConditions.Paralysis;
-import NonVolatileStatusConditions.Poison;
-import NonVolatileStatusConditions.Sleep;
 import PokemonStuff.Move;
 import PokemonStuff.Pokemon;
 

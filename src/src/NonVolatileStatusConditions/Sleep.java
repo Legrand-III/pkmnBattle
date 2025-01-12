@@ -20,12 +20,7 @@ public class Sleep extends StatusCond{
         if(turnsAsleep == 3){
             return true;
         }
-        if(turnsAsleep == 0){
-            turnsAsleep++;
-            return false;
-        }
-
-        if(Math.random() < 0.5){
+        if(turnsAsleep == 0 || Math.random() < 0.5){
             turnsAsleep ++;
             return false;
         }

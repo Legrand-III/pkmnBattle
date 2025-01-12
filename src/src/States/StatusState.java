@@ -190,10 +190,10 @@ public class StatusState extends AbstractState{
             case ("Burn"):
                 if (effectedPokemon.equals(activePokemon)) {
                     graphics2D.setColor(new Color(200, 0, 0, 150));
-                    graphics2D.fillRoundRect(tileSize * 9 - 2, 4, tileSize * 2 - 2, tileSize + 4, 25, 25);
+                    graphics2D.fillRoundRect(tileSize * 9 - 2, tileSize + 4, tileSize * 2 - 2, tileSize + 4, 25, 25);
                     graphics2D.setFont(new Font("times", Font.BOLD, 32));
                     graphics2D.setColor(Color.white);
-                    graphics2D.drawString("BRN", tileSize * 9 + tileSize / 4, tileSize * 9 - (tileSize / 8));
+                    graphics2D.drawString("BRN", tileSize * 9 + tileSize / 4, tileSize * 2 - (tileSize / 8));
                 } else {
                     graphics2D.setColor(new Color(200, 0, 0, 150));
                     graphics2D.fillRoundRect(screenWidth - tileSize*2 - 2, tileSize + 4, tileSize * 2 - 2, tileSize + 4, 25, 25);
