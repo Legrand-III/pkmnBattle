@@ -112,8 +112,8 @@ public class Trainer {
                 else{
                     ans+= possibleDamage;
                 }
-                if(possibleDamage < (0.20 * activePokemon.MaxHealth)){
-                    ans -=2*possibleDamage;
+                if(possibleDamage < (0.125 * activePokemon.MaxHealth)){
+                    ans -=possibleDamage/2;
                 }
                 if(effectiveness>1) {
                     ans *= (int)effectiveness;

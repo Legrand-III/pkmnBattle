@@ -262,7 +262,9 @@ class selectPokemon extends SubState{
 
     @Override
     public void escapePressed() {
-        trainerTeamState.keyInputs.state = new SelectionState(trainerTeamState.keyInputs);
+        if(activePokemon.CurrentHealth > 0) {
+            trainerTeamState.keyInputs.state = new SelectionState(trainerTeamState.keyInputs);
+        }
     }
 }
 class summaryOrSwitch extends SubState{
@@ -421,5 +423,6 @@ class summaryOrSwitch extends SubState{
     @Override
     public void escapePressed() {
         trainerTeamState.subState = new selectPokemon(trainerTeamState);
+
     }
 }

@@ -47,7 +47,8 @@ public class SummaryState extends AbstractState{
                 screenWidth - 2, tileSize*11 - 4, 25, 25);
 
         //selected pokemon
-        graphics2D.setColor(new Color(255,255,255,150)); //background = white + low opacity
+        if(teamCopy[0].CurrentHealth == 0){graphics2D.setColor(new Color(200, 0, 0, 150)); }
+        else{graphics2D.setColor(new Color(255,255,255,150));} //background = white + low opacity
         graphics2D.fillRoundRect(0, 0, tileSize*11, tileSize*11, 35, 35);
 
         graphics2D.setColor(Color.white);
@@ -99,7 +100,8 @@ public class SummaryState extends AbstractState{
 
 
         //pokemon b
-        graphics2D.setColor(new Color(255,255,255,150)); //background = white + low opacity
+        if(teamCopy[1].CurrentHealth == 0){graphics2D.setColor(new Color(200, 0, 0, 150)); }
+        else{graphics2D.setColor(new Color(255,255,255,150));}
         graphics2D.fillRoundRect(tileSize*11, 0, tileSize*5 + tileSize/2, tileSize*3, 35, 35);
 
         graphics2D.setColor(Color.white);
@@ -110,7 +112,8 @@ public class SummaryState extends AbstractState{
 
 
         //pokemon c
-        graphics2D.setColor(new Color(255,255,255,150)); //background = white + low opacity
+        if(teamCopy[2].CurrentHealth == 0){graphics2D.setColor(new Color(200, 0, 0, 150)); }
+        else{graphics2D.setColor(new Color(255,255,255,150));}
         graphics2D.fillRoundRect(tileSize*16 + tileSize/2, 0, tileSize*5 + tileSize/2, tileSize*3, 35, 35);
 
         graphics2D.setColor(Color.white);

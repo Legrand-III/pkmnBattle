@@ -188,8 +188,7 @@ public class BattleState extends AbstractState{
                 }
             }
             else{
-                graphics2D.drawString(PokemonB.Name + " fainted.", tileSize, tileSize *13 - (tileSize/8));
-                printed = true;
+                PokemonB.nonVolatileStatus = null;
                 turnPart = 7;
             }
         }
@@ -215,10 +214,10 @@ public class BattleState extends AbstractState{
             turnPart = 6;
         }
         else if(turnPart == 6){
+            if(printed){sleep(2000);}
+            printed = false;
             if(PokemonA.CurrentHealth == 0){
-                if(printed){sleep(2000);}
-                graphics2D.drawString(PokemonA.Name + " fainted.", tileSize, tileSize *13 - (tileSize/8));
-                printed = true;
+                PokemonA.nonVolatileStatus = null;
             }
             turnPart = 7;
         }
@@ -240,18 +239,42 @@ public class BattleState extends AbstractState{
             }
             turnPart++;
         }
+        else if(turnPart == 9){
+            if(printed){sleep(2000);}
+            if(PokemonA.CurrentHealth <= 0){
+                graphics2D.drawString(PokemonA.Name + " fainted.", tileSize, tileSize *13 - (tileSize/8));
+                printed = true;
+                PokemonA.nonVolatileStatus = null;
+            }
+            else{
+                printed = false;
+            }
+            turnPart = 10;
+        }
+        else if(turnPart == 10){
+            if(printed){sleep(2000);}
+            if(PokemonB.CurrentHealth <= 0){
+                graphics2D.drawString(PokemonB.Name + " fainted.", tileSize, tileSize *13 - (tileSize/8));
+                printed = true;
+                PokemonB.nonVolatileStatus = null;
+            }
+            else{
+                printed = false;
+            }
+            turnPart = 11;
+        }
         else{
             if(printed){sleep(2000);}
             activePokemon.protecting = false;
             opposingPokemon.protecting = false;
 
-            if(activePokemon.CurrentHealth == 0){
+            if(activePokemon.CurrentHealth <= 0){
                 activePokemon.nonVolatileStatus = null;
                 this.keyInputs.state = new TrainerTeamState(this.keyInputs);
                 return;
             }
 
-            if(opposingPokemon.CurrentHealth == 0){
+            if(opposingPokemon.CurrentHealth <= 0){
                 opposingPokemon.nonVolatileStatus = null;
                 if(opposingTrainer.team[1].CurrentHealth != 0) {
                     this.keyInputs.state = new BattleState(this.keyInputs, new Wait(), new Switch(1, opposingTrainer));

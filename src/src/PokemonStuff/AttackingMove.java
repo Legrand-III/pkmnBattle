@@ -38,7 +38,7 @@ public class AttackingMove extends Move{
         int damage;
         if(this.Category.equals("Physical")){//physical attack
             double burn = 1;
-            if(user.nonVolatileStatus.Condition.equals("Burn")){burn = 0.5;}
+            if(user.nonVolatileStatus!= null && user.nonVolatileStatus.Condition.equals("Burn")){burn = 0.5;}
             double targetDefense;
             if(Math.random() > 0.95){
                 critical = 2;

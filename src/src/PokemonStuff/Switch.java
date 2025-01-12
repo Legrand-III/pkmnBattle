@@ -20,7 +20,7 @@ public class Switch extends Move{
     public String[][] useMove(Pokemon user, Pokemon target) {
         String[][] ans = new String[2][2];
         ans[0][0] = trainer.team[newActive].Name;
-        ans[0][1] = "was sent out!";
+        ans[0][1] = "was sent in!";
 
         trainer.team[0] = trainer.team[newActive];
         trainer.team[newActive] = previousActive;

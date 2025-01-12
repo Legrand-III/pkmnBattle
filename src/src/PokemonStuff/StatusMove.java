@@ -36,6 +36,13 @@ public class StatusMove extends Move{
             }
             ans[0][0] = user.Name + " healed";
             ans[0][1] = "themself!";
+
+            if(effectList.length > 2 && effectList[2].equals("SLEEP")){
+                ans[1][0] = user.Name + " fell";
+                ans[1][1] = "asleep!";
+                user.nonVolatileStatus = new Sleep(user);
+            }
+
             return ans;
         }
 

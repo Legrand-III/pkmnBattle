@@ -21,10 +21,10 @@ public class SelectionState extends AbstractState{
 
         //change
         if(player == null && opposingTrainer == null) {
-            player = new Trainer(new Pokemon("Ninetales"), new Pokemon("Pikachu"), new Pokemon("Lucario"));
+            player = new Trainer(new Pokemon("Snorlax"), new Pokemon("Walrein"), new Pokemon("Electivire"));
             activePokemon = player.team[0];
 
-            opposingTrainer = new Trainer(new Pokemon("Temp"), new Pokemon("Scizor"), new Pokemon("Ninetales"));
+            opposingTrainer = new Trainer(new Pokemon("Weezing"), new Pokemon("Skarmory"), new Pokemon("Musharna"));
             opposingPokemon = opposingTrainer.team[0];
 
         }

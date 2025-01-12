@@ -19,6 +19,10 @@ public class Poison extends StatusCond{
     @Override
     public boolean EndofTurn() {
         effectedPokemon.CurrentHealth -= (effectedPokemon.MaxHealth * turnsPoisoned) / 16;
+        if(effectedPokemon.CurrentHealth < 0){
+            effectedPokemon.CurrentHealth = 0;
+        }
+        turnsPoisoned++;
         return true;
     }
 
