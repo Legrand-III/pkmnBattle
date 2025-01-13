@@ -92,7 +92,8 @@ public class StatusMove extends Move{
                     return ans;
                 case("POISON"):
                     if(target.nonVolatileStatus != null ||
-                            target.Type.equals("Poison") || (target.Type2 != null && target.Type2.equals("Poison"))){
+                            target.Type.equals("Poison") || (target.Type2 != null && target.Type2.equals("Poison")) ||
+                    target.Type.equals("Steel") || (target.Type2 != null && target.Type2.equals("Steel"))){
                         ans[0][0] = "But it";
                         ans[0][1] = "failed...";
                         return ans;

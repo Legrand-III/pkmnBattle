@@ -65,7 +65,7 @@ public class QuitState extends AbstractState{
                 activePokemon.CurrentHealth = activePokemon.MaxHealth;
                 opposingPokemon.CurrentHealth = opposingPokemon.MaxHealth;
 
-                keyInputs.state = new SelectionState(keyInputs);
+                keyInputs.state = new TitleScreen(keyInputs);
                 break;
             case(1):
                 keyInputs.state = new SelectionState(keyInputs);

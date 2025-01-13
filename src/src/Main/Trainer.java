@@ -206,7 +206,8 @@ public class Trainer {
                 return ans;
             case ("POISON"):
                 if (activePokemon.nonVolatileStatus != null ||
-                        activePokemon.Type.equals("Poison") || (activePokemon.Type2 != null && activePokemon.Type2.equals("Poison"))) {
+                        activePokemon.Type.equals("Poison") || (activePokemon.Type2 != null && activePokemon.Type2.equals("Poison"))
+                || activePokemon.Type.equals("Steel") || (activePokemon.Type2 != null && activePokemon.Type2.equals("Steel"))) {
                     ans = Integer.MIN_VALUE + 1;
                     return ans;
                 }

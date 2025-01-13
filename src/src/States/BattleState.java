@@ -158,6 +158,7 @@ public class BattleState extends AbstractState{
         }
 
         else if(turnPart == 3){
+            if(printed) {sleep(2000);printed = false;}
             moveText = null;
             if(PokemonB.CurrentHealth > 0){
                 if(MoveB.Category.equals("Wait")) {
@@ -181,7 +182,6 @@ public class BattleState extends AbstractState{
                         turnPart = 3;
                     }
                     else{
-                        if(printed){sleep(2000); printed = false;}
                         printUsedMove(PokemonB.Name, MoveB, graphics2D);
                         turnPart = 4;
                     }
@@ -224,7 +224,8 @@ public class BattleState extends AbstractState{
         else if(turnPart == 7){
             if(printed){sleep(2000);}
             printed = false;
-            if(PokemonA.CurrentHealth > 0 && PokemonA.nonVolatileStatus != null && PokemonA.nonVolatileStatus.EndofTurn()){
+            if(!MoveA.Category.equals("Wait") && !MoveB.Category.equals("Wait") &&
+                    PokemonA.CurrentHealth > 0 && PokemonA.nonVolatileStatus != null && PokemonA.nonVolatileStatus.EndofTurn()){
                 PokemonA.nonVolatileStatus.PrintstatusMessage(graphics2D);
                 printed = true;
             }
@@ -233,7 +234,8 @@ public class BattleState extends AbstractState{
         else if(turnPart == 8){
             if(printed){sleep(2000);}
             printed = false;
-            if(PokemonB.CurrentHealth > 0 && PokemonB.nonVolatileStatus != null && PokemonB.nonVolatileStatus.EndofTurn()){
+            if(!MoveA.Category.equals("Wait") && !MoveB.Category.equals("Wait") &&
+                    PokemonB.CurrentHealth > 0 && PokemonB.nonVolatileStatus != null && PokemonB.nonVolatileStatus.EndofTurn()){
                 PokemonB.nonVolatileStatus.PrintstatusMessage(graphics2D);
                 printed = true;
             }

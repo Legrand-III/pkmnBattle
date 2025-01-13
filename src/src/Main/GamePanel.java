@@ -29,12 +29,15 @@ public class GamePanel extends JPanel implements Runnable{
 
     Thread gameThread;
 
+
     public static HashMap<String, Move> moveData = storeMoveInfo("out/res/moves.csv");
     public static HashMap<String, Pokemon> pokemonData = storePokemonInfo("out/res/pokemon.csv");;
     public static Pokemon activePokemon;
     public static Pokemon opposingPokemon;
-    public static Trainer player;
-    public static Trainer opposingTrainer;
+    public static Trainer player = new Trainer(null, null, null);
+    public static Trainer opposingTrainer = new Trainer(null, null, null);
+    public static ArrayList<Pokemon> pokemonArrayList = new ArrayList<>(pokemonData.values());
+
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
