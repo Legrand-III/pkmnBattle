@@ -17,6 +17,7 @@ public class BattleState extends AbstractState{
     protected Move opponentMove;
     protected AbstractMap.SimpleEntry<Trainer, Move>[] turnOrder;
     protected int turnPart = 0;
+    protected int ansIndex = 0;
     boolean printed = false;
     String[][] moveText;
     public BattleState(PlayerKeyInputs keyInputs, Move selectedMove,
@@ -139,27 +140,32 @@ public class BattleState extends AbstractState{
             sleep(2000);
             moveText = MoveA.useMove(PokemonA, PokemonB);
             PokemonA.addUsedMove(MoveA);
-            if(moveText[0][0] != null) {
-                printMoveOutput(graphics2D, 0);
+            if(moveText[ansIndex][0] != null) {
+                printMoveOutput(graphics2D, ansIndex);
                 printed = true;
+                ansIndex++;
             }
             turnPart = 2;
         }
         else if(turnPart == 2){
             if(printed) {sleep(2000);}
-            if(moveText[1][0] != null){
-                printMoveOutput(graphics2D, 1);
+            if(moveText[ansIndex][0] != null){
+                printMoveOutput(graphics2D, ansIndex);
                 printed = true;
+                ansIndex++;
+                turnPart = 2;
             }
             else{
                 printed = false;
+                turnPart = 3;
             }
-            turnPart = 3;
+
         }
 
         else if(turnPart == 3){
             if(printed) {sleep(2000);printed = false;}
             moveText = null;
+            ansIndex = 0;
             if(PokemonB.CurrentHealth > 0){
                 if(MoveB.Category.equals("Wait")) {
                     playTurn(graphics2D, 7);
@@ -196,22 +202,27 @@ public class BattleState extends AbstractState{
             sleep(2000);
             moveText = MoveB.useMove(PokemonB, PokemonA);
             PokemonB.addUsedMove(MoveB);
-            if(moveText[0][0] != null) {
-                printMoveOutput(graphics2D, 0);
+            if(moveText[ansIndex][0] != null) {
+                printMoveOutput(graphics2D, ansIndex);
                 printed = true;
+                ansIndex++;
+
             }
             turnPart = 5;
         }
         else if(turnPart == 5){
             if(printed){sleep(2000);}
-            if(moveText[1][0] != null){
-                printMoveOutput(graphics2D, 1);
+            if(moveText[ansIndex][0] != null){
+                printMoveOutput(graphics2D, ansIndex);
                 printed = true;
+                ansIndex++;
+                turnPart = 5;
             }
             else{
                 printed = false;
+                turnPart = 6;
             }
-            turnPart = 6;
+
         }
         else if(turnPart == 6){
             if(printed){sleep(2000);}

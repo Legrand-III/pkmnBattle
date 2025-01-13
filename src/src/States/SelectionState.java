@@ -215,9 +215,11 @@ class fightMenu extends SubState{
         if(activePokemon.moves[selectionState.selectedOption].RemainingPP == 0){
             System.out.println("This move has no more PP!");
         }
-        this.selectionState.keyInputs.state = new BattleState(selectionState.keyInputs,
-                activePokemon.moves[selectionState.selectedOption],
-                 opposingTrainer.determineMove() );
+        else {
+            this.selectionState.keyInputs.state = new BattleState(selectionState.keyInputs,
+                    activePokemon.moves[selectionState.selectedOption],
+                    opposingTrainer.determineMove());
+        }
 
     }
     public void escapePressed(){
