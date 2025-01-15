@@ -23,23 +23,23 @@ public class PlayerKeyInputs implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         switch(e.getKeyCode()){
-            case KeyEvent.VK_W:
+            case KeyEvent.VK_W, KeyEvent.VK_UP:
                 state.upPressed();
                 break;
 
-            case KeyEvent.VK_A:
+            case KeyEvent.VK_A, KeyEvent.VK_LEFT:
                 state.leftPressed();
                 break;
 
-            case KeyEvent.VK_S:
+            case KeyEvent.VK_S, KeyEvent.VK_DOWN:
                 state.downPressed();
                 break;
 
-            case KeyEvent.VK_D:
+            case KeyEvent.VK_D, KeyEvent.VK_RIGHT:
                 state.rightPressed();
                 break;
 
-            case KeyEvent.VK_SPACE:
+            case KeyEvent.VK_SPACE, KeyEvent.VK_ENTER:
                 state.spacePressed();
                 break;
 

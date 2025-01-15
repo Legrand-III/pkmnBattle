@@ -441,7 +441,7 @@ class confirmSelection extends SubState {
             State.subState = new miniSummary(State);
         }
         else{
-
+            State.subState = new playerSelectTeam(State);
         }
 
     }

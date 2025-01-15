@@ -22,6 +22,8 @@ public class TitleScreen extends AbstractState{
         graphics2D.setFont(new Font("times", Font.BOLD, 48));
         graphics2D.setColor(Color.WHITE);
         graphics2D.drawString("Pokemon Battle!!", (tileSize * 7), tileSize * 3 -  (tileSize/8));
+
+        graphics2D.drawImage(pokemonData.get("Pikachu").frontSprite, tileSize*7, tileSize*3, tileSize*8, tileSize*8, null);
         if(optionNum == 0){
             graphics2D.setColor(new Color(255,170,180));
             graphics2D.drawString("♡", (tileSize * 9), tileSize * 12 -  (tileSize/8));

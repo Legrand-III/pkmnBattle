@@ -149,7 +149,7 @@ public class BattleState extends AbstractState{
         }
         else if(turnPart == 2){
             if(printed) {sleep(2000);}
-            if(moveText[ansIndex][0] != null){
+            if(ansIndex < moveText.length && moveText[ansIndex][0] != null){
                 printMoveOutput(graphics2D, ansIndex);
                 printed = true;
                 ansIndex++;
@@ -212,7 +212,7 @@ public class BattleState extends AbstractState{
         }
         else if(turnPart == 5){
             if(printed){sleep(2000);}
-            if(moveText[ansIndex][0] != null){
+            if(ansIndex < moveText.length && moveText[ansIndex][0] != null){
                 printMoveOutput(graphics2D, ansIndex);
                 printed = true;
                 ansIndex++;
