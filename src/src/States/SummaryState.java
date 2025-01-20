@@ -217,14 +217,32 @@ public class SummaryState extends AbstractState{
     }
     private void drawMoveInfo(Graphics2D graphics2D){
         this.drawOptionsBox(graphics2D, 0, 8, 5);
+
+        graphics2D.setFont(new Font("times", Font.BOLD|Font.ITALIC, 30));
+
         graphics2D.drawString("PP:   " + teamCopy[0].moves[optionNum-2].RemainingPP +
-                " / " + teamCopy[0].moves[optionNum-2].MaxPP, tileSize , tileSize * 13 - (tileSize/8));
+                " / " + teamCopy[0].moves[optionNum-2].MaxPP, tileSize , tileSize * 12 - (tileSize/8));
 
-        graphics2D.drawString("Type: " + teamCopy[0].moves[optionNum-2].Type, tileSize, tileSize * 14 - (tileSize/8));
-        graphics2D.drawString(teamCopy[0].moves[optionNum-2].Category, tileSize, tileSize * 15 - (tileSize/8));
+        graphics2D.drawString("Type: " + teamCopy[0].moves[optionNum-2].Type, tileSize, tileSize * 13 - (tileSize/8));
+        if(teamCopy[0].moves[optionNum-2].Power == -1){
+            graphics2D.drawString("Power: N/A", tileSize, tileSize * 14  - (tileSize/8));
 
-        graphics2D.drawString("Move info", tileSize * 10, tileSize * 13 - (tileSize/8));
-        graphics2D.drawString("goes here :p", tileSize * 10, tileSize * 15 - (tileSize/8));
+        }
+        else{
+            graphics2D.drawString("Power: " + teamCopy[0].moves[optionNum-2].Power, tileSize, tileSize * 14 - (tileSize/8));
+        }
+        if(teamCopy[0].moves[optionNum-2].Accuracy == 999999){
+            graphics2D.drawString("Accuracy: N/A", tileSize, tileSize * 15  - (tileSize/8));
+        }
+        else{
+            graphics2D.drawString("Accuracy: " + teamCopy[0].moves[optionNum-2].Accuracy, tileSize, tileSize * 15 - (tileSize/8));
+
+        }
+
+        graphics2D.drawString("Category: " + teamCopy[0].moves[optionNum-2].Category, tileSize, tileSize * 16 - (tileSize/8));
+
+        graphics2D.drawString(teamCopy[0].moves[optionNum-2].MoveInfo1, tileSize * 9, tileSize * 13 - (tileSize/8));
+        graphics2D.drawString(teamCopy[0].moves[optionNum-2].MoveInfo2, tileSize * 9, tileSize * 15 - (tileSize/8));
 
     }
 

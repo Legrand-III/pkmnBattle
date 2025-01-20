@@ -77,14 +77,16 @@ public class GamePanel extends JPanel implements Runnable{
             int pp = Integer.parseInt(splits.get(3)); int power = Integer.parseInt(splits.get(4));
             int accuracy = Integer.parseInt(splits.get(5)); int priority = Integer.parseInt(splits.get(6));
             String effect = splits.get(7);
+            String statusType = splits.get(8);
+            String info1 = splits.get(9); String info2 = splits.get(10);
+            String shortenedName = splits.get(11);
             switch(category){
                 case ("Physical"), ("Special"):
-                    Move attack = new AttackingMove(name, type, category, pp, power, accuracy, priority, effect);
+                    Move attack = new AttackingMove(name, type, category, pp, power, accuracy, priority, effect, info1, info2, shortenedName);
                     ans.put(name, attack);
                     break;
                 case("Status"):
-                    String statusType =splits.get(8);
-                    Move statusMove = new StatusMove(name, type, category, pp, power, accuracy, priority, effect, statusType);
+                    Move statusMove = new StatusMove(name, type, category, pp, power, accuracy, priority, effect, statusType, info1, info2, shortenedName);
                     ans.put(name, statusMove);
                     break;
 

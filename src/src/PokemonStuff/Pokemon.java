@@ -76,11 +76,11 @@ public class Pokemon {
         switch(move.Category){
             case ("Physical"), ("Special"):
                 return new AttackingMove(move.Name, move.Type, move.Category, move.MaxPP, move.Power, move.Accuracy,
-                        move.Priority, move.Effect);
+                        move.Priority, move.Effect, move.MoveInfo1, move.MoveInfo2, move.ShortenedName);
 
             case("Status"):
                 return new StatusMove(move.Name, move.Type, move.Category, move.MaxPP, move.Power, move.Accuracy,
-                        move.Priority, move.Effect, move.StatusType);
+                        move.Priority, move.Effect, move.StatusType, move.MoveInfo1, move.MoveInfo2, move.ShortenedName);
         }
         System.out.println("unable to find move category");
         return null;

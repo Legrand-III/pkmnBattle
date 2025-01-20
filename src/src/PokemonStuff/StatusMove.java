@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 public class StatusMove extends Move{
     public StatusMove(String name, String type, String category, int pp, int power, int accuracy, int priority,
-                      String effect, String statusType){
-        super(name, type, category, pp, power, accuracy, priority);
+                      String effect, String statusType, String info1, String info2, String shortenedName){
+        super(name, type, category, pp, power, accuracy, priority, info1, info2, shortenedName);
         this.Effect = effect;
         this.StatusType = statusType;
     }

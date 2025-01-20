@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AttackingMove extends Move{
-    public AttackingMove(String name, String type, String category, int pp, int power, int accuracy, int priority, String effect){
-        super(name, type, category, pp, power, accuracy, priority);
+    public AttackingMove(String name, String type, String category, int pp, int power, int accuracy, int priority, String effect, String info1, String info2, String shortenedName){
+        super(name, type, category, pp, power, accuracy, priority, info1, info2, shortenedName);
         this.Effect = effect;
     }
     public String[][] useMove(Pokemon user, Pokemon target){

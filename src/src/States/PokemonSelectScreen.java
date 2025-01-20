@@ -125,12 +125,12 @@ public class PokemonSelectScreen extends AbstractState{ //room for 40(?) pkmn
                 graphics2D.drawString("/ " + pokemonArrayList.get(selectedPkmn).Type2, tileSize*5, tileSize * 15 - (tileSize/8));
             }
 
-            graphics2D.setFont(new Font("times", Font.BOLD, 40));
+            graphics2D.setFont(new Font("times", Font.BOLD, 35));
 
-            graphics2D.drawString(pokemonArrayList.get(selectedPkmn).moves[0].Name, tileSize*12, tileSize * 13 - (tileSize/8));
-            graphics2D.drawString(pokemonArrayList.get(selectedPkmn).moves[1].Name, tileSize*17, tileSize * 13 - (tileSize/8));
-            graphics2D.drawString(pokemonArrayList.get(selectedPkmn).moves[2].Name, tileSize*12, tileSize * 15 - (tileSize/8));
-            graphics2D.drawString(pokemonArrayList.get(selectedPkmn).moves[3].Name, tileSize*17, tileSize * 15 - (tileSize/8));
+            graphics2D.drawString(pokemonArrayList.get(selectedPkmn).moves[0].ShortenedName, tileSize*12, tileSize * 13 - (tileSize/8));
+            graphics2D.drawString(pokemonArrayList.get(selectedPkmn).moves[1].ShortenedName, tileSize*17, tileSize * 13 - (tileSize/8));
+            graphics2D.drawString(pokemonArrayList.get(selectedPkmn).moves[2].ShortenedName, tileSize*12, tileSize * 15 - (tileSize/8));
+            graphics2D.drawString(pokemonArrayList.get(selectedPkmn).moves[3].ShortenedName, tileSize*17, tileSize * 15 - (tileSize/8));
 
 
         }
@@ -597,14 +597,35 @@ class miniSummary extends SubState{
 
     private void drawMoveInfo(Graphics2D graphics2D){
         State.drawOptionsBox(graphics2D, 0, 8, 5);
+
+        graphics2D.setFont(new Font("times", Font.BOLD|Font.ITALIC, 30));
+
         graphics2D.drawString("PP:   " + selectedPokemon.moves[optionNum].RemainingPP +
-                " / " + selectedPokemon.moves[optionNum].MaxPP, tileSize , tileSize * 13 - (tileSize/8));
+                " / " + selectedPokemon.moves[optionNum].MaxPP, tileSize , tileSize * 12 - (tileSize/8));
 
-        graphics2D.drawString("Type: " + selectedPokemon.moves[optionNum].Type, tileSize, tileSize * 14 - (tileSize/8));
-        graphics2D.drawString(selectedPokemon.moves[optionNum].Category, tileSize, tileSize * 15 - (tileSize/8));
 
-        graphics2D.drawString("Move info", tileSize * 10, tileSize * 13 - (tileSize/8));
-        graphics2D.drawString("goes here :p", tileSize * 10, tileSize * 15 - (tileSize/8));
+        graphics2D.drawString("Type: " + selectedPokemon.moves[optionNum].Type, tileSize, tileSize * 13  - (tileSize/8));
+       if(selectedPokemon.moves[optionNum].Power == -1){
+           graphics2D.drawString("Power: N/A", tileSize, tileSize * 14 - (tileSize/8));
+
+       }
+       else{
+           graphics2D.drawString("Power: " + selectedPokemon.moves[optionNum].Power, tileSize, tileSize * 14 - (tileSize/8));
+
+       }
+
+       if(selectedPokemon.moves[optionNum].Accuracy == 999999){
+           graphics2D.drawString("Accuracy: N/A", tileSize, tileSize * 15  - (tileSize/8));
+       }
+       else{
+           graphics2D.drawString("Accuracy: " + selectedPokemon.moves[optionNum].Accuracy, tileSize, tileSize * 15  - (tileSize/8));
+
+       }
+
+        graphics2D.drawString("Category: " + selectedPokemon.moves[optionNum].Category, tileSize, tileSize * 16  - (tileSize/8));
+
+        graphics2D.drawString(selectedPokemon.moves[optionNum].MoveInfo1, tileSize * 9, tileSize * 13 - (tileSize/8));
+        graphics2D.drawString(selectedPokemon.moves[optionNum].MoveInfo2, tileSize * 9, tileSize * 15 - (tileSize/8));
 
     }
 

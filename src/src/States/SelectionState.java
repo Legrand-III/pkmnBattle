@@ -172,11 +172,11 @@ class fightMenu extends SubState{
         selectionState.drawOptionsBox(graphics2D, 14, 8, 5);
 
 
-        graphics2D.setFont(new Font("times", Font.BOLD, 48));
-        graphics2D.drawString(activePokemon.moves[0].Name, tileSize, tileSize *13 - (tileSize/8));
-        graphics2D.drawString(activePokemon.moves[1].Name, tileSize*8, tileSize *13 - (tileSize/8));
-        graphics2D.drawString(activePokemon.moves[2].Name, tileSize, tileSize *15 - (tileSize/8));
-        graphics2D.drawString(activePokemon.moves[3].Name, tileSize*8, tileSize *15 - (tileSize/8));
+        graphics2D.setFont(new Font("times", Font.BOLD, 40));
+        graphics2D.drawString(activePokemon.moves[0].ShortenedName, tileSize, tileSize *13 - (tileSize/8));
+        graphics2D.drawString(activePokemon.moves[1].ShortenedName, tileSize*8, tileSize *13 - (tileSize/8));
+        graphics2D.drawString(activePokemon.moves[2].ShortenedName, tileSize, tileSize *15 - (tileSize/8));
+        graphics2D.drawString(activePokemon.moves[3].ShortenedName, tileSize*8, tileSize *15 - (tileSize/8));
 
         //move info
             graphics2D.drawString("PP:   " + activePokemon.moves[selectionState.selectedOption].RemainingPP +
@@ -190,19 +190,19 @@ class fightMenu extends SubState{
         switch (selectionState.selectedOption){ // highlight option
             case(0):
                 graphics2D.drawRoundRect(tileSize-5, tileSize *12,
-                        tileSize*5 + 5, tileSize + 5, 25, 25);
+                        tileSize*5 + tileSize/2 + 5, tileSize + 5, 25, 25);
                 break;
             case(1):
                 graphics2D.drawRoundRect(tileSize*8 -5, tileSize *12,
-                        tileSize*5 + 5, tileSize + 5, 25, 25);
+                        tileSize*5 + tileSize/2 + 5, tileSize + 5, 25, 25);
                 break;
             case(2):
                 graphics2D.drawRoundRect(tileSize-5, tileSize *14,
-                        tileSize*5 + 5, tileSize + 5, 25, 25);
+                        tileSize*5 + tileSize/2 + 5, tileSize + 5, 25, 25);
                 break;
             case(3):
                 graphics2D.drawRoundRect(tileSize*8 -5, tileSize *14,
-                        tileSize*5 + 5, tileSize + 5, 25, 25);
+                        tileSize*5 + tileSize/2 + 5, tileSize + 5, 25, 25);
                 break;
         }
 

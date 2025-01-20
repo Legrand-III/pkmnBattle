@@ -11,8 +11,11 @@ public class Move {
     public int Priority;
     public String Effect;
     public String StatusType = "";
+    public String MoveInfo1;
+    public String MoveInfo2;
+    public String ShortenedName;
     //maybe contact and such later
-    public Move(String name, String type, String category, int pp, int power, int accuracy, int priority){
+    public Move(String name, String type, String category, int pp, int power, int accuracy, int priority, String info1, String info2, String shortenedName){
         this.Name = name;
         this.Type = type;
         this.Category = category;
@@ -21,6 +24,10 @@ public class Move {
         this.Power = power;
         this.Accuracy = accuracy;
         this.Priority = priority;
+        this.MoveInfo1 = info1;
+        this.MoveInfo2 = info2;
+        this.ShortenedName = shortenedName;
+
     }
     public Move(String input){
         if(input.equals("Switch")){

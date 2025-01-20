@@ -1,18 +1,18 @@
 STRING-Name,STRING-Type,String-Type2,INT-MaxHealth,INT-Attack,INT-Defense,INT-SpAttack,INT-SpDefense,INT-Speed,Front-Sprite,Back-Sprite,move1,move2,move3,move4
 Pikachu,Electric,none,142,117,101,112,112,156,out/res/pokemonImages/pikachu.png,out/res/pokemonImages/pikachuBack.png,Thunderbolt,Thunder Wave,Iron Tail,Quick Attack
 Scizor,Bug,Steel,177,200,167,117,145,128,out/res/pokemonImages/scizor-f.png,out/res/pokemonImages/scizor-fBack.png,Metal Claw,Swords Dance,X-Scissor,Protect
-Ninetales,Fire,none,180,140,139,146,167,167,out/res/pokemonImages/ninetales.png,out/res/pokemonImages/ninetalesBack.png,Flamethrower,Will-O-Wisp,Psychic,Nasty Plot
+Ninetales,Fire,none,180,140,139,146,167,167,out/res/pokemonImages/ninetales.png,out/res/pokemonImages/ninetalesBack.png,Will-O-Wisp,Flamethrower,Psychic,Nasty Plot
 Nidoking,Poison,Ground,188,169,141,150,139,150,out/res/pokemonImages/nidoking.png,out/res/pokemonImages/nidokingBack.png,Earth Power,Sludge Wave,Stone Edge,Water Pulse
 Gardevoir,Psychic,Fairy,175,128,128,194,183,145,out/res/pokemonImages/gardevoir.png,out/res/pokemonImages/gardevoirBack.png,Moonblast,Calm Mind,Psychic,Focus Blast
 Leavanny,Bug,Grass,182,170,145,134,145,158,out/res/pokemonImages/leavanny.png,out/res/pokemonImages/leavannyBack.png,Leaf Blade,X-Scissor,Synthesis,Poison Jab
-Lucario,Fighting,Steel,177,178,134,183,134,156,out/res/pokemonImages/lucario.png,out/res/pokemonImages/lucarioBack.png,Aura Sphere,Extreme Speed,Crunch,Swords Dance
+Lucario,Fighting,Steel,177,178,134,183,134,156,out/res/pokemonImages/lucario.png,out/res/pokemonImages/lucarioBack.png,Aura Sphere,Extreme Speed,Crunch,Work Up
 Milotic,Water,none,202,123,144,167,194,146,out/res/pokemonImages/milotic-f.png,out/res/pokemonImages/milotic-fBack.png,Ice Beam,Calm Mind,Scald,Recover
 Bastiodon,Rock,Steel,167,114,242,108,209,90,out/res/pokemonImages/bastiodon.png,out/res/pokemonImages/bastiodonBack.png,Toxic,Stone Edge,Curse,Iron Head
 Cofagrigus,Ghost,none,165,112,216,161,172,90,out/res/pokemonImages/cofagrigus.png,out/res/pokemonImages/cofagrigusBack.png,Shadow Ball,Dark Pulse,Will-O-Wisp,Protect
 Electivire,Electric,none,182,192,130,161,150,161,out/res/pokemonImages/electivire.png,out/res/pokemonImages/electivireBack.png,Thunder Punch,Dynamic Punch,Ice Punch,Protect
 Musharna,Psychic,none,223,117,150,174,161,89,out/res/pokemonImages/musharna.png,out/res/pokemonImages/musharnaBack.png,Psychic,Moonblast,Hypnosis,Calm Mind
 Skarmory,Steel,Flying,172,145,211,101,134,134,out/res/pokemonImages/skarmory.png,out/res/pokemonImages/skarmoryBack.png,Iron Head,Drill Peck,Iron Defense,Toxic
-Snorlax,Normal,none,267,178,128,128,178,90,out/res/pokemonImages/snorlax.png,out/res/pokemonImages/snorlaxBack.png,Strength,Earthquake,Rest,Curse
+Snorlax,Normal,none,267,178,128,128,178,90,out/res/pokemonImages/snorlax.png,out/res/pokemonImages/snorlaxBack.png,Body Slam,Earthquake,Rest,Curse
 Solrock,Rock,Psychic,197,161,150,117,128,134,out/res/pokemonImages/solrock.png,out/res/pokemonImages/solrockBack.png,Stone Edge,Will-O-Wisp,Acrobatics,Flamethrower
 Walrein,Ice,Water,217,145,156,161,156,128,out/res/pokemonImages/walrein.png,out/res/pokemonImages/walreinBack.png,Blizzard,Scald,Growl,Rest
-Weezing,Poison,none,172,156,189,150,134,123,out/res/pokemonImages/weezing.png,out/res/pokemonImages/weezingBack.png,Sludge Bomb,Toxic,Dark Pulse,Protect
+Weezing,Poison,none,172,156,189,150,134,123,out/res/pokemonImages/weezing.png,out/res/pokemonImages/weezingBack.png,Toxic,Sludge Bomb,Dark Pulse,Protect
