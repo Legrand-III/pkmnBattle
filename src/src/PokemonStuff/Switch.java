@@ -30,6 +30,8 @@ public class Switch extends Move{
         if(trainer.equals(player)){activePokemon = trainer.team[0];}
 
         else{opposingPokemon = trainer.team[0];}
+
+
         return ans;
     }
 }

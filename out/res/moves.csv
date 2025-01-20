@@ -50,3 +50,9 @@ Drill Peck,Flying,Physical,20,80,100,0,none,none,A corkscrewing attack,with the 
 Hypnosis,Psychic,Status,20,-1,60,0,SLEEP,EnemyStatusCond,Th user hypnotizes the target,putting them to sleep,Hypnosis
 Iron Defense,Steel,Status,15,-1,999999,0,DEF!+2,SelfStat,The user hardens their body,Sharply increasing their Defense,Iron Defense
 Earthquake,Ground,Physical,10,100,100,0,none,none,The user sets off a,powerful earthquake,Earthquake
+Breaking Swipe,Dragon,Physical,15,60,100,0,ENEMYATK!+100!-1,none,The user swings their tail wildly,This will also lower the target's Attack,Break. Swipe
+Dragon Claw,Dragon,Physical,15,80,100,0,none,none,The user slashes the target,with huge claws,Dragon Claw
+Dragon Dance,Dragon,Status,20,-1,999999,0,ATK!+1!SPD!+1,SelfStat,A mystic powerful dance,Boosting the user's Attack and Speed,D. Dance
+Brave Bird,Flying,Physical,15,120,100,0,RECOIL!DMG!+33,none,The user recklessly dives at the target,This also damages the user a lot,Brave Bird
+Sucker Punch,Dark,Physical,5,70,100,1,none,none,This move will typically go first,however it will fail if the target doesn't attack,Sucker Punch
+Roost,Flying,Status,5,-1,999999,0,HEAL!+50,SelfHeal,The user rests their body,restoring their Health,Roost

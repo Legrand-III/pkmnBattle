@@ -128,5 +128,12 @@ public class Pokemon {
         }
     }
 
+    public void takeDamage(int damage){
+        this.CurrentHealth -= damage;
+        if(this.CurrentHealth < 0){
+            this.CurrentHealth = 0;
+        }
+    }
+
 
 }

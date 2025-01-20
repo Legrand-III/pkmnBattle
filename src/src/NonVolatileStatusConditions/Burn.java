@@ -16,10 +16,7 @@ public class Burn extends StatusCond{
 
     @Override
     public boolean EndofTurn() {
-        effectedPokemon.CurrentHealth -= (effectedPokemon.MaxHealth/8);
-        if(effectedPokemon.CurrentHealth < 0){
-            effectedPokemon.CurrentHealth = 0;
-        }
+        effectedPokemon.takeDamage(effectedPokemon.MaxHealth/8);
         return true;
     }
 

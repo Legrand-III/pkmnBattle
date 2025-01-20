@@ -6,6 +6,8 @@ import NonVolatileStatusConditions.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static States.BattleState.turnOrder;
+
 public class AttackingMove extends Move{
     public AttackingMove(String name, String type, String category, int pp, int power, int accuracy, int priority, String effect, String info1, String info2, String shortenedName){
         super(name, type, category, pp, power, accuracy, priority, info1, info2, shortenedName);
@@ -42,48 +44,82 @@ public class AttackingMove extends Move{
             sameTypeBonus += 0.5;
         }
         int damage;
+
+        if(this.Name.equals("Sucker Punch")){
+            if(!turnOrder[0].getKey().team[0].equals(user) || turnOrder[1].getValue().Category.equals("Status")){
+                //only works if the user goes first and if the target is attacking
+                ans[0][0] = "But it";
+                ans[0][1] = "failed...";
+                return ans;
+            }
+        }
+        int startingHealth = target.CurrentHealth;
+
         if(this.Category.equals("Physical")){//physical attack
             double burn = 1;
             if(user.nonVolatileStatus!= null && user.nonVolatileStatus.Condition.equals("Burn")){burn = 0.5;}
             double targetDefense;
+            double userAttack;
             if(Math.random() > 0.95){
                 critical = 2;
-                targetDefense = target.Defense;
+                if(user.effectiveStat(user.Attack, user.AtkMultiplier) < user.Attack){
+                    userAttack = user.Attack;
+                }
+                else{
+                    userAttack = user.effectiveStat(user.Attack, user.AtkMultiplier);
+                }
+
+                if(target.effectiveStat(target.Defense, target.DefMultiplier) > target.Defense){
+                    targetDefense = target.Defense;
+                }
+                else{
+                    targetDefense = target.effectiveStat(target.Defense, target.DefMultiplier);
+                }
             }
             else{
                 critical = 1;
+                userAttack = user.effectiveStat(user.Attack, user.AtkMultiplier);
                 targetDefense = target.effectiveStat(target.Defense, target.DefMultiplier);
             }
             System.out.println(user.Name + "'s effective attack = " + user.effectiveStat(user.Attack, user.AtkMultiplier));
             damage = (int)((((22 * this.Power *
-                    (user.effectiveStat(user.Attack, user.AtkMultiplier))
-                    / (targetDefense)) /50)+2)
+                    userAttack / (targetDefense)) /50)+2)
                     * effectiveness * critical * sameTypeBonus * burn);
             System.out.println("DMG = " + damage);
         }
         else{//special attack
             double targetSpDefense;
+            double userSpAttack;
             if(Math.random() > 0.95){
                 critical = 2;
-                targetSpDefense = target.SpDefense;
+                if(user.effectiveStat(user.SpAttack, user.SpAtkMultiplier) < user.SpAttack){
+                    userSpAttack = user.SpAttack;
+                }
+                else{
+                    userSpAttack = user.effectiveStat(user.SpAttack, user.SpAtkMultiplier);
+                }
+
+                if(target.effectiveStat(target.SpDefense, target.SpDefMultiplier) > target.SpDefense){
+                    targetSpDefense = target.SpDefense;
+                }
+                else{
+                    targetSpDefense = target.effectiveStat(target.SpDefense, target.SpDefMultiplier);
+                }
             }
             else{
                 critical = 1;
+                userSpAttack = user.effectiveStat(user.SpAttack, user.SpAtkMultiplier);
                 targetSpDefense = target.effectiveStat(target.SpDefense, target.SpDefMultiplier);
 
             }
             System.out.println(user.Name + "'s effective Special Attack = " + user.effectiveStat(user.SpAttack, user.SpAtkMultiplier));
             damage = (int)((((22 * this.Power *
-                    (user.effectiveStat(user.SpAttack, user.SpAtkMultiplier))
-                    / (targetSpDefense)) /50)+2)
+                    userSpAttack / (targetSpDefense)) /50)+2)
                     * effectiveness * critical * sameTypeBonus);
             System.out.println("DMG = " + damage);
         }
 
-        target.CurrentHealth -= damage;
-        if(target.CurrentHealth < 0){
-            target.CurrentHealth = 0;
-        }
+        target.takeDamage(damage);
 
 
         if(effectiveness > 1){
@@ -292,17 +328,34 @@ public class AttackingMove extends Move{
                     if(Integer.parseInt(effectList.get(1)) - (Math.random() * 100) > 0
                             && (user.SpdMultiplier > -6 && user.SpdMultiplier < 6)){
                         user.SpdMultiplier += Integer.parseInt(effectList.get(2));
+
                         if(user.SpdMultiplier > 6){
                             user.SpdMultiplier = 6;
                         }
                         else if(user.SpdMultiplier < -6){
                             user.SpdMultiplier = -6;
                         }
-                        ans[ansIndex][0] = user.Name + "'s";
-                        ans[ansIndex][1] = "Speed was raised!";
+                        if(Integer.parseInt(effectList.get(2)) > 0) {
+                            ans[ansIndex][0] = user.Name + "'s";
+                            ans[ansIndex][1] = "Speed was raised!";
+                        }
+                        else{
+                            ans[ansIndex][0] = user.Name + "'s";
+                            ans[ansIndex][1] = "Speed was lowered...";
+                        }
                     }
                     break;
+                case("RECOIL"):
+                    if(effectList.get(1).equals("DMG")){
+                        if(damage > startingHealth){
+                            damage = startingHealth;
+                        }
+                        user.takeDamage((int)(damage * ((Double.parseDouble(effectList.get(2)))/100)));
 
+                    }
+                    ans[ansIndex][0] = user.Name + " took";
+                    ans[ansIndex][1] = "recoil damage!";
+                    System.out.println("Recoil = " + (damage * ((Double.parseDouble(effectList.get(2)))/100)));
             }
 
         }

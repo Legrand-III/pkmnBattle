@@ -123,6 +123,9 @@ public class Trainer {
                 }
                 if(possibleDamage >= activePokemon.CurrentHealth){//the move is guaranteed to KO, use it!
                     ans+=100000;
+                    if(move.Priority > 0){
+                        ans += 100000;
+                    }
                 }
 
         }

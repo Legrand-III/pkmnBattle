@@ -15,7 +15,7 @@ public class BattleState extends AbstractState{
     protected PlayerKeyInputs keyInputs;
     protected Move selectedMove;
     protected Move opponentMove;
-    protected AbstractMap.SimpleEntry<Trainer, Move>[] turnOrder;
+    public static AbstractMap.SimpleEntry<Trainer, Move>[] turnOrder;
     protected int turnPart = 0;
     protected int ansIndex = 0;
     boolean printed = false;
@@ -25,7 +25,7 @@ public class BattleState extends AbstractState{
         this.keyInputs = keyInputs;
         this.selectedMove = selectedMove;
         this.opponentMove = opponentMove;
-        this.turnOrder = calculateTurnOrder(selectedMove, opponentMove);
+        turnOrder = calculateTurnOrder(selectedMove, opponentMove);
     }
     @Override
     public void update() {
@@ -281,13 +281,18 @@ public class BattleState extends AbstractState{
             activePokemon.protecting = false;
             opposingPokemon.protecting = false;
 
-            if(activePokemon.CurrentHealth <= 0){
+            if(activePokemon.CurrentHealth == 0){
                 activePokemon.nonVolatileStatus = null;
+                if(player.team[0].CurrentHealth == 0 && player.team[1].CurrentHealth == 0 && player.team[2].CurrentHealth == 0){
+                    opposingPokemon.nonVolatileStatus = null;
+                    this.keyInputs.state = new ResultsScreen(this.keyInputs);
+                    return;
+                }
                 this.keyInputs.state = new TrainerTeamState(this.keyInputs);
                 return;
             }
 
-            if(opposingPokemon.CurrentHealth <= 0){
+            if(opposingPokemon.CurrentHealth == 0){
                 opposingPokemon.nonVolatileStatus = null;
                 if(opposingTrainer.team[1].CurrentHealth != 0) {
                     this.keyInputs.state = new BattleState(this.keyInputs, new Wait(), new Switch(1, opposingTrainer));
@@ -297,7 +302,7 @@ public class BattleState extends AbstractState{
                 }
                 else{
                     System.out.println("you win!");
-                    this.keyInputs.state = new SelectionState(this.keyInputs);
+                    this.keyInputs.state = new ResultsScreen(this.keyInputs);
                 }
                 return;
             }

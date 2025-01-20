@@ -16,3 +16,5 @@ Snorlax,Normal,none,267,178,128,128,178,90,out/res/pokemonImages/snorlax.png,out
 Solrock,Rock,Psychic,197,161,150,117,128,134,out/res/pokemonImages/solrock.png,out/res/pokemonImages/solrockBack.png,Stone Edge,Will-O-Wisp,Acrobatics,Flamethrower
 Walrein,Ice,Water,217,145,156,161,156,128,out/res/pokemonImages/walrein.png,out/res/pokemonImages/walreinBack.png,Blizzard,Scald,Growl,Rest
 Weezing,Poison,none,172,156,189,150,134,123,out/res/pokemonImages/weezing.png,out/res/pokemonImages/weezingBack.png,Toxic,Sludge Bomb,Dark Pulse,Protect
+Flygon,Ground,Dragon,187,167,145,145,145,167,out/res/pokemonImages/flygon.png,out/res/pokemonImages/flygonBack.png,Earthquake,Breaking Swipe,Roost,Dragon Dance
+Honchkrow,Dark,Flying,207,194,114,172,114,135,out/res/pokemonImages/honchkrow.png,out/res/pokemonImages/honchkrowBack.png,Brave Bird,Sucker Punch,Dark Pulse,Roost

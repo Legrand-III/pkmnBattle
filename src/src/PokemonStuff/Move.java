@@ -61,7 +61,12 @@ public class Move {
             double targetDefense;
             if(Math.random() > 0.95){
                 critical = 2;
-                targetDefense = target.Defense;
+                if (target.effectiveStat(target.Defense, target.DefMultiplier) > target.Defense) {
+                    targetDefense = target.Defense;
+                }
+                else{
+                    targetDefense = target.effectiveStat(target.Defense, target.DefMultiplier);
+                }
             }
             else{
                 critical = 1;
@@ -72,6 +77,7 @@ public class Move {
                     (user.effectiveStat(user.Attack, user.AtkMultiplier))
                     / (targetDefense)) /50)+2) * critical  * burn);
             System.out.println("DMG = " + damage);
+            target.takeDamage(damage);
         if(critical > 1){
             ans[0][0] = "It's a";
             ans[0][1] = "critical hit!";
@@ -84,7 +90,7 @@ public class Move {
             ans[1][0] = user.Name + " took";
             ans[1][1] = "recoil damage!";
         }
-        user.CurrentHealth -= user.MaxHealth/4;
+        user.takeDamage(user.MaxHealth/4);
         return ans;
     }
 
