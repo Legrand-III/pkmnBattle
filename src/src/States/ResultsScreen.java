@@ -85,7 +85,7 @@ public class ResultsScreen extends AbstractState{
         else if(this.result.equals("lose")){
             graphics2D.drawImage(opposingPokemon.frontSprite, tileSize*14, tileSize*3, tileSize*4, tileSize*4, null);
             graphics2D.drawString("You lost :(", tileSize, tileSize *13 - (tileSize/8));
-            graphics2D.drawString("Ber luck next time",
+            graphics2D.drawString("Better luck next time",
                     tileSize, tileSize *15 - (tileSize/8));
         }
         else{

@@ -36,9 +36,15 @@ public class PokemonSelectScreen extends AbstractState{ //room for 40(?) pkmn
 
         graphics2D.setFont(new Font("times", Font.BOLD|Font.ITALIC, 24));
 
+
+
         graphics2D.drawString("Current Team ~", (tileSize * 11), tileSize);
 
         graphics2D.drawString("Opposing Team ~", (tileSize * 11), tileSize*3);
+
+        graphics2D.setFont(new Font("times", Font.BOLD|Font.ITALIC, 26));
+
+        graphics2D.drawString("Random Pokemon", tileSize, tileSize * 2 + tileSize/2);
 
         drawSelection(graphics2D);
         drawPokemon(graphics2D);
@@ -84,6 +90,30 @@ public class PokemonSelectScreen extends AbstractState{ //room for 40(?) pkmn
         subState.escapePressed();
     }
 
+    public void addPokemon(Pokemon selectedPokemon){
+        if(player.team[0] == null){
+            player.team[0] = selectedPokemon;
+        }
+        else if(player.team[1] == null){
+            player.team[1] = selectedPokemon;
+        }
+        else if(player.team[2] == null){
+            player.team[2] = selectedPokemon;
+        }
+        else if(opposingTrainer.team[0] == null){
+            opposingTrainer.team[0] = selectedPokemon;
+        }
+        else if(opposingTrainer.team[1] == null){
+            opposingTrainer.team[1] = selectedPokemon;
+        }
+        else{
+            opposingTrainer.team[2] = selectedPokemon;
+            this.subState = new readyToBattle(this);
+            return;
+        }
+        this.subState = new playerSelectTeam(this);
+    }
+
     public void drawPokemon(Graphics2D graphics2D){
         int xPos = 1;
         int yPos = 3;
@@ -105,9 +135,15 @@ public class PokemonSelectScreen extends AbstractState{ //room for 40(?) pkmn
 
         graphics2D.setColor(new Color(255,170,180, 150));
 
-        graphics2D.fillRoundRect(tileSize + (2*tileSize * optionX), 3*tileSize + (2*tileSize * optionY),
-                tileSize * 2, tileSize * 2, 25, 25);
-
+        if(optionY == -1){
+            graphics2D.fillRoundRect(tileSize, 2 * tileSize,
+                    tileSize * 5, tileSize, 25, 25);
+            return;
+        }
+        else {
+            graphics2D.fillRoundRect(tileSize + (2 * tileSize * optionX), 3 * tileSize + (2 * tileSize * optionY),
+                    tileSize * 2, tileSize * 2, 25, 25);
+        }
 
         int selectedPkmn = optionY * 10 + optionX;
         if(selectedPkmn < pokemonArrayList.size()){
@@ -228,6 +264,11 @@ class playerSelectTeam extends SubState{
 
     @Override
     public void spacePressed() {
+        if(State.optionY == -1){
+            int selectedPkmn = (int)(Math.random() * pokemonArrayList.size());
+            State.addPokemon(pokemonArrayList.get(selectedPkmn));
+            return;
+        }
         int selectedPkmn = State.optionY * 10 + State.optionX;
         if(selectedPkmn < pokemonArrayList.size()){
             State.subState = new confirmSelection(State);
@@ -243,8 +284,16 @@ class playerSelectTeam extends SubState{
 
     @Override
     public void upPressed() {
+        if(State.optionY == -1){
+            State.optionY = 3;
+        }
         if(State.optionY == 0){
-            State.optionY += 3;
+            if(State.optionX == 0 || State.optionX == 1){
+                State.optionY = -1;
+            }
+            else {
+                State.optionY += 3;
+            }
         }
         else {
             State.optionY -= 1;
@@ -253,7 +302,10 @@ class playerSelectTeam extends SubState{
 
     @Override
     public void downPressed() {
-        if(State.optionY == 3){
+        if(State.optionY== -1){
+            State.optionY = 0;
+        }
+        else if(State.optionY == 3){
             State.optionY -= 3;
         }
         else {
@@ -263,6 +315,9 @@ class playerSelectTeam extends SubState{
 
     @Override
     public void leftPressed() {
+        if(State.optionY == -1){
+            return;
+        }
         if(State.optionX == 0){
             State.optionX += 9;
         }
@@ -273,6 +328,9 @@ class playerSelectTeam extends SubState{
 
     @Override
     public void rightPressed() {
+        if(State.optionY == -1){
+            return;
+        }
         if(State.optionX == 9){
             State.optionX -= 9;
         }
@@ -305,6 +363,7 @@ class confirmQuit extends SubState{
                 tileSize*10 - 2, tileSize*8 - 4, 25, 25);
 
         graphics2D.setColor(Color.WHITE);
+        graphics2D.setFont(new Font("times", Font.BOLD, 40));
         graphics2D.drawString("Are you sure", (tileSize*2), tileSize * 5 -  (tileSize/8));
         graphics2D.drawString("you'd like to quit?", (tileSize*2), tileSize * 6 -  (tileSize/8));
 
@@ -435,7 +494,7 @@ class confirmSelection extends SubState {
     @Override
     public void spacePressed() {
         if(optionNum == 0){
-            addPokemon();
+            State.addPokemon(selectedPokemon);
         }
         else if(optionNum == 1){
             State.subState = new miniSummary(State);
@@ -444,29 +503,6 @@ class confirmSelection extends SubState {
             State.subState = new playerSelectTeam(State);
         }
 
-    }
-    public void addPokemon(){
-        if(player.team[0] == null){
-            player.team[0] = selectedPokemon;
-        }
-        else if(player.team[1] == null){
-            player.team[1] = selectedPokemon;
-        }
-        else if(player.team[2] == null){
-            player.team[2] = selectedPokemon;
-        }
-        else if(opposingTrainer.team[0] == null){
-            opposingTrainer.team[0] = selectedPokemon;
-        }
-        else if(opposingTrainer.team[1] == null){
-            opposingTrainer.team[1] = selectedPokemon;
-        }
-        else{
-            opposingTrainer.team[2] = selectedPokemon;
-            State.subState = new readyToBattle(State);
-            return;
-        }
-        State.subState = new playerSelectTeam(State);
     }
 
     @Override
@@ -489,6 +525,9 @@ class confirmSelection extends SubState {
         optionNum = (optionNum+1)%3;
     }
 }
+
+
+
 
 class miniSummary extends SubState{
     PokemonSelectScreen State;
@@ -679,6 +718,7 @@ class readyToBattle extends SubState{
                 tileSize*10 - 2, tileSize*8 - 4, 25, 25);
 
         graphics2D.setColor(Color.WHITE);
+        graphics2D.setFont(new Font("times", Font.BOLD, 40));
         graphics2D.drawString("Are you ready", (tileSize*2), tileSize * 5 -  (tileSize/8));
         graphics2D.drawString("to fight?", (tileSize*2), tileSize * 6 -  (tileSize/8));
 
