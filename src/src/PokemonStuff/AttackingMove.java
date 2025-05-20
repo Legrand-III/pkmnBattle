@@ -12,6 +12,8 @@ public class AttackingMove extends Move{
     public AttackingMove(String name, String type, String category, int pp, int power, int accuracy, int priority, String effect, String info1, String info2, String shortenedName){
         super(name, type, category, pp, power, accuracy, priority, info1, info2, shortenedName, effect, "none");
     }
+
+    @Override
     public String[][] useMove(Pokemon user, Pokemon target){
         usePP();
         int ansIndex = 0;
@@ -45,7 +47,7 @@ public class AttackingMove extends Move{
         int damage;
 
         if(this.Name.equals("Sucker Punch")){
-            if(!turnOrder[0].getKey().team[0].equals(user) || turnOrder[1].getValue().Category.equals("Status")){
+            if(!turnOrder[0].getKey().team()[0].equals(user) || turnOrder[1].getValue().Category.equals("Status")){
                 //only works if the user goes first and if the target is attacking
                 ans[0][0] = "But it";
                 ans[0][1] = "failed...";

@@ -9,9 +9,11 @@ import java.io.IOException;
 
 import static Main.GamePanel.pokemonData;
 
-
+/**
+ * the Pokemon! Holds stats, moves, and such so that battling is possible
+ */
 public class Pokemon {
-    //Main stuff, static stats + the pokemon
+    //Main stuff, stats + the pokemon
     public BufferedImage frontSprite, backSprite;
     public final String Name;
     public final String Type, Type2;
@@ -24,7 +26,6 @@ public class Pokemon {
     private StatusCond nonVolatileStatus = null; //sleep, burn, paralysis, etc
 
     //multipliers, stat changing
-    String Status; //maybe object
     private int AtkMultiplier, DefMultiplier, SpAtkMultiplier, SpDefMultiplier, SpdMultiplier;
 
 
@@ -50,7 +51,6 @@ public class Pokemon {
     }
     /**
      * Constructor used by the initialization to copy pokemon data from the CSV file
-     *
      */
     public Pokemon(String name, String type, String type2, int maxHealth, int attack, int defense,
                    int spAttack, int spDefense, int speed, String frontSpritePath, String backSpritePath,

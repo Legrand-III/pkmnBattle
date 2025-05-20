@@ -14,13 +14,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-
+/**
+ * the game panel!!
+ * holds the majority of the stuff for the game to function
+ */
 public class GamePanel extends JPanel implements Runnable{
     public final static int tileSize = 48; //each 1 tile is 48x48 pixels
-    public final static int rows = 16;
-    public final static int columns = 22;
-    public final static int screenHeight = tileSize * rows; // 16 tiles tall, temp size
-    public final static int screenWidth = tileSize * columns; //22 tiles wide, temp size
+    public final static int rows = 16; //the screen has 16 rows
+    public final static int columns = 22; //the screen has 22 columns
+    public final static int screenHeight = tileSize * rows; // 16 tiles tall
+    public final static int screenWidth = tileSize * columns; //22 tiles wide
     final int fps = 60;
 
     PlayerKeyInputs keyInputs;
@@ -31,7 +34,7 @@ public class GamePanel extends JPanel implements Runnable{
 
 
     public final static HashMap<String, Move> moveData = storeMoveInfo("out/res/moves.csv");
-    public final static HashMap<String, Pokemon> pokemonData = storePokemonInfo("out/res/pokemon.csv");;
+    public final static HashMap<String, Pokemon> pokemonData = storePokemonInfo("out/res/pokemon.csv");
     private static Pokemon activePokemon;
     private static Pokemon opposingPokemon;
     private static Trainer player = new Trainer(null, null, null);
@@ -56,6 +59,8 @@ public class GamePanel extends JPanel implements Runnable{
         }
 
     }
+
+
     public static ArrayList<String> readFile(String filename){
         try{
             return new ArrayList<>(Files.readAllLines(Paths.get(filename)));
@@ -66,6 +71,13 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     //String-Name,String-Type,String-Category,int-PP,int-Power,int-Accuracy
+
+    /**
+     * Reads a CSV file containing all the <Code>moves</Code> a <Code>Pokemon</Code> can use and stores them in a hashmap
+     * @param filename the file to be read
+     * @return a <Code>HashMap</Code> containing every move where the key is a string corresponding
+     * to the move name and the value is the <Code>Move</Code> itself
+     */
     public static HashMap<String, Move> storeMoveInfo(String filename){
         ArrayList<String> lines = readFile(filename);
         HashMap<String, Move> ans = new HashMap<>();
@@ -73,12 +85,17 @@ public class GamePanel extends JPanel implements Runnable{
         for(int i = 1; i < lines.size(); i++){
             ArrayList<String> splits = new ArrayList<>(Arrays.asList(lines.get(i).split(",")));
 
-            String name = splits.get(0); String type = splits.get(1); String category = splits.get(2);
-            int pp = Integer.parseInt(splits.get(3)); int power = Integer.parseInt(splits.get(4));
-            int accuracy = Integer.parseInt(splits.get(5)); int priority = Integer.parseInt(splits.get(6));
+            String name = splits.get(0);
+            String type = splits.get(1);
+            String category = splits.get(2);
+            int pp = Integer.parseInt(splits.get(3));
+            int power = Integer.parseInt(splits.get(4));
+            int accuracy = Integer.parseInt(splits.get(5));
+            int priority = Integer.parseInt(splits.get(6));
             String effect = splits.get(7);
             String statusType = splits.get(8);
-            String info1 = splits.get(9); String info2 = splits.get(10);
+            String info1 = splits.get(9);
+            String info2 = splits.get(10);
             String shortenedName = splits.get(11);
             switch(category){
                 case ("Physical"), ("Special"):
@@ -98,6 +115,12 @@ public class GamePanel extends JPanel implements Runnable{
     }
     //STRING-Name,STRING-Ability,INT-MaxHealth,INT-Attack,INT-Defense,INT-SpAttack,INT-SpDefense,
     // INT-Speed,Front-Sprite,Back-Sprite,move1,move2,move3,move4
+
+    /**
+     * reads a CSV file containing all the <Code>Pokemon</Code> and stores them in a hashmap
+     * @param filename the file to be read
+     * @return a hashmap where the keys are the pokemon name and the values are the <Code>Pokemon</Code> objects
+     */
     public static HashMap<String, Pokemon> storePokemonInfo(String filename){
         ArrayList<String> lines = readFile(filename);
         HashMap<String, Pokemon> ans = new HashMap<>();
@@ -150,6 +173,10 @@ public class GamePanel extends JPanel implements Runnable{
 
     }
 
+    /**
+     * draws the background and tiles of the game
+     * @param graphics the <code>Graphics</code> object to protect
+     */
     public void paintComponent(Graphics graphics){
         super.paintComponent(graphics);
         Graphics2D graphics2D = (Graphics2D)graphics;

@@ -12,10 +12,18 @@ public abstract class StatusCond {
         this.effectedPokemon = effectedPokemon;
     }
 
+    /**
+     * determines if a pokemon may act at the beginning of a turn
+     * @return true by default
+     */
     public boolean StartOfTurn(){
         return true;
     }
 
+    /**
+     * determines if anything should happen at the end of a turn
+     * @return false by default
+     */
     public boolean EndofTurn(){
         return false;
     }

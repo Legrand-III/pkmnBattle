@@ -59,8 +59,8 @@ public class Move {
         this.Type = "None";
         this.MaxPP = 1;
         this.RemainingPP = 1;
-        this.Effect = null;
-        this.StatusType = null;
+        this.Effect = "none";
+        this.StatusType = "none";
         this.MoveInfo1 = null;
         this.MoveInfo2 = null;
 
@@ -113,9 +113,10 @@ public class Move {
     }
 
     /**
-     * 0 = immune
-     * 0.5 or 0.25 = not very effective
-     *  1 = default
+     * Effectiveness is determined by the attacking move's type and the defending pokemon's type:
+     * 0 = immune,
+     * 0.5 or 0.25 = not very effective,
+     *  1 = neutral,
      *  2 or 4 = super effective
      **/
     public double calculateEffectiveness(String type){

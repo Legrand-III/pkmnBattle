@@ -6,6 +6,9 @@ import java.awt.*;
 
 import static Main.GamePanel.tileSize;
 
+/**
+ * Status Condition- Paralysis! The effected pokemon has a 25% chance of being unable to act
+ */
 public class Paralysis extends StatusCond{
     //may not be able to attack
 

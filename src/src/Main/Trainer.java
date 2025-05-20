@@ -8,20 +8,29 @@ import java.util.ArrayList;
 
 import static Main.GamePanel.*;
 
+/**
+ * trainers!
+ * Each trainer holds a team of 3 <Code>Pokemon</Code>
+ */
 public class Trainer {
-    public Pokemon[] team;
+    private Pokemon[] team;
     public Trainer(Pokemon a, Pokemon b, Pokemon c){
         team = new Pokemon[3];
         team[0] = a;
         team[1] = b;
         team[2] = c;
     }
+
+    /**
+     * used by the opponent to determine which move should be used.
+     * goes through all 4 available moves and returns the best valid option out of them.
+     * (A move is considered valid if it has >0 PP remaining).
+     * @return Either one of the 4 valid moves in the pokemon's moveset, or "Struggle" if there are no valid options
+     */
     public Move determineMove(){
         System.out.println("=========");
 
         ArrayList<AbstractMap.SimpleEntry<Move, Integer>> possibleOptions = new ArrayList<>();
-
-        //switch out? maybe
 
         possibleOptions.add(new AbstractMap.SimpleEntry<>(team[0].moves[0], 0));
         possibleOptions.add(new AbstractMap.SimpleEntry<>(team[0].moves[1], 0));
@@ -133,6 +142,13 @@ public class Trainer {
         return ans;
     }
 
+    /**
+     * determines the success of a stat changing move.
+     * Prioritizes increasing ones own stats if they are weakened and decreasing the enemy's stats if they are raised
+     * @param move the move being used
+     * @param target what pokemon will be effected by the move
+     * @return an int representing how successful the attack will be. A larger number signifies larger success
+     */
     public int statStuff(Move move, Pokemon target) {
         String[] effectList = move.Effect.split("!");
         int ans = 0;
@@ -180,6 +196,12 @@ public class Trainer {
         return ans;
     }
 
+    /**
+     * determines the success of status inflicting moves.
+     * Prioritizes inflicting status conditions on valid targets
+     * @param move The move inflicting the status condition
+     * @return an integer representing how successful the attack will be. A larger number signifies larger success
+     */
     public int statusThings(Move move){
         int ans = 0;
         switch (move.Effect) {
@@ -219,5 +241,10 @@ public class Trainer {
                 System.out.println("error in effect file, " + move.Effect);
                 return ans;
         }
+    }
+
+
+    public Pokemon[] team(){
+        return team;
     }
 }

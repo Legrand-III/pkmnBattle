@@ -101,9 +101,9 @@ public class BattleState extends AbstractState{
         return ans;
     }
     public void playTurn(Graphics2D graphics2D, int turnPart) throws InterruptedException {
-        Pokemon PokemonA = turnOrder[0].getKey().team[0];
+        Pokemon PokemonA = turnOrder[0].getKey().team()[0];
         Move MoveA = turnOrder[0].getValue();
-        Pokemon PokemonB = turnOrder[1].getKey().team[0];
+        Pokemon PokemonB = turnOrder[1].getKey().team()[0];
         Move MoveB = turnOrder[1].getValue();
         if(turnPart == 0){
             if(MoveA.Category.equals("Wait")) {
@@ -283,7 +283,7 @@ public class BattleState extends AbstractState{
 
             if(ActivePokemon().getCurrentHealth() == 0){
                 ActivePokemon().setNonVolatileStatus(null);
-                if(Player().team[0].getCurrentHealth() == 0 && Player().team[1].getCurrentHealth() == 0 && Player().team[2].getCurrentHealth() == 0){
+                if(Player().team()[0].getCurrentHealth() == 0 && Player().team()[1].getCurrentHealth() == 0 && Player().team()[2].getCurrentHealth() == 0){
                     OpposingPokemon().setNonVolatileStatus(null);
                     this.keyInputs.setState(new ResultsScreen(this.keyInputs));
                     return;
@@ -294,10 +294,10 @@ public class BattleState extends AbstractState{
 
             if(OpposingPokemon().getCurrentHealth() == 0){
                 OpposingPokemon().setNonVolatileStatus(null);
-                if(OpposingTrainer().team[1].getCurrentHealth() != 0) {
+                if(OpposingTrainer().team()[1].getCurrentHealth() != 0) {
                     this.keyInputs.setState(new BattleState(this.keyInputs, new Wait(), new Switch(1, OpposingTrainer())));
                 }
-                else if(OpposingTrainer().team[2].getCurrentHealth() != 0){
+                else if(OpposingTrainer().team()[2].getCurrentHealth() != 0){
                     this.keyInputs.setState(new BattleState(this.keyInputs, new Wait(), new Switch(2, OpposingTrainer())));
                 }
                 else{

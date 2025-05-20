@@ -6,6 +6,10 @@ import java.awt.*;
 
 import static Main.GamePanel.tileSize;
 
+/**
+ * Status Condition- Poison! The effected pokemon takes increasing damage at the end of each turn,
+ * starting at 1/16 of their max health, then increasing by 1/16 for each subsequent turn
+ */
 public class Poison extends StatusCond{
     //deals increasing damage over time
 
@@ -16,6 +20,10 @@ public class Poison extends StatusCond{
         Condition = "Poison";
     }
 
+    /**
+     * take increasing damage depending on how many turns they've been poisoned
+     * @return true, showing something should happen at the end of the turn
+     */
     @Override
     public boolean EndofTurn() {
         effectedPokemon.takeDamage((effectedPokemon.MaxHealth * turnsPoisoned) / 16);

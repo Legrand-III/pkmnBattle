@@ -6,6 +6,10 @@ import java.awt.*;
 
 import static Main.GamePanel.tileSize;
 
+/**
+ * Status Condition- Freeze! The effected pokemon has a 80% chance of being unable to act for the turn.
+ * Cures status condition on successful action
+ */
 public class Freeze extends StatusCond{
     //may not be able to attack
 

@@ -18,17 +18,17 @@ public class SummaryState extends AbstractState{
     public SummaryState(PlayerKeyInputs keyInputs, int selectedPokemon){
         this.keyInputs = keyInputs;
         optionNum = 0;
-        teamCopy[0] = Player().team[selectedPokemon];
+        teamCopy[0] = Player().team()[selectedPokemon];
         selectedPokemon+=1;
         if(selectedPokemon > 2){
             selectedPokemon = 0;
         }
-        teamCopy[1] = Player().team[selectedPokemon];
+        teamCopy[1] = Player().team()[selectedPokemon];
         selectedPokemon+=1;
         if(selectedPokemon > 2){
             selectedPokemon = 0;
         }
-        teamCopy[2] = Player().team[selectedPokemon];
+        teamCopy[2] = Player().team()[selectedPokemon];
     }
 
     @Override

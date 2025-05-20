@@ -16,7 +16,7 @@ public class PokemonSelectScreen extends AbstractState{ //room for 40(?) pkmn
     SubState subState;
     public PokemonSelectScreen(PlayerKeyInputs keyInputs){
         this.keyInputs = keyInputs;
-        if(OpposingTrainer().team[2] != null){
+        if(OpposingTrainer().team()[2] != null){
             this.subState = new readyToBattle(this);
         }
         else {
@@ -91,23 +91,23 @@ public class PokemonSelectScreen extends AbstractState{ //room for 40(?) pkmn
     }
 
     public void addPokemon(Pokemon selectedPokemon){
-        if(Player().team[0] == null){
-            Player().team[0] = selectedPokemon;
+        if(Player().team()[0] == null){
+            Player().team()[0] = selectedPokemon;
         }
-        else if(Player().team[1] == null){
-            Player().team[1] = selectedPokemon;
+        else if(Player().team()[1] == null){
+            Player().team()[1] = selectedPokemon;
         }
-        else if(Player().team[2] == null){
-            Player().team[2] = selectedPokemon;
+        else if(Player().team()[2] == null){
+            Player().team()[2] = selectedPokemon;
         }
-        else if(OpposingTrainer().team[0] == null){
-            OpposingTrainer().team[0] = selectedPokemon;
+        else if(OpposingTrainer().team()[0] == null){
+            OpposingTrainer().team()[0] = selectedPokemon;
         }
-        else if(OpposingTrainer().team[1] == null){
-            OpposingTrainer().team[1] = selectedPokemon;
+        else if(OpposingTrainer().team()[1] == null){
+            OpposingTrainer().team()[1] = selectedPokemon;
         }
         else{
-            OpposingTrainer().team[2] = selectedPokemon;
+            OpposingTrainer().team()[2] = selectedPokemon;
             this.subState = new readyToBattle(this);
             return;
         }
@@ -173,73 +173,73 @@ public class PokemonSelectScreen extends AbstractState{ //room for 40(?) pkmn
     }
 
     public void drawPlayerTeam(Graphics2D graphics2D){
-        if(Player().team[0] == null){
+        if(Player().team()[0] == null){
             return;
         }
-        graphics2D.drawImage(Player().team[0].frontSprite, (tileSize * 16), 0, tileSize, tileSize, null);
-        if(Player().team[1] == null){
+        graphics2D.drawImage(Player().team()[0].frontSprite, (tileSize * 16), 0, tileSize, tileSize, null);
+        if(Player().team()[1] == null){
             return;
         }
-        graphics2D.drawImage(Player().team[1].frontSprite, (tileSize * 17), 0, tileSize, tileSize, null);
-        if(Player().team[2] == null){
+        graphics2D.drawImage(Player().team()[1].frontSprite, (tileSize * 17), 0, tileSize, tileSize, null);
+        if(Player().team()[2] == null){
             return;
         }
-        graphics2D.drawImage(Player().team[2].frontSprite, (tileSize * 18), 0, tileSize, tileSize, null);
+        graphics2D.drawImage(Player().team()[2].frontSprite, (tileSize * 18), 0, tileSize, tileSize, null);
 
     }
     public void drawEnemyTeam(Graphics2D graphics2D){
-        if(OpposingTrainer().team[0] == null){
+        if(OpposingTrainer().team()[0] == null){
             return;
         }
-        graphics2D.drawImage(OpposingTrainer().team[0].frontSprite, (tileSize * 16), tileSize*2, tileSize, tileSize, null);
-        if(OpposingTrainer().team[1] == null){
+        graphics2D.drawImage(OpposingTrainer().team()[0].frontSprite, (tileSize * 16), tileSize*2, tileSize, tileSize, null);
+        if(OpposingTrainer().team()[1] == null){
             return;
         }
-        graphics2D.drawImage(OpposingTrainer().team[1].frontSprite, (tileSize * 17), tileSize*2, tileSize, tileSize, null);
-        if(OpposingTrainer().team[2] == null){
+        graphics2D.drawImage(OpposingTrainer().team()[1].frontSprite, (tileSize * 17), tileSize*2, tileSize, tileSize, null);
+        if(OpposingTrainer().team()[2] == null){
             return;
         }
-        graphics2D.drawImage(OpposingTrainer().team[2].frontSprite, (tileSize * 18), tileSize*2, tileSize, tileSize, null);
+        graphics2D.drawImage(OpposingTrainer().team()[2].frontSprite, (tileSize * 18), tileSize*2, tileSize, tileSize, null);
     }
 
     public boolean removePokemon(){
-        if(OpposingTrainer().team[2] != null){
-            OpposingTrainer().team[2] = null;
+        if(OpposingTrainer().team()[2] != null){
+            OpposingTrainer().team()[2] = null;
             return true;
         }
-        if(OpposingTrainer().team[1] != null){
-            OpposingTrainer().team[1] = null;
+        if(OpposingTrainer().team()[1] != null){
+            OpposingTrainer().team()[1] = null;
             return true;
         }
-        if(OpposingTrainer().team[0] != null){
-            OpposingTrainer().team[0] = null;
+        if(OpposingTrainer().team()[0] != null){
+            OpposingTrainer().team()[0] = null;
             return true;
         }
-        if(Player().team[2] != null){
-            Player().team[2] = null;
+        if(Player().team()[2] != null){
+            Player().team()[2] = null;
             return true;
         }
-        if(Player().team[1] != null){
-            Player().team[1] = null;
+        if(Player().team()[1] != null){
+            Player().team()[1] = null;
             return true;
         }
-        if(Player().team[0] != null){
-            Player().team[0] = null;
+        if(Player().team()[0] != null){
+            Player().team()[0] = null;
             return true;
         }
         return false;
     }
 
     public void finalizeTeams(){
-        Player().team[0] = new Pokemon(Player().team[0].Name);
-        Player().team[1] = new Pokemon(Player().team[1].Name);
-        Player().team[2] = new Pokemon(Player().team[2].Name);
-        setActivePokemon(Player().team[0]);
+        Player().team()[0] = new Pokemon(Player().team()[0].Name);
+        Player().team()[1] = new Pokemon(Player().team()[1].Name);
+        Player().team()[2] = new Pokemon(Player().team()[2].Name);
+        setActivePokemon(Player().team()[0]);
 
-        OpposingTrainer().team[0] = new Pokemon(OpposingTrainer().team[0].Name);
-        OpposingTrainer().team[1] = new Pokemon(OpposingTrainer().team[1].Name);
-        OpposingTrainer().team[2] = new Pokemon(OpposingTrainer().team[2].Name);
-        setOpposingPokemon(OpposingTrainer().team[0]);
+        OpposingTrainer().team()[0] = new Pokemon(OpposingTrainer().team()[0].Name);
+        OpposingTrainer().team()[1] = new Pokemon(OpposingTrainer().team()[1].Name);
+        OpposingTrainer().team()[2] = new Pokemon(OpposingTrainer().team()[2].Name);
+        setOpposingPokemon(OpposingTrainer().team()[0]);
     }
 
 }

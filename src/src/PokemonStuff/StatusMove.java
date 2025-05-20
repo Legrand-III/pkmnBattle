@@ -12,6 +12,7 @@ public class StatusMove extends Move{
         super(name, type, category, pp, power, accuracy, priority, info1, info2, shortenedName, effect, statusType);
     }
 
+    @Override
     public String[][] useMove(Pokemon user, Pokemon target){
         usePP();
         String[][] ans = new String[2][2];

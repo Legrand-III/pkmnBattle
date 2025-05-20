@@ -7,6 +7,9 @@ import States.TitleScreen;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+/**
+ * reads the players keystrokes and displays an action based on the state of the game
+ */
 public class PlayerKeyInputs implements KeyListener {
     public final GamePanel gp;
 
@@ -16,10 +19,15 @@ public class PlayerKeyInputs implements KeyListener {
         this.gp = gp;
         this.state = new TitleScreen(this);
     }
+
     @Override
     public void keyTyped(KeyEvent e) {
     }
 
+    /**
+     * reads the players keystrokes and does the appropriate action based on the key pressed and the current state
+     * @param e the key you've pressed
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         switch(e.getKeyCode()){
@@ -54,10 +62,18 @@ public class PlayerKeyInputs implements KeyListener {
     public void keyReleased(KeyEvent e) {
     }
 
+    /**
+     * gets your current state!
+     * @return your current state
+     */
     public AbstractState getState() {
         return state;
     }
 
+    /**
+     * sets your current state!
+     * @param state your new state
+     */
     public void setState(AbstractState state) {
         this.state = state;
     }
