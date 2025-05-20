@@ -18,16 +18,6 @@ public class SelectionState extends AbstractState{
         //      [FIGHT]-0  |   Status-1
         //      Pokemon-2  |    Quit-3
         this.subState = new mainMenu(this);
-
-        //change
-        if(player == null && opposingTrainer == null) {
-            player = new Trainer(new Pokemon("Snorlax"), new Pokemon("Walrein"), new Pokemon("Electivire"));
-            activePokemon = player.team[0];
-
-            opposingTrainer = new Trainer(new Pokemon("Weezing"), new Pokemon("Skarmory"), new Pokemon("Musharna"));
-            opposingPokemon = opposingTrainer.team[0];
-
-        }
     }
     @Override
     public void update() {
@@ -104,7 +94,7 @@ class mainMenu extends SubState{
 
         graphics2D.setFont(new Font("times", Font.BOLD, 48));
         graphics2D.drawString("What should", tileSize, tileSize *13 - (tileSize/8));
-        graphics2D.drawString(activePokemon.Name + " do?",
+        graphics2D.drawString(ActivePokemon().Name + " do?",
                 tileSize, tileSize *15 - (tileSize/8));
         graphics2D.drawString("Fight!", tileSize*12, tileSize *13 - (tileSize/8));
         graphics2D.drawString("Status", tileSize*18, tileSize *13 - (tileSize/8));
@@ -138,13 +128,13 @@ class mainMenu extends SubState{
                 selectionState.subState = new fightMenu(selectionState);
                 break;
             case(1):
-                selectionState.keyInputs.state = new StatusState(selectionState.keyInputs);
+                selectionState.keyInputs.setState(new StatusState(selectionState.keyInputs));
                 break;
             case(2):
-                selectionState.keyInputs.state = new TrainerTeamState(selectionState.keyInputs);
+                selectionState.keyInputs.setState(new TrainerTeamState(selectionState.keyInputs));
                 break;
             case(3):
-                selectionState.keyInputs.state = new QuitState(selectionState.keyInputs);
+                selectionState.keyInputs.setState(new QuitState(selectionState.keyInputs));
                 break;
         }
     }
@@ -173,16 +163,16 @@ class fightMenu extends SubState{
 
 
         graphics2D.setFont(new Font("times", Font.BOLD, 40));
-        graphics2D.drawString(activePokemon.moves[0].ShortenedName, tileSize, tileSize *13 - (tileSize/8));
-        graphics2D.drawString(activePokemon.moves[1].ShortenedName, tileSize*8, tileSize *13 - (tileSize/8));
-        graphics2D.drawString(activePokemon.moves[2].ShortenedName, tileSize, tileSize *15 - (tileSize/8));
-        graphics2D.drawString(activePokemon.moves[3].ShortenedName, tileSize*8, tileSize *15 - (tileSize/8));
+        graphics2D.drawString(ActivePokemon().moves[0].ShortenedName, tileSize, tileSize *13 - (tileSize/8));
+        graphics2D.drawString(ActivePokemon().moves[1].ShortenedName, tileSize*8, tileSize *13 - (tileSize/8));
+        graphics2D.drawString(ActivePokemon().moves[2].ShortenedName, tileSize, tileSize *15 - (tileSize/8));
+        graphics2D.drawString(ActivePokemon().moves[3].ShortenedName, tileSize*8, tileSize *15 - (tileSize/8));
 
         //move info
-            graphics2D.drawString("PP:   " + activePokemon.moves[selectionState.selectedOption].RemainingPP +
-                    " / " + activePokemon.moves[selectionState.selectedOption].MaxPP, tileSize * 15 , tileSize * 13 - (tileSize/8));
+            graphics2D.drawString("PP:   " + ActivePokemon().moves[selectionState.selectedOption].getRemainingPP() +
+                    " / " + ActivePokemon().moves[selectionState.selectedOption].MaxPP, tileSize * 15 , tileSize * 13 - (tileSize/8));
 
-            graphics2D.drawString("Type: " + activePokemon.moves[selectionState.selectedOption].Type, tileSize * 15, tileSize * 15 - (tileSize/8));
+            graphics2D.drawString("Type: " + ActivePokemon().moves[selectionState.selectedOption].Type, tileSize * 15, tileSize * 15 - (tileSize/8));
 
 
         graphics2D.setStroke(new BasicStroke(5));
@@ -212,13 +202,13 @@ class fightMenu extends SubState{
 
     @Override
     public void spacePressed() {
-        if(activePokemon.moves[selectionState.selectedOption].RemainingPP == 0){
+        if(ActivePokemon().moves[selectionState.selectedOption].getRemainingPP() == 0){
             System.out.println("This move has no more PP!");
         }
         else {
-            this.selectionState.keyInputs.state = new BattleState(selectionState.keyInputs,
-                    activePokemon.moves[selectionState.selectedOption],
-                    opposingTrainer.determineMove());
+            this.selectionState.keyInputs.setState(new BattleState(selectionState.keyInputs,
+                    ActivePokemon().moves[selectionState.selectedOption],
+                    OpposingTrainer().determineMove()));
         }
 
     }

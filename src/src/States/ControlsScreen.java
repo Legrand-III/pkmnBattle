@@ -71,6 +71,6 @@ public class ControlsScreen extends AbstractState{
 
     @Override
     public void escapePressed(){
-        keyInputs.state = new TitleScreen(keyInputs);
+        keyInputs.setState(new TitleScreen(keyInputs));
     }
 }

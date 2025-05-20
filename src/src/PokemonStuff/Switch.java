@@ -27,9 +27,9 @@ public class Switch extends Move{
 
         previousActive.switchOut();
 
-        if(trainer.equals(player)){activePokemon = trainer.team[0];}
+        if(trainer.equals(Player())){setActivePokemon(trainer.team[0]);}
 
-        else{opposingPokemon = trainer.team[0];}
+        else{setOpposingPokemon(trainer.team[0]);}
 
 
         return ans;

@@ -16,12 +16,12 @@ import java.util.HashMap;
 
 
 public class GamePanel extends JPanel implements Runnable{
-    public static int tileSize = 48; //each 1 tile is 48x48 pixels
-    public static int rows = 16;
-    public static int columns = 22;
-    public static int screenHeight = tileSize * rows; // 16 tiles tall, temp size
-    public static int screenWidth = tileSize * columns; //22 tiles wide, temp size
-    int fps = 60;
+    public final static int tileSize = 48; //each 1 tile is 48x48 pixels
+    public final static int rows = 16;
+    public final static int columns = 22;
+    public final static int screenHeight = tileSize * rows; // 16 tiles tall, temp size
+    public final static int screenWidth = tileSize * columns; //22 tiles wide, temp size
+    final int fps = 60;
 
     PlayerKeyInputs keyInputs;
 
@@ -30,12 +30,12 @@ public class GamePanel extends JPanel implements Runnable{
     Thread gameThread;
 
 
-    public static HashMap<String, Move> moveData = storeMoveInfo("out/res/moves.csv");
-    public static HashMap<String, Pokemon> pokemonData = storePokemonInfo("out/res/pokemon.csv");;
-    public static Pokemon activePokemon;
-    public static Pokemon opposingPokemon;
-    public static Trainer player = new Trainer(null, null, null);
-    public static Trainer opposingTrainer = new Trainer(null, null, null);
+    public final static HashMap<String, Move> moveData = storeMoveInfo("out/res/moves.csv");
+    public final static HashMap<String, Pokemon> pokemonData = storePokemonInfo("out/res/pokemon.csv");;
+    private static Pokemon activePokemon;
+    private static Pokemon opposingPokemon;
+    private static Trainer player = new Trainer(null, null, null);
+    private static Trainer opposingTrainer = new Trainer(null, null, null);
     public static ArrayList<Pokemon> pokemonArrayList = new ArrayList<>(pokemonData.values());
 
 
@@ -167,9 +167,34 @@ public class GamePanel extends JPanel implements Runnable{
             y += tileSize;
         }
 
-        keyInputs.state.paintComponent(graphics2D);
+        keyInputs.getState().paintComponent(graphics2D);
 
 
         graphics2D.dispose();
+    }
+
+
+    public static Trainer Player() {
+        return player;
+    }
+
+    public static Trainer OpposingTrainer() {
+        return opposingTrainer;
+    }
+
+    public static Pokemon ActivePokemon() {
+        return activePokemon;
+    }
+
+    public static void setActivePokemon(Pokemon pokemon) {
+        activePokemon = pokemon;
+    }
+
+    public static Pokemon OpposingPokemon() {
+        return opposingPokemon;
+    }
+
+    public static void setOpposingPokemon(Pokemon pokemon) {
+        opposingPokemon = pokemon;
     }
 }

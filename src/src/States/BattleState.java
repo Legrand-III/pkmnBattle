@@ -21,7 +21,7 @@ public class BattleState extends AbstractState{
     boolean printed = false;
     String[][] moveText;
     public BattleState(PlayerKeyInputs keyInputs, Move selectedMove,
-     Move opponentMove){
+                       Move opponentMove){
         this.keyInputs = keyInputs;
         this.selectedMove = selectedMove;
         this.opponentMove = opponentMove;
@@ -38,8 +38,8 @@ public class BattleState extends AbstractState{
 
         Graphics2D graphics2D = (Graphics2D)graphics;
 
-        graphics2D.drawImage(activePokemon.backSprite, tileSize*4, tileSize*7 - 2, tileSize*4, tileSize*4, null);
-        graphics2D.drawImage(opposingPokemon.frontSprite, tileSize*14, tileSize*3, tileSize*4, tileSize*4, null);
+        graphics2D.drawImage(ActivePokemon().backSprite, tileSize*4, tileSize*7 - 2, tileSize*4, tileSize*4, null);
+        graphics2D.drawImage(OpposingPokemon().frontSprite, tileSize*14, tileSize*3, tileSize*4, tileSize*4, null);
 
         drawTextBox(graphics2D, columns, 5);
 
@@ -57,46 +57,46 @@ public class BattleState extends AbstractState{
     public AbstractMap.SimpleEntry<Trainer,Move>[] calculateTurnOrder(Move selectedMove, Move opponentMove){
         AbstractMap.SimpleEntry<Trainer,Move>[] ans = new AbstractMap.SimpleEntry[2];
         if(selectedMove.Priority == opponentMove.Priority){//same priority = speed determines
-            double activeEffSpeed = activePokemon.effectiveStat(activePokemon.Speed, activePokemon.SpdMultiplier);
-            if(activePokemon.nonVolatileStatus != null &&
-                    activePokemon.nonVolatileStatus.Condition.equals("Paralysis")){
+            double activeEffSpeed = ActivePokemon().effectiveStat(ActivePokemon().Speed, ActivePokemon().SpdMultiplier());
+            if(ActivePokemon().getNonVolatileStatus() != null &&
+                    ActivePokemon().getNonVolatileStatus().Condition.equals("Paralysis")){
                 activeEffSpeed /=2;
             }
-            double opposingEffSpeed = opposingPokemon.effectiveStat(opposingPokemon.Speed, opposingPokemon.SpdMultiplier);
-            if(opposingPokemon.nonVolatileStatus != null &&
-                    opposingPokemon.nonVolatileStatus.Condition.equals("Paralysis")){
+            double opposingEffSpeed = OpposingPokemon().effectiveStat(OpposingPokemon().Speed, OpposingPokemon().SpdMultiplier());
+            if(OpposingPokemon().getNonVolatileStatus() != null &&
+                    OpposingPokemon().getNonVolatileStatus().Condition.equals("Paralysis")){
                 opposingEffSpeed /=2;
             }
             if(activeEffSpeed > opposingEffSpeed){//player first
-                ans[0] = new AbstractMap.SimpleEntry<>(player, selectedMove);
-                ans[1] = new AbstractMap.SimpleEntry<>(opposingTrainer, opponentMove);
+                ans[0] = new AbstractMap.SimpleEntry<>(Player(), selectedMove);
+                ans[1] = new AbstractMap.SimpleEntry<>(OpposingTrainer(), opponentMove);
                 return ans;
             }
             else if(activeEffSpeed < opposingEffSpeed){//enemy first
-                ans[0] = new AbstractMap.SimpleEntry<>(opposingTrainer, opponentMove);
-                ans[1] = new AbstractMap.SimpleEntry<>(player, selectedMove);
+                ans[0] = new AbstractMap.SimpleEntry<>(OpposingTrainer(), opponentMove);
+                ans[1] = new AbstractMap.SimpleEntry<>(Player(), selectedMove);
                 return ans;
             }
             //else, speed tie, random order
             int first = (int)(Math.random()*2);
             if(first == 0){//player first
-                ans[0] = new AbstractMap.SimpleEntry<>(player, selectedMove);
-                ans[1] = new AbstractMap.SimpleEntry<>(opposingTrainer, opponentMove);
+                ans[0] = new AbstractMap.SimpleEntry<>(Player(), selectedMove);
+                ans[1] = new AbstractMap.SimpleEntry<>(OpposingTrainer(), opponentMove);
             }
             else{ //enemy first
-                ans[0] = new AbstractMap.SimpleEntry<>(opposingTrainer, opponentMove);
-                ans[1] = new AbstractMap.SimpleEntry<>(player, selectedMove);
+                ans[0] = new AbstractMap.SimpleEntry<>(OpposingTrainer(), opponentMove);
+                ans[1] = new AbstractMap.SimpleEntry<>(Player(), selectedMove);
             }
             return ans;
         }
         //else, different priorities
         if(selectedMove.Priority > opponentMove.Priority){//player first
-            ans[0] = new AbstractMap.SimpleEntry<>(player, selectedMove);
-            ans[1] = new AbstractMap.SimpleEntry<>(opposingTrainer, opponentMove);
+            ans[0] = new AbstractMap.SimpleEntry<>(Player(), selectedMove);
+            ans[1] = new AbstractMap.SimpleEntry<>(OpposingTrainer(), opponentMove);
         }
         else{//(selectedMove.Priority < opponentMove.Priority) --> enemy first
-            ans[0] = new AbstractMap.SimpleEntry<>(opposingTrainer, opponentMove);
-            ans[1] = new AbstractMap.SimpleEntry<>(player, selectedMove);
+            ans[0] = new AbstractMap.SimpleEntry<>(OpposingTrainer(), opponentMove);
+            ans[1] = new AbstractMap.SimpleEntry<>(Player(), selectedMove);
         }
         return ans;
     }
@@ -114,15 +114,15 @@ public class BattleState extends AbstractState{
                 printUsedMove(PokemonA.Name, MoveA, graphics2D);
                 turnPart = 1;
             }
-            else if(PokemonA.nonVolatileStatus != null && !PokemonA.nonVolatileStatus.StartOfTurn()){
-                PokemonA.nonVolatileStatus.PrintstatusMessage(graphics2D);
+            else if(PokemonA.getNonVolatileStatus() != null && !PokemonA.getNonVolatileStatus().StartOfTurn()){
+                PokemonA.getNonVolatileStatus().PrintstatusMessage(graphics2D);
                 printed = true;
                 turnPart = 3;
             }
             else{
-                if(PokemonA.nonVolatileStatus != null && PokemonA.nonVolatileStatus.cureAtStart){
-                    PokemonA.nonVolatileStatus.PrintCured(graphics2D);
-                    PokemonA.nonVolatileStatus = null;
+                if(PokemonA.getNonVolatileStatus() != null && PokemonA.getNonVolatileStatus().cureAtStart){
+                    PokemonA.getNonVolatileStatus().PrintCured(graphics2D);
+                    PokemonA.setNonVolatileStatus(null);
                     printed = true;
                     turnPart = 0;
                 }
@@ -166,7 +166,7 @@ public class BattleState extends AbstractState{
             if(printed) {sleep(2000);printed = false;}
             moveText = null;
             ansIndex = 0;
-            if(PokemonB.CurrentHealth > 0){
+            if(PokemonB.getCurrentHealth() > 0){
                 if(MoveB.Category.equals("Wait")) {
                     playTurn(graphics2D, 7);
                     return;
@@ -175,15 +175,15 @@ public class BattleState extends AbstractState{
                     printUsedMove(PokemonB.Name, MoveB, graphics2D);
                     turnPart = 4;
                 }
-                else if(PokemonB.nonVolatileStatus != null && !PokemonB.nonVolatileStatus.StartOfTurn()){
-                    PokemonB.nonVolatileStatus.PrintstatusMessage(graphics2D);
+                else if(PokemonB.getNonVolatileStatus() != null && !PokemonB.getNonVolatileStatus().StartOfTurn()){
+                    PokemonB.getNonVolatileStatus().PrintstatusMessage(graphics2D);
                     printed = true;
                     turnPart = 7;
                 }
                 else{
-                    if(PokemonB.nonVolatileStatus != null && PokemonB.nonVolatileStatus.cureAtStart){
-                        PokemonB.nonVolatileStatus.PrintCured(graphics2D);
-                        PokemonB.nonVolatileStatus = null;
+                    if(PokemonB.getNonVolatileStatus() != null && PokemonB.getNonVolatileStatus().cureAtStart){
+                        PokemonB.getNonVolatileStatus().PrintCured(graphics2D);
+                        PokemonB.setNonVolatileStatus(null);
                         printed = true;
                         turnPart = 3;
                     }
@@ -194,7 +194,7 @@ public class BattleState extends AbstractState{
                 }
             }
             else{
-                PokemonB.nonVolatileStatus = null;
+                PokemonB.setNonVolatileStatus(null);
                 turnPart = 7;
             }
         }
@@ -227,8 +227,8 @@ public class BattleState extends AbstractState{
         else if(turnPart == 6){
             if(printed){sleep(2000);}
             printed = false;
-            if(PokemonA.CurrentHealth == 0){
-                PokemonA.nonVolatileStatus = null;
+            if(PokemonA.getCurrentHealth() == 0){
+                PokemonA.setNonVolatileStatus(null);
             }
             turnPart = 7;
         }
@@ -236,8 +236,8 @@ public class BattleState extends AbstractState{
             if(printed){sleep(2000);}
             printed = false;
             if(!MoveA.Category.equals("Wait") && !MoveB.Category.equals("Wait") &&
-                    PokemonA.CurrentHealth > 0 && PokemonA.nonVolatileStatus != null && PokemonA.nonVolatileStatus.EndofTurn()){
-                PokemonA.nonVolatileStatus.PrintstatusMessage(graphics2D);
+                    PokemonA.getCurrentHealth() > 0 && PokemonA.getNonVolatileStatus() != null && PokemonA.getNonVolatileStatus().EndofTurn()){
+                PokemonA.getNonVolatileStatus().PrintstatusMessage(graphics2D);
                 printed = true;
             }
             turnPart++;
@@ -246,18 +246,18 @@ public class BattleState extends AbstractState{
             if(printed){sleep(2000);}
             printed = false;
             if(!MoveA.Category.equals("Wait") && !MoveB.Category.equals("Wait") &&
-                    PokemonB.CurrentHealth > 0 && PokemonB.nonVolatileStatus != null && PokemonB.nonVolatileStatus.EndofTurn()){
-                PokemonB.nonVolatileStatus.PrintstatusMessage(graphics2D);
+                    PokemonB.getCurrentHealth() > 0 && PokemonB.getNonVolatileStatus() != null && PokemonB.getNonVolatileStatus().EndofTurn()){
+                PokemonB.getNonVolatileStatus().PrintstatusMessage(graphics2D);
                 printed = true;
             }
             turnPart++;
         }
         else if(turnPart == 9){
             if(printed){sleep(2000);}
-            if(PokemonA.CurrentHealth <= 0){
+            if(PokemonA.getCurrentHealth() <= 0){
                 graphics2D.drawString(PokemonA.Name + " fainted.", tileSize, tileSize *13 - (tileSize/8));
                 printed = true;
-                PokemonA.nonVolatileStatus = null;
+                PokemonA.setNonVolatileStatus(null);
             }
             else{
                 printed = false;
@@ -266,10 +266,10 @@ public class BattleState extends AbstractState{
         }
         else if(turnPart == 10){
             if(printed){sleep(2000);}
-            if(PokemonB.CurrentHealth <= 0){
+            if(PokemonB.getCurrentHealth() <= 0){
                 graphics2D.drawString(PokemonB.Name + " fainted.", tileSize, tileSize *13 - (tileSize/8));
                 printed = true;
-                PokemonB.nonVolatileStatus = null;
+                PokemonB.setNonVolatileStatus(null);
             }
             else{
                 printed = false;
@@ -278,36 +278,36 @@ public class BattleState extends AbstractState{
         }
         else{
             if(printed){sleep(2000);}
-            activePokemon.protecting = false;
-            opposingPokemon.protecting = false;
+            ActivePokemon().setProtecting(false);
+            OpposingPokemon().setProtecting(false);
 
-            if(activePokemon.CurrentHealth == 0){
-                activePokemon.nonVolatileStatus = null;
-                if(player.team[0].CurrentHealth == 0 && player.team[1].CurrentHealth == 0 && player.team[2].CurrentHealth == 0){
-                    opposingPokemon.nonVolatileStatus = null;
-                    this.keyInputs.state = new ResultsScreen(this.keyInputs);
+            if(ActivePokemon().getCurrentHealth() == 0){
+                ActivePokemon().setNonVolatileStatus(null);
+                if(Player().team[0].getCurrentHealth() == 0 && Player().team[1].getCurrentHealth() == 0 && Player().team[2].getCurrentHealth() == 0){
+                    OpposingPokemon().setNonVolatileStatus(null);
+                    this.keyInputs.setState(new ResultsScreen(this.keyInputs));
                     return;
                 }
-                this.keyInputs.state = new TrainerTeamState(this.keyInputs);
+                this.keyInputs.setState(new TrainerTeamState(this.keyInputs));
                 return;
             }
 
-            if(opposingPokemon.CurrentHealth == 0){
-                opposingPokemon.nonVolatileStatus = null;
-                if(opposingTrainer.team[1].CurrentHealth != 0) {
-                    this.keyInputs.state = new BattleState(this.keyInputs, new Wait(), new Switch(1, opposingTrainer));
+            if(OpposingPokemon().getCurrentHealth() == 0){
+                OpposingPokemon().setNonVolatileStatus(null);
+                if(OpposingTrainer().team[1].getCurrentHealth() != 0) {
+                    this.keyInputs.setState(new BattleState(this.keyInputs, new Wait(), new Switch(1, OpposingTrainer())));
                 }
-                else if(opposingTrainer.team[2].CurrentHealth != 0){
-                    this.keyInputs.state = new BattleState(this.keyInputs, new Wait(), new Switch(2, opposingTrainer));
+                else if(OpposingTrainer().team[2].getCurrentHealth() != 0){
+                    this.keyInputs.setState(new BattleState(this.keyInputs, new Wait(), new Switch(2, OpposingTrainer())));
                 }
                 else{
                     System.out.println("you win!");
-                    this.keyInputs.state = new ResultsScreen(this.keyInputs);
+                    this.keyInputs.setState(new ResultsScreen(this.keyInputs));
                 }
                 return;
             }
 
-            this.keyInputs.state = new SelectionState(this.keyInputs);
+            this.keyInputs.setState(new SelectionState(this.keyInputs));
         }
 
         this.turnPart = turnPart;

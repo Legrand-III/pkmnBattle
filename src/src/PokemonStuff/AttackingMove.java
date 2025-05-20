@@ -10,14 +10,13 @@ import static States.BattleState.turnOrder;
 
 public class AttackingMove extends Move{
     public AttackingMove(String name, String type, String category, int pp, int power, int accuracy, int priority, String effect, String info1, String info2, String shortenedName){
-        super(name, type, category, pp, power, accuracy, priority, info1, info2, shortenedName);
-        this.Effect = effect;
+        super(name, type, category, pp, power, accuracy, priority, info1, info2, shortenedName, effect, "none");
     }
     public String[][] useMove(Pokemon user, Pokemon target){
-        this.RemainingPP -=1;
+        usePP();
         int ansIndex = 0;
         String[][] ans = new String[3][2];
-        if(target.protecting){
+        if(target.isProtecting()){
             ans[0][0] = target.Name + " blocked";
             ans[0][1] = "the hit!";
             return ans;
@@ -53,35 +52,35 @@ public class AttackingMove extends Move{
                 return ans;
             }
         }
-        int startingHealth = target.CurrentHealth;
+        int startingHealth = target.getCurrentHealth();
 
         if(this.Category.equals("Physical")){//physical attack
             double burn = 1;
-            if(user.nonVolatileStatus!= null && user.nonVolatileStatus.Condition.equals("Burn")){burn = 0.5;}
+            if(user.getNonVolatileStatus()!= null && user.getNonVolatileStatus().Condition.equals("Burn")){burn = 0.5;}
             double targetDefense;
             double userAttack;
             if(Math.random() > 0.95){
                 critical = 2;
-                if(user.effectiveStat(user.Attack, user.AtkMultiplier) < user.Attack){
+                if(user.effectiveStat(user.Attack, user.AtkMultiplier()) < user.Attack){
                     userAttack = user.Attack;
                 }
                 else{
-                    userAttack = user.effectiveStat(user.Attack, user.AtkMultiplier);
+                    userAttack = user.effectiveStat(user.Attack, user.AtkMultiplier());
                 }
 
-                if(target.effectiveStat(target.Defense, target.DefMultiplier) > target.Defense){
+                if(target.effectiveStat(target.Defense, target.DefMultiplier()) > target.Defense){
                     targetDefense = target.Defense;
                 }
                 else{
-                    targetDefense = target.effectiveStat(target.Defense, target.DefMultiplier);
+                    targetDefense = target.effectiveStat(target.Defense, target.DefMultiplier());
                 }
             }
             else{
                 critical = 1;
-                userAttack = user.effectiveStat(user.Attack, user.AtkMultiplier);
-                targetDefense = target.effectiveStat(target.Defense, target.DefMultiplier);
+                userAttack = user.effectiveStat(user.Attack, user.AtkMultiplier());
+                targetDefense = target.effectiveStat(target.Defense, target.DefMultiplier());
             }
-            System.out.println(user.Name + "'s effective attack = " + user.effectiveStat(user.Attack, user.AtkMultiplier));
+            System.out.println(user.Name + "'s effective attack = " + user.effectiveStat(user.Attack, user.AtkMultiplier()));
             damage = (int)((((22 * this.Power *
                     userAttack / (targetDefense)) /50)+2)
                     * effectiveness * critical * sameTypeBonus * burn);
@@ -92,27 +91,27 @@ public class AttackingMove extends Move{
             double userSpAttack;
             if(Math.random() > 0.95){
                 critical = 2;
-                if(user.effectiveStat(user.SpAttack, user.SpAtkMultiplier) < user.SpAttack){
+                if(user.effectiveStat(user.SpAttack, user.SpAtkMultiplier()) < user.SpAttack){
                     userSpAttack = user.SpAttack;
                 }
                 else{
-                    userSpAttack = user.effectiveStat(user.SpAttack, user.SpAtkMultiplier);
+                    userSpAttack = user.effectiveStat(user.SpAttack, user.SpAtkMultiplier());
                 }
 
-                if(target.effectiveStat(target.SpDefense, target.SpDefMultiplier) > target.SpDefense){
+                if(target.effectiveStat(target.SpDefense, target.SpDefMultiplier()) > target.SpDefense){
                     targetSpDefense = target.SpDefense;
                 }
                 else{
-                    targetSpDefense = target.effectiveStat(target.SpDefense, target.SpDefMultiplier);
+                    targetSpDefense = target.effectiveStat(target.SpDefense, target.SpDefMultiplier());
                 }
             }
             else{
                 critical = 1;
-                userSpAttack = user.effectiveStat(user.SpAttack, user.SpAtkMultiplier);
-                targetSpDefense = target.effectiveStat(target.SpDefense, target.SpDefMultiplier);
+                userSpAttack = user.effectiveStat(user.SpAttack, user.SpAtkMultiplier());
+                targetSpDefense = target.effectiveStat(target.SpDefense, target.SpDefMultiplier());
 
             }
-            System.out.println(user.Name + "'s effective Special Attack = " + user.effectiveStat(user.SpAttack, user.SpAtkMultiplier));
+            System.out.println(user.Name + "'s effective Special Attack = " + user.effectiveStat(user.SpAttack, user.SpAtkMultiplier()));
             damage = (int)((((22 * this.Power *
                     userSpAttack / (targetSpDefense)) /50)+2)
                     * effectiveness * critical * sameTypeBonus);
@@ -144,46 +143,46 @@ public class AttackingMove extends Move{
             switch(effectList.get(0)){
                 case("PARALYSIS"):
                     if(Integer.parseInt(effectList.get(1)) - (Math.random() * 100) > 0 &&
-                            target.nonVolatileStatus == null && !target.Type.equals("Electric")
+                            target.getNonVolatileStatus() == null && !target.Type.equals("Electric")
                             && (target.Type2 == null || !target.Type2.equals("Electric"))){
-                        target.nonVolatileStatus = new Paralysis(target);
+                        target.setNonVolatileStatus(new Paralysis(target));
                         ans[ansIndex][0] = target.Name;
                         ans[ansIndex][1] = "was paralyzed!";
                     }
                     break;
                 case("BURN"):
                     if(Integer.parseInt(effectList.get(1)) - (Math.random() * 100) > 0 &&
-                            target.nonVolatileStatus == null && !target.Type.equals("Fire")
+                            target.getNonVolatileStatus() == null && !target.Type.equals("Fire")
                             && (target.Type2 == null || !target.Type2.equals("Fire"))) {
-                        target.nonVolatileStatus = new Burn(target);
+                        target.setNonVolatileStatus(new Burn(target));
                         ans[ansIndex][0] = target.Name;
                         ans[ansIndex][1] = "was burnt!";
                     }
                     break;
                 case("POISON"):
                     if(Integer.parseInt(effectList.get(1)) - (Math.random() * 100) > 0 &&
-                            target.nonVolatileStatus == null && !target.Type.equals("Poison")
+                            target.getNonVolatileStatus() == null && !target.Type.equals("Poison")
                             && (target.Type2 == null || !target.Type2.equals("Poison"))
                             && !target.Type.equals("Steel")
                             && (target.Type2 == null || !target.Type2.equals("Steel"))) {
-                        target.nonVolatileStatus = new Poison(target);
+                        target.setNonVolatileStatus(new Poison(target));
                         ans[ansIndex][0] = target.Name;
                         ans[ansIndex][1] = "was poisoned!";
                     }
                     break;
                 case("SLEEP"):
                     if(Integer.parseInt(effectList.get(1)) - (Math.random() * 100) > 0 &&
-                            target.nonVolatileStatus == null){
-                        target.nonVolatileStatus = new Sleep(target);
+                            target.getNonVolatileStatus() == null){
+                        target.setNonVolatileStatus(new Sleep(target));
                         ans[ansIndex][0] = target.Name;
                         ans[ansIndex][1] = "fell asleep!";
                     }
                     break;
                 case("FREEZE"):
                     if(Integer.parseInt(effectList.get(1)) - (Math.random() * 100) > 0 &&
-                            target.nonVolatileStatus == null && !target.Type.equals("Ice")
+                            target.getNonVolatileStatus() == null && !target.Type.equals("Ice")
                             && (target.Type2 == null || !target.Type2.equals("Ice"))) {
-                        target.nonVolatileStatus = new Freeze(target);
+                        target.setNonVolatileStatus(new Freeze(target));
                         ans[ansIndex][0] = target.Name;
                         ans[ansIndex][1] = "was frozen solid!";
                     }
@@ -192,28 +191,17 @@ public class AttackingMove extends Move{
 
                 case("ENEMYDEF"):
                     if(Integer.parseInt(effectList.get(1)) - (Math.random() * 100) > 0
-                    && (target.DefMultiplier > -6 && target.DefMultiplier < 6)){
-                        target.DefMultiplier += Integer.parseInt(effectList.get(2));
-                        if(target.DefMultiplier > 6){
-                            target.DefMultiplier = 6;
-                        }
-                        else if(target.DefMultiplier < -6){
-                            target.DefMultiplier = -6;
-                        }
+                    && (target.DefMultiplier() > -6 && target.DefMultiplier() < 6)){
+                        target.changeDefMultiplier(Integer.parseInt(effectList.get(2)));
                         ans[ansIndex][0] = target.Name + "'s";
                         ans[ansIndex][1] = "Defense was lowered!";
                     }
                     break;
                 case("ENEMYSpDEF"):
                     if(Integer.parseInt(effectList.get(1)) - (Math.random() * 100) > 0
-                            && (target.SpDefMultiplier > -6 && target.SpDefMultiplier < 6)){
-                        target.SpDefMultiplier += Integer.parseInt(effectList.get(2));
-                        if(target.SpDefMultiplier > 6){
-                            target.SpDefMultiplier = 6;
-                        }
-                        else if(target.SpDefMultiplier < -6){
-                            target.SpDefMultiplier = -6;
-                        }
+                            && (target.SpDefMultiplier() > -6 && target.SpDefMultiplier() < 6)){
+
+                        target.changeSpDefMultiplier(Integer.parseInt(effectList.get(2)));
                         ans[ansIndex][0] = target.Name + "'s";
                         ans[ansIndex][1] = "Special Defense was lowered!";
                     }
@@ -221,14 +209,8 @@ public class AttackingMove extends Move{
 
                 case("ENEMYATK"):
                     if(Integer.parseInt(effectList.get(1)) - (Math.random() * 100) > 0
-                            && (target.AtkMultiplier > -6 && target.AtkMultiplier < 6)){
-                        target.AtkMultiplier += Integer.parseInt(effectList.get(2));
-                        if(target.AtkMultiplier > 6){
-                            target.AtkMultiplier = 6;
-                        }
-                        else if(target.AtkMultiplier < -6){
-                            target.AtkMultiplier = -6;
-                        }
+                            && (target.AtkMultiplier() > -6 && target.AtkMultiplier() < 6)){
+                        target.changeAtkMultiplier(Integer.parseInt(effectList.get(2)));
                         ans[ansIndex][0] = target.Name + "'s";
                         ans[ansIndex][1] = "Attack was lowered!";
                     }
@@ -236,14 +218,8 @@ public class AttackingMove extends Move{
 
                 case("ENEMYSpATK"):
                     if(Integer.parseInt(effectList.get(1)) - (Math.random() * 100) > 0
-                            && (target.SpAtkMultiplier > -6 && target.SpAtkMultiplier < 6)){
-                        target.SpAtkMultiplier += Integer.parseInt(effectList.get(2));
-                        if(target.SpAtkMultiplier > 6){
-                            target.SpAtkMultiplier = 6;
-                        }
-                        else if(target.SpAtkMultiplier < -6){
-                            target.SpAtkMultiplier = -6;
-                        }
+                            && (target.SpAtkMultiplier() > -6 && target.SpAtkMultiplier() < 6)){
+                        target.changeSpAtkMultiplier(Integer.parseInt(effectList.get(2)));
                         ans[ansIndex][0] = target.Name + "'s";
                         ans[ansIndex][1] = "Special Attack was lowered!";
                     }
@@ -251,14 +227,8 @@ public class AttackingMove extends Move{
 
                 case("ENEMYSPD"):
                     if(Integer.parseInt(effectList.get(1)) - (Math.random() * 100) > 0
-                            && (target.SpdMultiplier > -6 && target.SpdMultiplier < 6)){
-                        target.SpdMultiplier += Integer.parseInt(effectList.get(2));
-                        if(target.SpdMultiplier > 6){
-                            target.SpdMultiplier = 6;
-                        }
-                        else if(target.SpdMultiplier < -6){
-                            target.SpdMultiplier = -6;
-                        }
+                            && (target.SpdMultiplier() > -6 && target.SpdMultiplier() < 6)){
+                        target.changeSpdMultiplier(Integer.parseInt(effectList.get(2)));
                         ans[ansIndex][0] = target.Name + "'s";
                         ans[ansIndex][1] = "Speed was lowered!";
                     }
@@ -266,14 +236,8 @@ public class AttackingMove extends Move{
 
                 case("SELFDEF"):
                     if(Integer.parseInt(effectList.get(1)) - (Math.random() * 100) > 0
-                            && (user.DefMultiplier > -6 && user.DefMultiplier < 6)){
-                        user.DefMultiplier += Integer.parseInt(effectList.get(2));
-                        if(user.DefMultiplier > 6){
-                            user.DefMultiplier = 6;
-                        }
-                        else if(user.DefMultiplier < -6){
-                            user.DefMultiplier = -6;
-                        }
+                            && (user.DefMultiplier() > -6 && user.DefMultiplier() < 6)){
+                        user.changeDefMultiplier(Integer.parseInt(effectList.get(2)));
                         ans[ansIndex][0] = user.Name + "'s";
                         ans[ansIndex][1] = "Defense was raised!";
                     }
@@ -281,29 +245,18 @@ public class AttackingMove extends Move{
 
                 case("SELFSpDEF"):
                     if(Integer.parseInt(effectList.get(1)) - (Math.random() * 100) > 0
-                            && (user.SpDefMultiplier > -6 && user.SpDefMultiplier < 6)){
-                        user.SpDefMultiplier += Integer.parseInt(effectList.get(2));
-                        if(user.SpDefMultiplier > 6){
-                            user.SpDefMultiplier = 6;
-                        }
-                        else if(user.SpDefMultiplier < -6){
-                            user.SpDefMultiplier = -6;
-                        }
+                            && (user.SpDefMultiplier() > -6 && user.SpDefMultiplier() < 6)){
+                        user.changeSpDefMultiplier(Integer.parseInt(effectList.get(2)));
                         ans[ansIndex][0] = user.Name + "'s";
                         ans[ansIndex][1] = "Special Defense was raised!";
                     }
                     break;
 
+
                 case("SELFATK"):
                     if(Integer.parseInt(effectList.get(1)) - (Math.random() * 100) > 0
-                            && (user.AtkMultiplier > -6 && user.AtkMultiplier < 6)){
-                        user.AtkMultiplier += Integer.parseInt(effectList.get(2));
-                        if(user.AtkMultiplier > 6){
-                            user.AtkMultiplier = 6;
-                        }
-                        else if(user.AtkMultiplier < -6){
-                            user.AtkMultiplier = -6;
-                        }
+                            && (user.AtkMultiplier() > -6 && user.AtkMultiplier() < 6)){
+                        user.changeAtkMultiplier(Integer.parseInt(effectList.get(2)));
                         ans[ansIndex][0] = user.Name + "'s";
                         ans[ansIndex][1] = "Attack was raised!";
                     }
@@ -311,14 +264,8 @@ public class AttackingMove extends Move{
 
                 case("SELFSpATK"):
                     if(Integer.parseInt(effectList.get(1)) - (Math.random() * 100) > 0
-                            && (user.SpAtkMultiplier > -6 && user.SpAtkMultiplier < 6)){
-                        user.SpAtkMultiplier += Integer.parseInt(effectList.get(2));
-                        if(user.SpAtkMultiplier > 6){
-                            user.SpAtkMultiplier = 6;
-                        }
-                        else if(user.SpAtkMultiplier < -6){
-                            user.SpAtkMultiplier = -6;
-                        }
+                            && (user.SpAtkMultiplier() > -6 && user.SpAtkMultiplier() < 6)){
+                        user.changeSpAtkMultiplier(Integer.parseInt(effectList.get(2)));
                         ans[ansIndex][0] = user.Name + "'s";
                         ans[ansIndex][1] = "Special Attack was raised!";
                     }
@@ -326,15 +273,8 @@ public class AttackingMove extends Move{
 
                 case("SELFSPD"):
                     if(Integer.parseInt(effectList.get(1)) - (Math.random() * 100) > 0
-                            && (user.SpdMultiplier > -6 && user.SpdMultiplier < 6)){
-                        user.SpdMultiplier += Integer.parseInt(effectList.get(2));
-
-                        if(user.SpdMultiplier > 6){
-                            user.SpdMultiplier = 6;
-                        }
-                        else if(user.SpdMultiplier < -6){
-                            user.SpdMultiplier = -6;
-                        }
+                            && (user.SpdMultiplier() > -6 && user.SpdMultiplier() < 6)){
+                        user.changeSpdMultiplier(Integer.parseInt(effectList.get(2)));
                         if(Integer.parseInt(effectList.get(2)) > 0) {
                             ans[ansIndex][0] = user.Name + "'s";
                             ans[ansIndex][1] = "Speed was raised!";

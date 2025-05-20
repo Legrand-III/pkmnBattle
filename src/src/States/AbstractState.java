@@ -29,26 +29,26 @@ public abstract class AbstractState {
         graphics2D.drawRoundRect(tileSize, tileSize + 2,
                 tileSize*9 - 2, tileSize*3 - 4, 25, 25);
 
-        if(activePokemon.nonVolatileStatus != null){
-            drawStatus(graphics2D, activePokemon);
+        if(ActivePokemon().getNonVolatileStatus() != null){
+            drawStatus(graphics2D, ActivePokemon());
         }
-        if(opposingPokemon.nonVolatileStatus != null){
-            drawStatus(graphics2D, opposingPokemon);
+        if(OpposingPokemon().getNonVolatileStatus() != null){
+            drawStatus(graphics2D, OpposingPokemon());
         }
 
 
         graphics2D.setFont(new Font("times", Font.BOLD, 48));
         graphics2D.setColor(Color.black);
-        graphics2D.drawString(activePokemon.Name, tileSize*13, tileSize * 9 - (tileSize/8));
-        graphics2D.drawString("HP: " + activePokemon.CurrentHealth + " / "
-                + activePokemon.MaxHealth, tileSize*14, tileSize * 11 - (tileSize/8));
+        graphics2D.drawString(ActivePokemon().Name, tileSize*13, tileSize * 9 - (tileSize/8));
+        graphics2D.drawString("HP: " + ActivePokemon().getCurrentHealth() + " / "
+                + ActivePokemon().MaxHealth, tileSize*14, tileSize * 11 - (tileSize/8));
 
-        graphics2D.drawString(opposingPokemon.Name, tileSize*2, tileSize * 2 - (tileSize/8));
-        graphics2D.drawString("HP: " + opposingPokemon.CurrentHealth + " / "
-                + opposingPokemon.MaxHealth, tileSize*3, tileSize * 4 - (tileSize/8));
+        graphics2D.drawString(OpposingPokemon().Name, tileSize*2, tileSize * 2 - (tileSize/8));
+        graphics2D.drawString("HP: " + OpposingPokemon().getCurrentHealth() + " / "
+                + OpposingPokemon().MaxHealth, tileSize*3, tileSize * 4 - (tileSize/8));
 
-        graphics2D.drawImage(activePokemon.backSprite, tileSize*4, tileSize*7 - 2, tileSize*4, tileSize*4, null);
-        graphics2D.drawImage(opposingPokemon.frontSprite, tileSize*14, tileSize*3, tileSize*4, tileSize*4, null);
+        graphics2D.drawImage(ActivePokemon().backSprite, tileSize*4, tileSize*7 - 2, tileSize*4, tileSize*4, null);
+        graphics2D.drawImage(OpposingPokemon().frontSprite, tileSize*14, tileSize*3, tileSize*4, tileSize*4, null);
 
 
     }
@@ -79,9 +79,9 @@ public abstract class AbstractState {
     }
 
     private void drawStatus(Graphics2D graphics2D, Pokemon effectedPokemon){
-        switch(effectedPokemon.nonVolatileStatus.Condition){
+        switch(effectedPokemon.getNonVolatileStatus().Condition){
             case("Burn"):
-                if(effectedPokemon.equals(activePokemon)){
+                if(effectedPokemon.equals(ActivePokemon())){
                     graphics2D.setColor(new Color(200,0, 0,150));
                     graphics2D.fillRoundRect(tileSize*19 - 2, tileSize*8 + 4, tileSize*2 - 2, tileSize + 4, 25, 25);
                     graphics2D.setFont(new Font("times", Font.BOLD, 32));
@@ -97,7 +97,7 @@ public abstract class AbstractState {
                 }
                 break;
             case("Sleep"):
-                if(effectedPokemon.equals(activePokemon)){
+                if(effectedPokemon.equals(ActivePokemon())){
                         graphics2D.setColor(new Color(100,227, 233,150));
                         graphics2D.fillRoundRect(tileSize*19 - 2, tileSize*8 + 4, tileSize*2 - 2, tileSize + 4, 25, 25);
                         graphics2D.setFont(new Font("times", Font.BOLD, 32));
@@ -113,7 +113,7 @@ public abstract class AbstractState {
                 }
                 break;
             case("Poison"):
-                if(effectedPokemon.equals(activePokemon)){
+                if(effectedPokemon.equals(ActivePokemon())){
                     graphics2D.setColor(new Color(128,0, 128,150));
                     graphics2D.fillRoundRect(tileSize*19 - 2, tileSize*8 + 4, tileSize*2 - 2, tileSize + 4, 25, 25);
                     graphics2D.setFont(new Font("times", Font.BOLD, 32));
@@ -129,7 +129,7 @@ public abstract class AbstractState {
                 }
                 break;
             case("Paralysis"):
-                if(effectedPokemon.equals(activePokemon)){
+                if(effectedPokemon.equals(ActivePokemon())){
                     graphics2D.setColor(new Color(255,255, 50,150));
                     graphics2D.fillRoundRect(tileSize*19 - 2, tileSize*8 + 4, tileSize*2 - 2, tileSize + 4, 25, 25);
                     graphics2D.setFont(new Font("times", Font.BOLD, 32));
@@ -145,7 +145,7 @@ public abstract class AbstractState {
                 }
                 break;
             case("Freeze"):
-                if(effectedPokemon.equals(activePokemon)){
+                if(effectedPokemon.equals(ActivePokemon())){
                     graphics2D.setColor(new Color(70,189, 255,150));
                     graphics2D.fillRoundRect(tileSize*19 - 2, tileSize*8 + 4, tileSize*2 - 2, tileSize + 4, 25, 25);
                     graphics2D.setFont(new Font("times", Font.BOLD, 32));

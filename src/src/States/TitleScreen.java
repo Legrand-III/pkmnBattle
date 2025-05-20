@@ -56,10 +56,10 @@ public class TitleScreen extends AbstractState{
     @Override
     public void spacePressed(){
         if(optionNum == 0){
-            keyInputs.state = new PokemonSelectScreen(keyInputs);
+            keyInputs.setState(new PokemonSelectScreen(keyInputs));
         }
         else{
-            keyInputs.state = new ControlsScreen(keyInputs);
+            keyInputs.setState(new ControlsScreen(keyInputs));
         }
     }
 }

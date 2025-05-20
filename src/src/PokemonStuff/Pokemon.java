@@ -6,7 +6,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import static Main.GamePanel.pokemonData;
 
@@ -14,28 +13,53 @@ import static Main.GamePanel.pokemonData;
 public class Pokemon {
     //Main stuff, static stats + the pokemon
     public BufferedImage frontSprite, backSprite;
-    public String Name;
-    public String Type, Type2;
-    public int MaxHealth, CurrentHealth, Attack, Defense, SpAttack, SpDefense, Speed;
+    public final String Name;
+    public final String Type, Type2;
+    public final int MaxHealth,  Attack, Defense, SpAttack, SpDefense, Speed;
+    private int CurrentHealth;
 
-    public Move[] moves;
-    public boolean protecting = false;
-    public Move[] previousMoves = new Move[4];
-    public StatusCond nonVolatileStatus = null; //sleep, burn, paralysis, etc
-    public ArrayList<String> volatileStatus; //confuse, taunt, torment, infatuation, etc
+    public final Move[] moves;
+    private boolean protecting = false;
+    private Move[] previousMoves = new Move[4];
+    private StatusCond nonVolatileStatus = null; //sleep, burn, paralysis, etc
 
     //multipliers, stat changing
     String Status; //maybe object
-    public int AtkMultiplier, DefMultiplier, SpAtkMultiplier, SpDefMultiplier, SpdMultiplier;
-    public Pokemon(String name){ //constructor used for team pokemon
-        createPokemon(pokemonData.get(name));
-    }
+    private int AtkMultiplier, DefMultiplier, SpAtkMultiplier, SpDefMultiplier, SpdMultiplier;
 
+
+    /**
+     * Main Pokemon Constructor used for creating pokemon on each player's team
+     * @param name The pokemon's name, used to get data from pokemonData hashmap
+     */
+    public Pokemon(String name){ //constructor used for team pokemon
+        Pokemon pkmn = pokemonData.get(name);
+        this.Name = pkmn.Name; this.Type = pkmn.Type; this.Type2 = pkmn.Type2;
+        this.MaxHealth = pkmn.MaxHealth; this.CurrentHealth = pkmn.MaxHealth;
+        this.Attack = pkmn.Attack; this.Defense = pkmn.Defense;
+        this.SpAttack = pkmn.SpAttack; this.SpDefense = pkmn.SpDefense;
+        this.Speed = pkmn.Speed;
+        this.moves = new Move[4];
+
+        //new object so PP can be represented accurately
+        moves[0] = copyMoveData(pkmn.moves[0]); moves[1] = copyMoveData(pkmn.moves[1]);
+        moves[2] = copyMoveData(pkmn.moves[2]); moves[3] = copyMoveData(pkmn.moves[3]);
+
+        this.frontSprite = pkmn.frontSprite;
+        this.backSprite = pkmn.backSprite;
+    }
+    /**
+     * Constructor used by the initialization to copy pokemon data from the CSV file
+     *
+     */
     public Pokemon(String name, String type, String type2, int maxHealth, int attack, int defense,
                    int spAttack, int spDefense, int speed, String frontSpritePath, String backSpritePath,
                    Move m0, Move m1, Move m2, Move m3){ //constructor used for blueprint
         this.Name = name; this.Type = type;
-        if(!type2.equals("none")){
+        if(type2.equals("none")){
+            this.Type2 = null;
+        }
+        else{
             this.Type2 = type2;
         }
         this.MaxHealth = maxHealth; this.CurrentHealth = maxHealth;
@@ -56,22 +80,6 @@ public class Pokemon {
         }
     }
 
-    public void createPokemon(Pokemon pkmn){
-        this.Name = pkmn.Name; this.Type = pkmn.Type; this.Type2 = pkmn.Type2;
-        this.MaxHealth = pkmn.MaxHealth; this.CurrentHealth = pkmn.MaxHealth;
-        this.MaxHealth = pkmn.MaxHealth; this.CurrentHealth = pkmn.MaxHealth;
-        this.Attack = pkmn.Attack; this.Defense = pkmn.Defense;
-        this.SpAttack = pkmn.SpAttack; this.SpDefense = pkmn.SpDefense;
-        this.Speed = pkmn.Speed;
-        this.moves = new Move[4];
-
-        //new object so PP can be represented accurately
-        moves[0] = copyMoveData(pkmn.moves[0]); moves[1] = copyMoveData(pkmn.moves[1]);
-        moves[2] = copyMoveData(pkmn.moves[2]); moves[3] = copyMoveData(pkmn.moves[3]);
-
-        this.frontSprite = pkmn.frontSprite;
-        this.backSprite = pkmn.backSprite;
-    }
     public Move copyMoveData(Move move){
         switch(move.Category){
             case ("Physical"), ("Special"):
@@ -113,6 +121,10 @@ public class Pokemon {
         }
         return baseStat;
     }
+    public Move[] getPreviousMoves(){
+        return this.previousMoves;
+    }
+
     public void addUsedMove(Move move){
         if(this.previousMoves[0] == null){
             previousMoves[0] = move;
@@ -134,6 +146,102 @@ public class Pokemon {
             this.CurrentHealth = 0;
         }
     }
+    public void heal(int healAmt){
+        this.CurrentHealth += healAmt;
+        //validate
+        if(this.CurrentHealth > this.MaxHealth){
+            this.CurrentHealth = this.MaxHealth;
+        }
+    }
+    public int getCurrentHealth() {
+        return CurrentHealth;
+    }
 
 
+    public StatusCond getNonVolatileStatus() {
+        return nonVolatileStatus;
+    }
+    public void setNonVolatileStatus(StatusCond nonVolatileStatus) {
+        this.nonVolatileStatus = nonVolatileStatus;
+    }
+
+
+    public boolean isProtecting() {
+        return protecting;
+    }
+    public void setProtecting(boolean protecting) {
+        this.protecting = protecting;
+    }
+
+    public int AtkMultiplier() {
+        return AtkMultiplier;
+    }
+    public void changeAtkMultiplier(int atkMultiplier) {
+        this.AtkMultiplier += atkMultiplier;
+        //validate
+        if(this.AtkMultiplier > 6){
+            this.AtkMultiplier = 6;
+        }
+        else if(this.AtkMultiplier < -6){
+            this.AtkMultiplier = -6;
+        }
+    }
+
+    public int SpAtkMultiplier() {
+        return SpAtkMultiplier;
+    }
+
+    public void changeSpAtkMultiplier(int spAtkMultiplier) {
+        this.SpAtkMultiplier += spAtkMultiplier;
+        //validate
+        if(this.SpAtkMultiplier > 6){
+            this.SpAtkMultiplier = 6;
+        }
+        else if(this.SpAtkMultiplier < -6){
+            this.SpAtkMultiplier = -6;
+        }
+    }
+
+    public int DefMultiplier() {
+        return DefMultiplier;
+    }
+    public void changeDefMultiplier(int defMultiplier) {
+        this.DefMultiplier += defMultiplier;
+        //validate
+        if(this.DefMultiplier > 6){
+            this.DefMultiplier = 6;
+        }
+        else if(this.DefMultiplier < -6){
+            this.DefMultiplier = -6;
+        }
+    }
+
+    public int SpDefMultiplier() {
+        return SpDefMultiplier;
+    }
+    public void changeSpDefMultiplier(int spDefMultiplier) {
+        this.SpDefMultiplier += spDefMultiplier;
+        //validate
+        if(this.SpDefMultiplier > 6){
+            this.SpDefMultiplier = 6;
+        }
+        else if(this.SpDefMultiplier < -6){
+            this.SpDefMultiplier = -6;
+        }
+    }
+
+    public int SpdMultiplier() {
+        return SpdMultiplier;
+    }
+
+    public void changeSpdMultiplier(int spdMultiplier) {
+        this.SpdMultiplier += spdMultiplier;
+        //validate
+        if(this.SpdMultiplier > 6){
+            this.SpdMultiplier = 6;
+        }
+        else if(this.SpdMultiplier < -6){
+            this.SpdMultiplier = -6;
+        }
+    }
 }

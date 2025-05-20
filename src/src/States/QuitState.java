@@ -62,19 +62,18 @@ public class QuitState extends AbstractState{
     public void spacePressed() {
         switch(selectedOption){
             case(0)://quit - reset for now
-                activePokemon.CurrentHealth = activePokemon.MaxHealth;
-                opposingPokemon.CurrentHealth = opposingPokemon.MaxHealth;
-
-                keyInputs.state = new TitleScreen(keyInputs);
+                ActivePokemon().heal(ActivePokemon().MaxHealth);
+                OpposingPokemon().heal(OpposingPokemon().MaxHealth);
+                keyInputs.setState(new TitleScreen(keyInputs));
                 break;
             case(1):
-                keyInputs.state = new SelectionState(keyInputs);
+                keyInputs.setState( new SelectionState(keyInputs));
                 break;
         }
     }
 
 
     public void escapePressed() {
-        keyInputs.state = new SelectionState(keyInputs);
+        keyInputs.setState(new SelectionState(keyInputs));
     }
 }

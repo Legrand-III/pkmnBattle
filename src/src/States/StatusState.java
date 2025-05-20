@@ -37,10 +37,10 @@ public class StatusState extends AbstractState{
         graphics2D.drawRoundRect( 0,2,
                 tileSize*11 - 2, tileSize*11 - 4, 25, 25);
 
-        graphics2D.drawImage(activePokemon.frontSprite, tileSize, tileSize, tileSize*2, tileSize*2, null);
+        graphics2D.drawImage(ActivePokemon().frontSprite, tileSize, tileSize, tileSize*2, tileSize*2, null);
         graphics2D.setFont(new Font("times", Font.BOLD|Font.ITALIC, 38));
-        graphics2D.drawString(activePokemon.Name, tileSize * 4, tileSize*2 - (tileSize/8));
-        graphics2D.drawString("HP: " + activePokemon.CurrentHealth + " / " + activePokemon.MaxHealth,
+        graphics2D.drawString(ActivePokemon().Name, tileSize * 4, tileSize*2 - (tileSize/8));
+        graphics2D.drawString("HP: " + ActivePokemon().getCurrentHealth() + " / " + ActivePokemon().MaxHealth,
                 tileSize * 4, tileSize*3 - (tileSize/8));
 
         graphics2D.drawString("ATK: ", tileSize, tileSize*5 - (tileSize/8));
@@ -49,11 +49,11 @@ public class StatusState extends AbstractState{
         graphics2D.drawString("SpDEF: ", tileSize, tileSize*8 - (tileSize/8));
         graphics2D.drawString("SPD: ", tileSize, tileSize*9 - (tileSize/8));
 
-        drawStatChanges(activePokemon, "ATK", tileSize * 5 - 6, graphics2D);
-        drawStatChanges(activePokemon, "DEF", tileSize * 5 - 6, graphics2D);
-        drawStatChanges(activePokemon, "SpATK", tileSize * 5 - 6, graphics2D);
-        drawStatChanges(activePokemon, "SpDEF", tileSize * 5 - 6, graphics2D);
-        drawStatChanges(activePokemon, "SPD", tileSize * 5 - 6, graphics2D);
+        drawStatChanges(ActivePokemon(), "ATK", tileSize * 5 - 6, graphics2D);
+        drawStatChanges(ActivePokemon(), "DEF", tileSize * 5 - 6, graphics2D);
+        drawStatChanges(ActivePokemon(), "SpATK", tileSize * 5 - 6, graphics2D);
+        drawStatChanges(ActivePokemon(), "SpDEF", tileSize * 5 - 6, graphics2D);
+        drawStatChanges(ActivePokemon(), "SPD", tileSize * 5 - 6, graphics2D);
 
 
         //enemy status
@@ -65,10 +65,10 @@ public class StatusState extends AbstractState{
         graphics2D.drawRoundRect( tileSize*11,2,
                 tileSize*11 - 2, tileSize*11 - 4, 25, 25);
 
-        graphics2D.drawImage(opposingPokemon.frontSprite, tileSize*12, tileSize, tileSize*2, tileSize*2, null);
+        graphics2D.drawImage(OpposingPokemon().frontSprite, tileSize*12, tileSize, tileSize*2, tileSize*2, null);
         graphics2D.setFont(new Font("times", Font.BOLD|Font.ITALIC, 38));
-        graphics2D.drawString(opposingPokemon.Name, tileSize * 15, tileSize*2 - (tileSize/8));
-        graphics2D.drawString("HP: " + opposingPokemon.CurrentHealth + " / " + opposingPokemon.MaxHealth,
+        graphics2D.drawString(OpposingPokemon().Name, tileSize * 15, tileSize*2 - (tileSize/8));
+        graphics2D.drawString("HP: " + OpposingPokemon().getCurrentHealth() + " / " + OpposingPokemon().MaxHealth,
                 tileSize * 15, tileSize*3 - (tileSize/8));
 
         graphics2D.drawString("ATK: ", tileSize*12, tileSize*5 - (tileSize/8));
@@ -77,17 +77,17 @@ public class StatusState extends AbstractState{
         graphics2D.drawString("SpDEF: ", tileSize*12, tileSize*8 - (tileSize/8));
         graphics2D.drawString("SPD: ", tileSize*12, tileSize*9 - (tileSize/8));
 
-        drawStatChanges(opposingPokemon, "ATK", tileSize * 16 - 6, graphics2D);
-        drawStatChanges(opposingPokemon, "DEF", tileSize * 16 - 6, graphics2D);
-        drawStatChanges(opposingPokemon, "SpATK", tileSize * 16 - 6, graphics2D);
-        drawStatChanges(opposingPokemon, "SpDEF", tileSize * 16 - 6, graphics2D);
-        drawStatChanges(opposingPokemon, "SPD", tileSize * 16 - 6, graphics2D);
+        drawStatChanges(OpposingPokemon(), "ATK", tileSize * 16 - 6, graphics2D);
+        drawStatChanges(OpposingPokemon(), "DEF", tileSize * 16 - 6, graphics2D);
+        drawStatChanges(OpposingPokemon(), "SpATK", tileSize * 16 - 6, graphics2D);
+        drawStatChanges(OpposingPokemon(), "SpDEF", tileSize * 16 - 6, graphics2D);
+        drawStatChanges(OpposingPokemon(), "SPD", tileSize * 16 - 6, graphics2D);
 
-        if(activePokemon.nonVolatileStatus != null){
-            drawStatus(graphics2D, activePokemon);
+        if(ActivePokemon().getNonVolatileStatus() != null){
+            drawStatus(graphics2D, ActivePokemon());
         }
-        if(opposingPokemon.nonVolatileStatus != null){
-            drawStatus(graphics2D, opposingPokemon);
+        if(OpposingPokemon().getNonVolatileStatus() != null){
+            drawStatus(graphics2D, OpposingPokemon());
         }
 
     }
@@ -98,12 +98,12 @@ public class StatusState extends AbstractState{
         switch (stat){
             case("ATK"):
                 yPos = tileSize*5 - (tileSize/8);
-                if(subject.AtkMultiplier < 0){
-                    int multiplier = subject.AtkMultiplier*-1;
+                if(subject.AtkMultiplier() < 0){
+                    int multiplier = subject.AtkMultiplier()*-1;
                     drawStatChanges(xPos, yPos, multiplier, "-", graphics2D);
                 }
-                else if(subject.AtkMultiplier > 0){
-                    drawStatChanges(xPos, yPos, subject.AtkMultiplier, "+", graphics2D);
+                else if(subject.Attack > 0){
+                    drawStatChanges(xPos, yPos, subject.AtkMultiplier(), "+", graphics2D);
                 }
                 else{
                     drawBlankStats(xPos, yPos, graphics2D);
@@ -111,12 +111,12 @@ public class StatusState extends AbstractState{
                 break;
             case("DEF"):
                 yPos = tileSize*6 - (tileSize/8);
-                if(subject.DefMultiplier < 0){
-                    int multiplier = subject.DefMultiplier*-1;
+                if(subject.DefMultiplier() < 0){
+                    int multiplier = subject.DefMultiplier()*-1;
                     drawStatChanges(xPos, yPos, multiplier, "-", graphics2D);
                 }
-                else if(subject.DefMultiplier > 0){
-                    drawStatChanges(xPos, yPos, subject.DefMultiplier, "+", graphics2D);
+                else if(subject.DefMultiplier() > 0){
+                    drawStatChanges(xPos, yPos, subject.DefMultiplier(), "+", graphics2D);
                 }
                 else{
                     drawBlankStats(xPos, yPos, graphics2D);
@@ -124,12 +124,12 @@ public class StatusState extends AbstractState{
                 break;
             case("SpATK"):
                 yPos = tileSize*7 - (tileSize/8);
-                if(subject.SpAtkMultiplier < 0){
-                    int multiplier = subject.SpAtkMultiplier*-1;
+                if(subject.SpAtkMultiplier() < 0){
+                    int multiplier = subject.SpAtkMultiplier()*-1;
                     drawStatChanges(xPos, yPos, multiplier, "-", graphics2D);
                 }
-                else if(subject.SpAtkMultiplier > 0){
-                    drawStatChanges(xPos, yPos, subject.SpAtkMultiplier, "+", graphics2D);
+                else if(subject.SpAtkMultiplier() > 0){
+                    drawStatChanges(xPos, yPos, subject.SpAtkMultiplier(), "+", graphics2D);
                 }
                 else{
                     drawBlankStats(xPos, yPos, graphics2D);
@@ -137,12 +137,12 @@ public class StatusState extends AbstractState{
                 break;
             case("SpDEF"):
                 yPos = tileSize*8 - (tileSize/8);
-                if(subject.SpDefMultiplier < 0){
-                    int multiplier = subject.SpDefMultiplier*-1;
+                if(subject.SpDefMultiplier() < 0){
+                    int multiplier = subject.SpDefMultiplier()*-1;
                     drawStatChanges(xPos, yPos, multiplier, "-", graphics2D);
                 }
-                else if(subject.SpDefMultiplier > 0){
-                    drawStatChanges(xPos, yPos, subject.SpDefMultiplier, "+", graphics2D);
+                else if(subject.SpDefMultiplier() > 0){
+                    drawStatChanges(xPos, yPos, subject.SpDefMultiplier(), "+", graphics2D);
                 }
                 else{
                     drawBlankStats(xPos, yPos, graphics2D);
@@ -150,12 +150,12 @@ public class StatusState extends AbstractState{
                 break;
             case("SPD"):
                 yPos = tileSize*9 - (tileSize/8);
-                if(subject.SpdMultiplier < 0){
-                    int multiplier = subject.SpdMultiplier*-1;
+                if(subject.SpdMultiplier() < 0){
+                    int multiplier = subject.SpdMultiplier()*-1;
                     drawStatChanges(xPos, yPos, multiplier, "-", graphics2D);
                 }
-                else if(subject.SpdMultiplier > 0){
-                    drawStatChanges(xPos, yPos, subject.SpdMultiplier, "+", graphics2D);
+                else if(subject.SpdMultiplier() > 0){
+                    drawStatChanges(xPos, yPos, subject.SpdMultiplier(), "+", graphics2D);
                 }
                 else{
                     drawBlankStats(xPos, yPos, graphics2D);
@@ -186,9 +186,9 @@ public class StatusState extends AbstractState{
     }
 
     private void drawStatus(Graphics2D graphics2D, Pokemon effectedPokemon) {
-        switch (effectedPokemon.nonVolatileStatus.Condition) {
+        switch (effectedPokemon.getNonVolatileStatus().Condition) {
             case ("Burn"):
-                if (effectedPokemon.equals(activePokemon)) {
+                if (effectedPokemon.equals(ActivePokemon())) {
                     graphics2D.setColor(new Color(200, 0, 0, 150));
                     graphics2D.fillRoundRect(tileSize * 9 - 2, tileSize + 4, tileSize * 2 - 2, tileSize + 4, 25, 25);
                     graphics2D.setFont(new Font("times", Font.BOLD, 32));
@@ -203,7 +203,7 @@ public class StatusState extends AbstractState{
                 }
                 break;
             case ("Sleep"):
-                if (effectedPokemon.equals(activePokemon)) {
+                if (effectedPokemon.equals(ActivePokemon())) {
                     graphics2D.setColor(new Color(100, 227, 233, 150));
                     graphics2D.fillRoundRect(tileSize * 9 - 2, tileSize + 4, tileSize * 2 - 2, tileSize + 4, 25, 25);
                     graphics2D.setFont(new Font("times", Font.BOLD, 32));
@@ -218,7 +218,7 @@ public class StatusState extends AbstractState{
                 }
                 break;
             case ("Poison"):
-                if (effectedPokemon.equals(activePokemon)) {
+                if (effectedPokemon.equals(ActivePokemon())) {
                     graphics2D.setColor(new Color(128, 0, 128, 150));
                     graphics2D.fillRoundRect(tileSize * 9 - 2, tileSize + 4, tileSize * 2 - 2, tileSize + 4, 25, 25);
                     graphics2D.setFont(new Font("times", Font.BOLD, 32));
@@ -233,7 +233,7 @@ public class StatusState extends AbstractState{
                 }
                 break;
             case ("Paralysis"):
-                if (effectedPokemon.equals(activePokemon)) {
+                if (effectedPokemon.equals(ActivePokemon())) {
                     graphics2D.setColor(new Color(255, 255, 50, 150));
                     graphics2D.fillRoundRect(tileSize * 9 - 2, tileSize + 4, tileSize * 2 - 2, tileSize + 4, 25, 25);
                     graphics2D.setFont(new Font("times", Font.BOLD, 32));
@@ -248,7 +248,7 @@ public class StatusState extends AbstractState{
                 }
                 break;
             case ("Freeze"):
-                if (effectedPokemon.equals(activePokemon)) {
+                if (effectedPokemon.equals(ActivePokemon())) {
                     graphics2D.setColor(new Color(70, 189, 255, 150));
                     graphics2D.fillRoundRect(tileSize * 9 - 2, tileSize + 4, tileSize * 2 - 2, tileSize + 4, 25, 25);
                     graphics2D.setFont(new Font("times", Font.BOLD, 32));
@@ -267,6 +267,6 @@ public class StatusState extends AbstractState{
 
     @Override
     public void escapePressed() {
-        keyInputs.state = new SelectionState(keyInputs);
+        keyInputs.setState(new SelectionState(keyInputs));
     }
 }

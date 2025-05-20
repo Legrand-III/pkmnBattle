@@ -38,7 +38,7 @@ public class TrainerTeamState extends AbstractState{
                 screenWidth - 2, tileSize*11 - 4, 25, 25);
 
         //active pokemon
-        if(activePokemon.CurrentHealth == 0){
+        if(ActivePokemon().getCurrentHealth() == 0){
             graphics2D.setColor(new Color(255,0,0,150)); //background = red + low opacity
         }
         else {
@@ -49,13 +49,13 @@ public class TrainerTeamState extends AbstractState{
         graphics2D.setColor(Color.white);
         graphics2D.drawRoundRect(tileSize, tileSize*3 + 2,
                 tileSize*9 - 2, tileSize*5 - 4, 25, 25);
-        graphics2D.drawImage(activePokemon.frontSprite, tileSize*2, tileSize*4 - 2, tileSize*2, tileSize*2, null);
-        graphics2D.drawString(activePokemon.Name, tileSize*5, tileSize*5 - (tileSize/8));
-        graphics2D.drawString("HP: " + activePokemon.CurrentHealth + " / " + activePokemon.MaxHealth,
+        graphics2D.drawImage(ActivePokemon().frontSprite, tileSize*2, tileSize*4 - 2, tileSize*2, tileSize*2, null);
+        graphics2D.drawString(ActivePokemon().Name, tileSize*5, tileSize*5 - (tileSize/8));
+        graphics2D.drawString("HP: " + ActivePokemon().getCurrentHealth() + " / " + ActivePokemon().MaxHealth,
                 tileSize*4, tileSize*7 - (tileSize/8));
 
         //pokemon b
-        if(player.team[1].CurrentHealth == 0){
+        if(Player().team[1].getCurrentHealth() == 0){
             graphics2D.setColor(new Color(255,0,0,150)); //background = red + low opacity
         }
         else {
@@ -67,13 +67,13 @@ public class TrainerTeamState extends AbstractState{
         graphics2D.setColor(Color.white);
         graphics2D.drawRoundRect(tileSize*12, tileSize + 2,
                 tileSize*9 - 2, tileSize*4 - 4, 25, 25);
-        graphics2D.drawImage(player.team[1].frontSprite, tileSize*13, tileSize*2 - 2, tileSize*2, tileSize*2, null);
-        graphics2D.drawString(player.team[1].Name, tileSize*16, tileSize*3 - (tileSize/8));
-        graphics2D.drawString("HP: " + player.team[1].CurrentHealth + " / " + player.team[1].MaxHealth,
+        graphics2D.drawImage(Player().team[1].frontSprite, tileSize*13, tileSize*2 - 2, tileSize*2, tileSize*2, null);
+        graphics2D.drawString(Player().team[1].Name, tileSize*16, tileSize*3 - (tileSize/8));
+        graphics2D.drawString("HP: " + Player().team[1].getCurrentHealth() + " / " + Player().team[1].MaxHealth,
                 tileSize*15, tileSize*4 - (tileSize/8));
 
         //pokemon c
-        if(player.team[2].CurrentHealth == 0){
+        if(Player().team[2].getCurrentHealth() == 0){
             graphics2D.setColor(new Color(255,0,0,150)); //background = red + low opacity
         }
         else {
@@ -84,19 +84,19 @@ public class TrainerTeamState extends AbstractState{
         graphics2D.setColor(Color.white);
         graphics2D.drawRoundRect(tileSize*12, tileSize*6 + 2,
                 tileSize*9 - 2, tileSize*4 - 4, 25, 25);
-        graphics2D.drawImage(player.team[2].frontSprite, tileSize*13, tileSize*7 - 2, tileSize*2, tileSize*2, null);
-        graphics2D.drawString(player.team[2].Name, tileSize*16, tileSize*8 - (tileSize/8));
-        graphics2D.drawString("HP: " + player.team[2].CurrentHealth + " / " + player.team[2].MaxHealth,
+        graphics2D.drawImage(Player().team[2].frontSprite, tileSize*13, tileSize*7 - 2, tileSize*2, tileSize*2, null);
+        graphics2D.drawString(Player().team[2].Name, tileSize*16, tileSize*8 - (tileSize/8));
+        graphics2D.drawString("HP: " + Player().team[2].getCurrentHealth() + " / " + Player().team[2].MaxHealth,
                 tileSize*15, tileSize*9 - (tileSize/8));
 
-        if(player.team[0].nonVolatileStatus != null){
-            drawStatus(graphics2D, player.team[0], tileSize*8, tileSize*3);
+        if(Player().team[0].getNonVolatileStatus() != null){
+            drawStatus(graphics2D, Player().team[0], tileSize*8, tileSize*3);
         }
-        if(player.team[1].nonVolatileStatus != null){
-            drawStatus(graphics2D, player.team[1], tileSize*19, tileSize);
+        if(Player().team[1].getNonVolatileStatus() != null){
+            drawStatus(graphics2D, Player().team[1], tileSize*19, tileSize);
         }
-        if(player.team[2].nonVolatileStatus != null){
-            drawStatus(graphics2D, player.team[2], tileSize*19, tileSize*6);
+        if(Player().team[2].getNonVolatileStatus() != null){
+            drawStatus(graphics2D, Player().team[2], tileSize*19, tileSize*6);
         }
 
 
@@ -106,7 +106,7 @@ public class TrainerTeamState extends AbstractState{
     }
 
     private void drawStatus(Graphics2D graphics2D, Pokemon effectedPokemon, int xPos, int yPos) {
-        switch (effectedPokemon.nonVolatileStatus.Condition) {
+        switch (effectedPokemon.getNonVolatileStatus().Condition) {
             case ("Burn"):
                 graphics2D.setColor(new Color(200, 0, 0, 150));
                 graphics2D.fillRoundRect(xPos - 2, yPos, tileSize * 2 - 2, tileSize + 4, 25, 25);
@@ -262,8 +262,8 @@ class selectPokemon extends SubState{
 
     @Override
     public void escapePressed() {
-        if(activePokemon.CurrentHealth > 0) {
-            trainerTeamState.keyInputs.state = new SelectionState(trainerTeamState.keyInputs);
+        if(ActivePokemon().getCurrentHealth() > 0) {
+            trainerTeamState.keyInputs.setState(new SelectionState(trainerTeamState.keyInputs));
         }
     }
 }
@@ -381,28 +381,28 @@ class summaryOrSwitch extends SubState{
                 if(selectedPokemon == 0){
                     System.out.println("this pokemon is already active!");
                 }
-                else if(player.team[selectedPokemon].CurrentHealth > 0){//change
-                    if(activePokemon.CurrentHealth == 0){
-                        trainerTeamState.keyInputs.state = new BattleState(trainerTeamState.keyInputs,
-                                new Switch(selectedPokemon, player), new Wait());
+                else if(Player().team[selectedPokemon].getCurrentHealth() > 0){//change
+                    if(ActivePokemon().getCurrentHealth() == 0){
+                        trainerTeamState.keyInputs.setState(new BattleState(trainerTeamState.keyInputs,
+                                new Switch(selectedPokemon, Player()), new Wait()));
                     }
-                    else if(opposingPokemon.CurrentHealth != 0) {
-                        trainerTeamState.keyInputs.state = new BattleState(trainerTeamState.keyInputs,
-                                new Switch(selectedPokemon, player), opposingTrainer.determineMove());
+                    else if(OpposingPokemon().getCurrentHealth() != 0) {
+                        trainerTeamState.keyInputs.setState(new BattleState(trainerTeamState.keyInputs,
+                                new Switch(selectedPokemon, Player()), OpposingTrainer().determineMove()));
                     }
                     else{
 
-                        if(opposingTrainer.team[1].CurrentHealth != 0){
-                            trainerTeamState.keyInputs.state = new BattleState(trainerTeamState.keyInputs,
-                                    new Switch(selectedPokemon, player), new Switch(1, opposingTrainer));
+                        if(OpposingTrainer().team[1].getCurrentHealth() != 0){
+                            trainerTeamState.keyInputs.setState(new BattleState(trainerTeamState.keyInputs,
+                                    new Switch(selectedPokemon, Player()), new Switch(1, OpposingTrainer())));
                         }
-                        else if(opposingTrainer.team[2].CurrentHealth != 0){
-                            trainerTeamState.keyInputs.state = new BattleState(trainerTeamState.keyInputs,
-                                    new Switch(selectedPokemon, player), new Switch(2, opposingTrainer));
+                        else if(OpposingTrainer().team[2].getCurrentHealth() != 0){
+                            trainerTeamState.keyInputs.setState(new BattleState(trainerTeamState.keyInputs,
+                                    new Switch(selectedPokemon, Player()), new Switch(2, OpposingTrainer())));
                         }
                         else{
-                            trainerTeamState.keyInputs.state = new BattleState(trainerTeamState.keyInputs,
-                                    new Switch(selectedPokemon, player), new Wait());
+                            trainerTeamState.keyInputs.setState(new BattleState(trainerTeamState.keyInputs,
+                                    new Switch(selectedPokemon, Player()), new Wait()));
                         }
 
                     }
@@ -412,7 +412,7 @@ class summaryOrSwitch extends SubState{
                 }
                 break;
             case(1):
-                trainerTeamState.keyInputs.state = new SummaryState(trainerTeamState.keyInputs, selectedPokemon);
+                trainerTeamState.keyInputs.setState(new SummaryState(trainerTeamState.keyInputs, selectedPokemon));
                 break;
             case(2):
                 trainerTeamState.subState = new selectPokemon(trainerTeamState);

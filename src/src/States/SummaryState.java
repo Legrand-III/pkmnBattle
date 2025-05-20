@@ -18,17 +18,17 @@ public class SummaryState extends AbstractState{
     public SummaryState(PlayerKeyInputs keyInputs, int selectedPokemon){
         this.keyInputs = keyInputs;
         optionNum = 0;
-        teamCopy[0] = player.team[selectedPokemon];
+        teamCopy[0] = Player().team[selectedPokemon];
         selectedPokemon+=1;
         if(selectedPokemon > 2){
             selectedPokemon = 0;
         }
-        teamCopy[1] = player.team[selectedPokemon];
+        teamCopy[1] = Player().team[selectedPokemon];
         selectedPokemon+=1;
         if(selectedPokemon > 2){
             selectedPokemon = 0;
         }
-        teamCopy[2] = player.team[selectedPokemon];
+        teamCopy[2] = Player().team[selectedPokemon];
     }
 
     @Override
@@ -47,7 +47,7 @@ public class SummaryState extends AbstractState{
                 screenWidth - 2, tileSize*11 - 4, 25, 25);
 
         //selected pokemon
-        if(teamCopy[0].CurrentHealth == 0){graphics2D.setColor(new Color(200, 0, 0, 150)); }
+        if(teamCopy[0].getCurrentHealth() == 0){graphics2D.setColor(new Color(200, 0, 0, 150)); }
         else{graphics2D.setColor(new Color(255,255,255,150));} //background = white + low opacity
         graphics2D.fillRoundRect(0, 0, tileSize*11, tileSize*11, 35, 35);
 
@@ -65,7 +65,7 @@ public class SummaryState extends AbstractState{
         }
 
         //stats
-        graphics2D.drawString("HP: " + teamCopy[0].CurrentHealth + " / " + teamCopy[0].MaxHealth, tileSize, tileSize*5 - (tileSize/8));
+        graphics2D.drawString("HP: " + teamCopy[0].getCurrentHealth() + " / " + teamCopy[0].MaxHealth, tileSize, tileSize*5 - (tileSize/8));
         graphics2D.drawString("ATK: " + teamCopy[0].Attack, tileSize, tileSize*6 - (tileSize/8));
         graphics2D.drawString("DEF: " + teamCopy[0].Defense, tileSize, tileSize*7 - (tileSize/8));
         graphics2D.drawString("SpATK: " + teamCopy[0].SpAttack, tileSize, tileSize*8 - (tileSize/8));
@@ -100,7 +100,7 @@ public class SummaryState extends AbstractState{
 
 
         //pokemon b
-        if(teamCopy[1].CurrentHealth == 0){graphics2D.setColor(new Color(200, 0, 0, 150)); }
+        if(teamCopy[1].getCurrentHealth() == 0){graphics2D.setColor(new Color(200, 0, 0, 150)); }
         else{graphics2D.setColor(new Color(255,255,255,150));}
         graphics2D.fillRoundRect(tileSize*11, 0, tileSize*5 + tileSize/2, tileSize*3, 35, 35);
 
@@ -112,7 +112,7 @@ public class SummaryState extends AbstractState{
 
 
         //pokemon c
-        if(teamCopy[2].CurrentHealth == 0){graphics2D.setColor(new Color(200, 0, 0, 150)); }
+        if(teamCopy[2].getCurrentHealth() == 0){graphics2D.setColor(new Color(200, 0, 0, 150)); }
         else{graphics2D.setColor(new Color(255,255,255,150));}
         graphics2D.fillRoundRect(tileSize*16 + tileSize/2, 0, tileSize*5 + tileSize/2, tileSize*3, 35, 35);
 
@@ -124,7 +124,7 @@ public class SummaryState extends AbstractState{
 
 
 
-        if(teamCopy[0].nonVolatileStatus != null){
+        if(teamCopy[0].getNonVolatileStatus() != null){
             drawStatus(graphics2D, teamCopy[0]);
         }
 
@@ -172,11 +172,11 @@ public class SummaryState extends AbstractState{
 
     @Override
     public void escapePressed() {
-        keyInputs.state = new TrainerTeamState(keyInputs);
+        keyInputs.setState(new TrainerTeamState(keyInputs));
     }
 
     private void drawStatus(Graphics2D graphics2D, Pokemon effectedPokemon) {
-        switch (effectedPokemon.nonVolatileStatus.Condition) {
+        switch (effectedPokemon.getNonVolatileStatus().Condition) {
             case ("Burn"):
                     graphics2D.setColor(new Color(200, 0, 0, 150));
                     graphics2D.fillRoundRect(tileSize * 9 - 2,  4, tileSize * 2 - 2, tileSize + 4, 25, 25);
@@ -220,7 +220,7 @@ public class SummaryState extends AbstractState{
 
         graphics2D.setFont(new Font("times", Font.BOLD|Font.ITALIC, 30));
 
-        graphics2D.drawString("PP:   " + teamCopy[0].moves[optionNum-2].RemainingPP +
+        graphics2D.drawString("PP:   " + teamCopy[0].moves[optionNum-2].getRemainingPP() +
                 " / " + teamCopy[0].moves[optionNum-2].MaxPP, tileSize , tileSize * 12 - (tileSize/8));
 
         graphics2D.drawString("Type: " + teamCopy[0].moves[optionNum-2].Type, tileSize, tileSize * 13 - (tileSize/8));

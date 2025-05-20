@@ -14,10 +14,10 @@ public class ResultsScreen extends AbstractState{
 
     public ResultsScreen(PlayerKeyInputs keyInputs){
         this.keyInputs = keyInputs;
-        if(activePokemon.CurrentHealth == 0 && opposingPokemon.CurrentHealth == 0){
+        if(ActivePokemon().getCurrentHealth() == 0 && OpposingPokemon().getCurrentHealth() == 0){
             this.result = "tie";
         }
-        else if(activePokemon.CurrentHealth == 0){
+        else if(ActivePokemon().getCurrentHealth() == 0){
             this.result = "lose";
         }
         else{
@@ -33,7 +33,7 @@ public class ResultsScreen extends AbstractState{
                 throw new RuntimeException(e);
             }
 
-            this.keyInputs.state = new TitleScreen(this.keyInputs);
+            this.keyInputs.setState(new TitleScreen(this.keyInputs));
             return;
         }
         //player health box
@@ -58,13 +58,13 @@ public class ResultsScreen extends AbstractState{
 
         graphics2D.setFont(new Font("times", Font.BOLD, 48));
         graphics2D.setColor(Color.black);
-        graphics2D.drawString(activePokemon.Name, tileSize*13, tileSize * 9 - (tileSize/8));
-        graphics2D.drawString("HP: " + activePokemon.CurrentHealth + " / "
-                + activePokemon.MaxHealth, tileSize*14, tileSize * 11 - (tileSize/8));
+        graphics2D.drawString(ActivePokemon().Name, tileSize*13, tileSize * 9 - (tileSize/8));
+        graphics2D.drawString("HP: " + ActivePokemon().getCurrentHealth() + " / "
+                + ActivePokemon().MaxHealth, tileSize*14, tileSize * 11 - (tileSize/8));
 
-        graphics2D.drawString(opposingPokemon.Name, tileSize*2, tileSize * 2 - (tileSize/8));
-        graphics2D.drawString("HP: " + opposingPokemon.CurrentHealth + " / "
-                + opposingPokemon.MaxHealth, tileSize*3, tileSize * 4 - (tileSize/8));
+        graphics2D.drawString(OpposingPokemon().Name, tileSize*2, tileSize * 2 - (tileSize/8));
+        graphics2D.drawString("HP: " + OpposingPokemon().getCurrentHealth() + " / "
+                + OpposingPokemon().MaxHealth, tileSize*3, tileSize * 4 - (tileSize/8));
 
         displayResult(graphics2D);
 
@@ -77,13 +77,13 @@ public class ResultsScreen extends AbstractState{
         graphics2D.setFont(new Font("times", Font.BOLD, 48));
 
         if(this.result.equals("win")){
-            graphics2D.drawImage(activePokemon.backSprite, tileSize*4, tileSize*7 - 2, tileSize*4, tileSize*4, null);
+            graphics2D.drawImage(ActivePokemon().backSprite, tileSize*4, tileSize*7 - 2, tileSize*4, tileSize*4, null);
             graphics2D.drawString("Congratulations! You defeated", tileSize, tileSize *13 - (tileSize/8));
             graphics2D.drawString("your opponent!",
                     tileSize, tileSize *15 - (tileSize/8));
         }
         else if(this.result.equals("lose")){
-            graphics2D.drawImage(opposingPokemon.frontSprite, tileSize*14, tileSize*3, tileSize*4, tileSize*4, null);
+            graphics2D.drawImage(OpposingPokemon().frontSprite, tileSize*14, tileSize*3, tileSize*4, tileSize*4, null);
             graphics2D.drawString("You lost :(", tileSize, tileSize *13 - (tileSize/8));
             graphics2D.drawString("Better luck next time",
                     tileSize, tileSize *15 - (tileSize/8));

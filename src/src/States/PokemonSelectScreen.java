@@ -16,7 +16,7 @@ public class PokemonSelectScreen extends AbstractState{ //room for 40(?) pkmn
     SubState subState;
     public PokemonSelectScreen(PlayerKeyInputs keyInputs){
         this.keyInputs = keyInputs;
-        if(opposingTrainer.team[2] != null){
+        if(OpposingTrainer().team[2] != null){
             this.subState = new readyToBattle(this);
         }
         else {
@@ -91,23 +91,23 @@ public class PokemonSelectScreen extends AbstractState{ //room for 40(?) pkmn
     }
 
     public void addPokemon(Pokemon selectedPokemon){
-        if(player.team[0] == null){
-            player.team[0] = selectedPokemon;
+        if(Player().team[0] == null){
+            Player().team[0] = selectedPokemon;
         }
-        else if(player.team[1] == null){
-            player.team[1] = selectedPokemon;
+        else if(Player().team[1] == null){
+            Player().team[1] = selectedPokemon;
         }
-        else if(player.team[2] == null){
-            player.team[2] = selectedPokemon;
+        else if(Player().team[2] == null){
+            Player().team[2] = selectedPokemon;
         }
-        else if(opposingTrainer.team[0] == null){
-            opposingTrainer.team[0] = selectedPokemon;
+        else if(OpposingTrainer().team[0] == null){
+            OpposingTrainer().team[0] = selectedPokemon;
         }
-        else if(opposingTrainer.team[1] == null){
-            opposingTrainer.team[1] = selectedPokemon;
+        else if(OpposingTrainer().team[1] == null){
+            OpposingTrainer().team[1] = selectedPokemon;
         }
         else{
-            opposingTrainer.team[2] = selectedPokemon;
+            OpposingTrainer().team[2] = selectedPokemon;
             this.subState = new readyToBattle(this);
             return;
         }
@@ -173,73 +173,73 @@ public class PokemonSelectScreen extends AbstractState{ //room for 40(?) pkmn
     }
 
     public void drawPlayerTeam(Graphics2D graphics2D){
-        if(player.team[0] == null){
+        if(Player().team[0] == null){
             return;
         }
-        graphics2D.drawImage(player.team[0].frontSprite, (tileSize * 16), 0, tileSize, tileSize, null);
-        if(player.team[1] == null){
+        graphics2D.drawImage(Player().team[0].frontSprite, (tileSize * 16), 0, tileSize, tileSize, null);
+        if(Player().team[1] == null){
             return;
         }
-        graphics2D.drawImage(player.team[1].frontSprite, (tileSize * 17), 0, tileSize, tileSize, null);
-        if(player.team[2] == null){
+        graphics2D.drawImage(Player().team[1].frontSprite, (tileSize * 17), 0, tileSize, tileSize, null);
+        if(Player().team[2] == null){
             return;
         }
-        graphics2D.drawImage(player.team[2].frontSprite, (tileSize * 18), 0, tileSize, tileSize, null);
+        graphics2D.drawImage(Player().team[2].frontSprite, (tileSize * 18), 0, tileSize, tileSize, null);
 
     }
     public void drawEnemyTeam(Graphics2D graphics2D){
-        if(opposingTrainer.team[0] == null){
+        if(OpposingTrainer().team[0] == null){
             return;
         }
-        graphics2D.drawImage(opposingTrainer.team[0].frontSprite, (tileSize * 16), tileSize*2, tileSize, tileSize, null);
-        if(opposingTrainer.team[1] == null){
+        graphics2D.drawImage(OpposingTrainer().team[0].frontSprite, (tileSize * 16), tileSize*2, tileSize, tileSize, null);
+        if(OpposingTrainer().team[1] == null){
             return;
         }
-        graphics2D.drawImage(opposingTrainer.team[1].frontSprite, (tileSize * 17), tileSize*2, tileSize, tileSize, null);
-        if(opposingTrainer.team[2] == null){
+        graphics2D.drawImage(OpposingTrainer().team[1].frontSprite, (tileSize * 17), tileSize*2, tileSize, tileSize, null);
+        if(OpposingTrainer().team[2] == null){
             return;
         }
-        graphics2D.drawImage(opposingTrainer.team[2].frontSprite, (tileSize * 18), tileSize*2, tileSize, tileSize, null);
+        graphics2D.drawImage(OpposingTrainer().team[2].frontSprite, (tileSize * 18), tileSize*2, tileSize, tileSize, null);
     }
 
     public boolean removePokemon(){
-        if(opposingTrainer.team[2] != null){
-            opposingTrainer.team[2] = null;
+        if(OpposingTrainer().team[2] != null){
+            OpposingTrainer().team[2] = null;
             return true;
         }
-        if(opposingTrainer.team[1] != null){
-            opposingTrainer.team[1] = null;
+        if(OpposingTrainer().team[1] != null){
+            OpposingTrainer().team[1] = null;
             return true;
         }
-        if(opposingTrainer.team[0] != null){
-            opposingTrainer.team[0] = null;
+        if(OpposingTrainer().team[0] != null){
+            OpposingTrainer().team[0] = null;
             return true;
         }
-        if(player.team[2] != null){
-            player.team[2] = null;
+        if(Player().team[2] != null){
+            Player().team[2] = null;
             return true;
         }
-        if(player.team[1] != null){
-            player.team[1] = null;
+        if(Player().team[1] != null){
+            Player().team[1] = null;
             return true;
         }
-        if(player.team[0] != null){
-            player.team[0] = null;
+        if(Player().team[0] != null){
+            Player().team[0] = null;
             return true;
         }
         return false;
     }
 
     public void finalizeTeams(){
-        player.team[0] = new Pokemon(player.team[0].Name);
-        player.team[1] = new Pokemon(player.team[1].Name);
-        player.team[2] = new Pokemon(player.team[2].Name);
-        activePokemon = player.team[0];
+        Player().team[0] = new Pokemon(Player().team[0].Name);
+        Player().team[1] = new Pokemon(Player().team[1].Name);
+        Player().team[2] = new Pokemon(Player().team[2].Name);
+        setActivePokemon(Player().team[0]);
 
-        opposingTrainer.team[0] = new Pokemon(opposingTrainer.team[0].Name);
-        opposingTrainer.team[1] = new Pokemon(opposingTrainer.team[1].Name);
-        opposingTrainer.team[2] = new Pokemon(opposingTrainer.team[2].Name);
-        opposingPokemon = opposingTrainer.team[0];
+        OpposingTrainer().team[0] = new Pokemon(OpposingTrainer().team[0].Name);
+        OpposingTrainer().team[1] = new Pokemon(OpposingTrainer().team[1].Name);
+        OpposingTrainer().team[2] = new Pokemon(OpposingTrainer().team[2].Name);
+        setOpposingPokemon(OpposingTrainer().team[0]);
     }
 
 }
@@ -393,7 +393,7 @@ class confirmQuit extends SubState{
     @Override
     public void spacePressed() {
         if(optionNum == 0){
-            State.keyInputs.state = new TitleScreen(State.keyInputs);
+            State.keyInputs.setState(new TitleScreen(State.keyInputs));
         }
         else{
             State.subState = new playerSelectTeam(State);
@@ -561,7 +561,7 @@ class miniSummary extends SubState{
                 screenWidth - 2, tileSize*11 - 4, 25, 25);
 
         //selected pokemon
-        if(selectedPokemon.CurrentHealth == 0){graphics2D.setColor(new Color(200, 0, 0, 150)); }
+        if(selectedPokemon.getCurrentHealth() == 0){graphics2D.setColor(new Color(200, 0, 0, 150)); }
         else{graphics2D.setColor(new Color(255,255,255,150));} //background = white + low opacity
         graphics2D.fillRoundRect(0, 0, tileSize*11, tileSize*11, 35, 35);
 
@@ -579,7 +579,7 @@ class miniSummary extends SubState{
         }
 
         //stats
-        graphics2D.drawString("HP: " + selectedPokemon.CurrentHealth + " / " + selectedPokemon.MaxHealth, tileSize, tileSize*5 - (tileSize/8));
+        graphics2D.drawString("HP: " + selectedPokemon.getCurrentHealth() + " / " + selectedPokemon.MaxHealth, tileSize, tileSize*5 - (tileSize/8));
         graphics2D.drawString("ATK: " + selectedPokemon.Attack, tileSize, tileSize*6 - (tileSize/8));
         graphics2D.drawString("DEF: " + selectedPokemon.Defense, tileSize, tileSize*7 - (tileSize/8));
         graphics2D.drawString("SpATK: " + selectedPokemon.SpAttack, tileSize, tileSize*8 - (tileSize/8));
@@ -639,7 +639,7 @@ class miniSummary extends SubState{
 
         graphics2D.setFont(new Font("times", Font.BOLD|Font.ITALIC, 30));
 
-        graphics2D.drawString("PP:   " + selectedPokemon.moves[optionNum].RemainingPP +
+        graphics2D.drawString("PP:   " + selectedPokemon.moves[optionNum].getRemainingPP() +
                 " / " + selectedPokemon.moves[optionNum].MaxPP, tileSize , tileSize * 12 - (tileSize/8));
 
 
@@ -749,7 +749,7 @@ class readyToBattle extends SubState{
     public void spacePressed() {
         if(optionNum == 0){
             State.finalizeTeams();
-            State.keyInputs.state = new SelectionState(State.keyInputs);
+            State.keyInputs.setState(new SelectionState(State.keyInputs));
         }
         else{
             State.removePokemon();

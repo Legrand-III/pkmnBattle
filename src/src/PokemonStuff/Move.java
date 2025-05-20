@@ -1,21 +1,22 @@
 package PokemonStuff;
 
 public class Move {
-    public String Name;
-    public String Type;
-    public String Category;
-    public int MaxPP;
-    public int RemainingPP;
-    public int Power;
-    public int Accuracy;
-    public int Priority;
-    public String Effect;
-    public String StatusType = "";
-    public String MoveInfo1;
-    public String MoveInfo2;
-    public String ShortenedName;
+    public final String Name;
+    public final String Type;
+    public final String Category;
+    public final int MaxPP;
+    private int RemainingPP;
+    public final int Power;
+    public final int Accuracy;
+    public final int Priority;
+    public final String Effect;
+    public final String StatusType;
+    public final String MoveInfo1;
+    public final String MoveInfo2;
+    public final String ShortenedName;
     //maybe contact and such later
-    public Move(String name, String type, String category, int pp, int power, int accuracy, int priority, String info1, String info2, String shortenedName){
+
+    public Move(String name, String type, String category, int pp, int power, int accuracy, int priority, String info1, String info2, String shortenedName, String effect, String statusType){
         this.Name = name;
         this.Type = type;
         this.Category = category;
@@ -27,29 +28,46 @@ public class Move {
         this.MoveInfo1 = info1;
         this.MoveInfo2 = info2;
         this.ShortenedName = shortenedName;
-
+        this.Effect = effect;
+        this.StatusType = statusType;
     }
     public Move(String input){
         if(input.equals("Switch")){
+            this.Name = "Switch";
+            this.ShortenedName = "Switch";
             this.Priority = 99;
             this.Category = "Switch";
+            this.Power = 0;
+            this.Accuracy = 0;
         }
         else if(input.equals("Wait")){
+            this.Name = "Wait";
+            this.ShortenedName = "Wait";
             this.Priority = -99;
             this.Category = "Wait";
+            this.Power = 0;
+            this.Accuracy = 0;
         }
         else{
             this.Name = "Struggle";
-            this.Type = "None";
+            this.ShortenedName = "Struggle";
             this.Category = "Physical";
             this.Power = 50;
             this.Accuracy = 100;
             this.Priority = 0;
         }
+        this.Type = "None";
+        this.MaxPP = 1;
+        this.RemainingPP = 1;
+        this.Effect = null;
+        this.StatusType = null;
+        this.MoveInfo1 = null;
+        this.MoveInfo2 = null;
+
     }
     public String[][] useMove(Pokemon user, Pokemon target){ //struggle
         String[][] ans = new String[2][2];
-        if(target.protecting){
+        if(target.isProtecting()){
             ans[0][0] = target.Name + " blocked";
             ans[0][1] = "the hit!";
             return ans;
@@ -57,24 +75,24 @@ public class Move {
         int critical;
         int damage;
             double burn = 1;
-            if(user.nonVolatileStatus.Condition.equals("Burn")){burn = 0.5;}
+            if(user.getNonVolatileStatus().Condition.equals("Burn")){burn = 0.5;}
             double targetDefense;
             if(Math.random() > 0.95){
                 critical = 2;
-                if (target.effectiveStat(target.Defense, target.DefMultiplier) > target.Defense) {
+                if (target.effectiveStat(target.Defense, target.DefMultiplier()) > target.Defense) {
                     targetDefense = target.Defense;
                 }
                 else{
-                    targetDefense = target.effectiveStat(target.Defense, target.DefMultiplier);
+                    targetDefense = target.effectiveStat(target.Defense, target.DefMultiplier());
                 }
             }
             else{
                 critical = 1;
-                targetDefense = target.effectiveStat(target.Defense, target.DefMultiplier);
+                targetDefense = target.effectiveStat(target.Defense, target.DefMultiplier());
             }
-            System.out.println(user.Name + "'s effective attack = " + user.effectiveStat(user.Attack, user.AtkMultiplier));
+            System.out.println(user.Name + "'s effective attack = " + user.effectiveStat(user.Attack, user.AtkMultiplier()));
             damage = (int)((((22 * this.Power *
-                    (user.effectiveStat(user.Attack, user.AtkMultiplier))
+                    (user.effectiveStat(user.Attack, user.AtkMultiplier()))
                     / (targetDefense)) /50)+2) * critical  * burn);
             System.out.println("DMG = " + damage);
             target.takeDamage(damage);
@@ -344,4 +362,10 @@ public class Move {
         return ans;
     }
 
+    public int getRemainingPP() {
+        return RemainingPP;
+    }
+    public void usePP(){
+        this.RemainingPP -=1;
+    }
 }

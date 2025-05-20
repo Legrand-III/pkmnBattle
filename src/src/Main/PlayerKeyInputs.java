@@ -8,9 +8,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class PlayerKeyInputs implements KeyListener {
-    private GamePanel gp;
+    public final GamePanel gp;
 
-    public AbstractState state;
+    private AbstractState state;
 
     public PlayerKeyInputs(GamePanel gp){
         this.gp = gp;
@@ -52,5 +52,13 @@ public class PlayerKeyInputs implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
+    }
+
+    public AbstractState getState() {
+        return state;
+    }
+
+    public void setState(AbstractState state) {
+        this.state = state;
     }
 }
